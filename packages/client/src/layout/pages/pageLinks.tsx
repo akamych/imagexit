@@ -1,7 +1,5 @@
 import { Typography, theme } from 'antd'
-import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { itemsMenu } from '../../constants/menu'
 
 export function PageLinks() {
   const { Title } = Typography
