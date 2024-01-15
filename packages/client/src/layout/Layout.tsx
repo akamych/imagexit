@@ -2,7 +2,6 @@ import { Layout } from 'antd'
 import { usePagesRoutes } from '../router'
 import { LFooter } from './footer'
 import { LHeader } from './header'
-
 import { contentStyle } from '../assets/antdStyle'
 
 export const Pages = () => {

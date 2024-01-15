@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import './App.css'
 import { Pages } from './layout/Layout'
+import { BrowserRouter } from 'react-router-dom'
 
 function App() {
   useEffect(() => {
@@ -14,9 +15,12 @@ function App() {
     fetchServerData()
   }, [])
   return (
-    <div className="App">
-      <Pages />
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        Вот тут будет жить ваше приложение :)
+        <Pages />
+      </div>
+    </BrowserRouter>
   )
 }
 
