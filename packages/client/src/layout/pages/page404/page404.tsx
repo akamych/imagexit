@@ -1,12 +1,12 @@
 import { Typography } from 'antd'
 import { Link } from 'react-router-dom'
-import styles from './styles.module.css'
+import './styles.css'
 
 export const PageNotFound = () => {
   const { Title } = Typography
   return (
     <>
-      <div className={styles.content}>
+      <div className="content">
         <Title>Ошибка 404: Некорректный запрос</Title>
         <Title>¯\_(ツ)_/¯</Title>
         <p style={{ color: 'black' }}>
