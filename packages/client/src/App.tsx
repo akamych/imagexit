@@ -19,12 +19,19 @@ function App() {
   }, [])
   return (
     <BrowserRouter>
+<<<<<<< HEAD
       <Provider store={store}>
         <div className="App">
           Вот тут будет жить ваше приложение :)
           <Pages />
         </div>
       </Provider>
+=======
+      <div className="App">
+        Вот тут будет жить ваше приложение :)
+        <Pages />
+      </div>
+>>>>>>> 6189eec (Фикс для jest)
     </BrowserRouter>
   )
 }
