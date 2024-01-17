@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { PageMain } from '../layout/pages/pageMain'
-import { PageNotFound } from '../layout/pages/page404'
+import { PageNotFound } from '../layout/pages/page404/page404'
 import { PageLogin } from '../layout/pages/pageLogin'
 import { PageSignUp } from '../layout/pages/pageSignUp'
 import { PageProfile } from '../layout/pages/pageProfile/pageProfile'

@@ -17,7 +17,6 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        Вот тут будет жить ваше приложение :)
         <Pages />
       </div>
     </BrowserRouter>
