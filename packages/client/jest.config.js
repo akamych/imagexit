@@ -6,7 +6,7 @@ export default {
   testEnvironment: 'jsdom',
   transform: {
     "^.+\\.js$": "babel-jest",
-    "^.+\\.css$": "jest-transform-css"
+    ".+\\.(css|styl|less|sass|scss)$": "jest-transform-css"
   },
   testMatch: ['<rootDir>/src/**/*.test.{ts,tsx}'],
   globals: {
