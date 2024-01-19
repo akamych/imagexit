@@ -4,6 +4,10 @@ dotenv.config()
 export default {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
+  transform: {
+    "^.+\\.js$": "babel-jest",
+    "^.+\\.css$": "jest-transform-css"
+  },
   testMatch: ['<rootDir>/src/**/*.test.{ts,tsx}'],
   globals: {
     __SERVER_PORT__: process.env.SERVER_PORT,

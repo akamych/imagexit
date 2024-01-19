@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@evilmartians/lefthook": "^1.3.9",
+    "jest-transform-css": "^6.0.1",
     "lerna": "^5.4.3"
   }
 }
