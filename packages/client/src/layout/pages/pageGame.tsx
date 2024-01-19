@@ -1,4 +1,4 @@
-import { Typography, Input, Space } from 'antd'
+import { Typography, Input, Space, Button } from 'antd'
 import { UseDrawField } from '../../hooks/useDrawField'
 import { UseDrawPlayers } from '../../hooks/useDrawPlayers'
 import { gameSettings } from '../../constants/game'
@@ -14,8 +14,8 @@ export const PageGame = () => {
   const { Title } = Typography
 
   const {
-    startGame,
-    setStartGame,
+    isStartGame,
+    setIsStartGame,
     setSelectedCard,
     selectedCard,
     visibleField,
@@ -24,11 +24,7 @@ export const PageGame = () => {
   const { ctx, canvas, clearCanvas } = UseInitCanvas()
   const { setPlace, fieldsElement } = UseDrawField(ctx)
   const { cardsElement, setCardsElement } = UseInitImage()
-  const { setNext, generatePlayers } = UseDrawPlayers(
-    ctx,
-    fieldsElement,
-    setPlace
-  )
+  const { generatePlayers } = UseDrawPlayers(ctx, fieldsElement)
   const { drawCards, animateCards, drawCard } = UseDrawCards(
     ctx,
     cardsElement,
@@ -38,37 +34,39 @@ export const PageGame = () => {
   const { addClick, removeClick } = UseHandler(canvas)
 
   useEffect(() => {
-    if (startGame) {
+    if (isStartGame) {
       addClick(animateCards)
     } else {
       removeClick(animateCards)
     }
-  }, [startGame])
+  }, [isStartGame])
 
-  const setImage = () => {
+  const startGame = () => {
     setVisibleField(false)
     drawCards()
-    setStartGame(true)
+    setIsStartGame(true)
   }
 
   const nextStep = () => {
     clearCanvas()
-    setNext((prev: number) => prev + 1)
     setPlace()
     generatePlayers()
-    if (selectedCard) {
+    selectedCard &&
       drawCard(selectedCard.img, selectedCard.left, selectedCard.top)
-    }
   }
 
   const initPlace = () => {
     clearCanvas()
     setVisibleField(true)
     setPlace()
-    setStartGame(false)
-    if (selectedCard) {
+    selectedCard &&
       drawCard(selectedCard.img, selectedCard.left, selectedCard.top)
-    }
+  }
+
+  const reloadGame = () => {
+    clearCanvas()
+    setIsStartGame(false)
+    setSelectedCard(null)
   }
 
   return (
@@ -84,10 +82,18 @@ export const PageGame = () => {
         height={gameSettings.CANVAS_HEIGHT_PX}
         style={{ border: '1px solid black' }}></canvas>
       <Space style={inputContainer}>
-        <button onClick={setImage}>Начать игру</button>
-        <button onClick={initPlace}>Посмотреть игровое поле</button>
-        {visibleField && (
-          <button onClick={nextStep}>Генерация положения на поле</button>
+        {isStartGame ? (
+          <Button onClick={reloadGame}>Перезапустить игру</Button>
+        ) : (
+          <Button onClick={startGame}>Начать игру</Button>
+        )}
+
+        {visibleField ? (
+          <Button onClick={nextStep}>
+            Генерация положения игроков на поле
+          </Button>
+        ) : (
+          <Button onClick={initPlace}>Посмотреть игровое поле</Button>
         )}
       </Space>
     </>

@@ -1,24 +1,17 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { gameSettings } from '../constants/game'
 import { IFieldElement, IPlayerElement } from '../types/game'
 import { randomInteger } from '../helpers/number'
 
 type UseDrawPlayers = (
   ctx: CanvasRenderingContext2D | null,
-  fieldsElement: IFieldElement[],
-  setPlace: () => void
+  fieldsElement: IFieldElement[]
 ) => {
-  setNext: Dispatch<SetStateAction<number>>
   generatePlayers: () => void
 }
 
-export const UseDrawPlayers: UseDrawPlayers = (
-  ctx,
-  fieldsElement,
-  setPlace
-) => {
+export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement) => {
   const [players, setPlayers] = useState<IPlayerElement[]>([])
-  const [next, setNext] = useState(0)
 
   const generatePlayers = () => {
     const arrPayer = Array.from({ length: randomInteger(2, 6) }).map(() => {
@@ -45,7 +38,6 @@ export const UseDrawPlayers: UseDrawPlayers = (
   }, [players, ctx])
 
   return {
-    setNext,
     generatePlayers,
   }
 }
