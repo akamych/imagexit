@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Typography,
   Button,
@@ -10,7 +10,7 @@ import {
   Form,
   Input,
 } from 'antd';
-import { LoadingOutlined, PlusOutlined, LockOutlined } from '@ant-design/icons';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import styles from './styles.module.css';
 
 const { Title, Paragraph } = Typography;
@@ -19,8 +19,32 @@ export const PageProfile = () => {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
+  const [userData, setUserData] = useState({
+      "id": 1349893,
+      "first_name": "Mr",
+      "second_name": "Random",
+      "display_name": "mrrandom",
+      "login": "mrrandom",
+      "avatar": "/d48fddcf-5954-454e-8cc7-b4b9f6ce36ae/c0784cb2-1f55-41b5-8378-31455060d0ec_noroot.png",
+      "email": "mr@random.com",
+      "phone": "123456789"
+  });
 
   type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('https://ya-praktikum.tech/api/v2/auth/user');
+        const data = await response.json();
+        setUserData(data);
+      } catch (error) {
+        console.log('fetching error');
+      }
+    };
+
+    fetchUserData();
+  }, []); 
 
   const getBase64 = (img: FileType, callback: (url: string) => void) => {
     const reader = new FileReader();
