@@ -13,3 +13,11 @@ export interface ICardElement {
   img: CanvasImageSource
   id: number
 }
+
+export interface IPlayerElement {
+  width: number
+  height: number
+  top: number
+  left: number
+  scope: number
+}

@@ -5,6 +5,9 @@ export const gameSettings = {
   FIELD_WIDTH_PX: 100,
   FIELD_HEIGHT_PX: 100,
 
+  PLAYER_WIDTH_PX: 20,
+  PLAYER_HEIGHT_PX: 20,
+
   CANVAS_WIDTH_PX: 1000,
   CANVAS_HEIGHT_PX: 800,
 }

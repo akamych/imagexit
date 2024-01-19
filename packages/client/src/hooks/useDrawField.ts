@@ -10,13 +10,6 @@ export const UseDrawField = (ctx: CanvasRenderingContext2D | null) => {
       return
     }
 
-    ctx.clearRect(
-      0,
-      0,
-      gameSettings.CANVAS_WIDTH_PX,
-      gameSettings.CANVAS_HEIGHT_PX
-    )
-
     let x = 0
     let y = gameSettings.CANVAS_HEIGHT_PX - gameSettings.FIELD_HEIGHT_PX
     let number = 0
@@ -33,8 +26,8 @@ export const UseDrawField = (ctx: CanvasRenderingContext2D | null) => {
       arr.push({
         width: gameSettings.FIELD_WIDTH_PX,
         height: gameSettings.FIELD_HEIGHT_PX,
-        top: x,
-        left: y,
+        top: y,
+        left: x,
       })
 
       ctx.fillStyle = '#fff' // Белый цвет для цифры внутри
@@ -65,8 +58,8 @@ export const UseDrawField = (ctx: CanvasRenderingContext2D | null) => {
       arr.push({
         width: gameSettings.FIELD_WIDTH_PX,
         height: gameSettings.FIELD_HEIGHT_PX,
-        top: x,
-        left: y,
+        top: y,
+        left: x,
       })
 
       ctx.fillStyle = '#fff' // Белый цвет для цифры внутри
@@ -80,7 +73,6 @@ export const UseDrawField = (ctx: CanvasRenderingContext2D | null) => {
 
       if (y < gameSettings.CANVAS_HEIGHT_PX - 140) {
         y += gameSettings.FIELD_HEIGHT_PX + 10
-        x += 20
         drawFieldBottom()
       }
     }

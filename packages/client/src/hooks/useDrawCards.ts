@@ -5,16 +5,19 @@ import { ICardElement } from '../types/game'
 type UseDrawCards = (
   ctx: CanvasRenderingContext2D | null,
   cardsElement: ICardElement[],
-  setCardsElement: Dispatch<SetStateAction<ICardElement[]>>
+  setCardsElement: Dispatch<SetStateAction<ICardElement[]>>,
+  setSelectedCard: Dispatch<SetStateAction<ICardElement | null>>
 ) => {
   drawCards: () => void
+  drawCard: (img: CanvasImageSource, dx: number, dy: number) => void
   animateCards: (x: number, y: number) => void
 }
 
 export const UseDrawCards: UseDrawCards = (
   ctx,
   cardsElement,
-  setCardsElement
+  setCardsElement,
+  setSelectedCard
 ) => {
   const drawCard = (img: CanvasImageSource, dx = 0, dy = 0) => {
     ctx &&
@@ -65,6 +68,7 @@ export const UseDrawCards: UseDrawCards = (
         x > element.left &&
         x < element.left + element.width
       ) {
+        setSelectedCard(element)
         let animationX = element.left
         let animationY = element.top
         const intervalX = setInterval(() => {
@@ -122,5 +126,6 @@ export const UseDrawCards: UseDrawCards = (
   return {
     drawCards,
     animateCards,
+    drawCard,
   }
 }

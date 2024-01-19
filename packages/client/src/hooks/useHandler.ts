@@ -5,8 +5,8 @@ type UseHandler = (elem: HTMLElement | null) => {
   removeClick: (cb: (...props: any) => void) => void
 }
 
-export const UseHandler: UseHandler = (elem: HTMLElement | null) => {
-  const ref = useRef<(props: any) => void>()
+export const UseHandler: UseHandler = elem => {
+  const ref = useRef<(...props: any) => void>()
 
   const handlerClick = useCallback(
     (event: MouseEvent) => {
@@ -18,7 +18,8 @@ export const UseHandler: UseHandler = (elem: HTMLElement | null) => {
 
       const x = event.pageX - elemLeft
       const y = event.pageY - elemTop
-      ref.current && ref.current({ x, y })
+      ref.current && ref.current(x, y)
+      removeClick()
     },
     [elem]
   )
