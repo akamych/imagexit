@@ -1,0 +1,10 @@
+export const gameSettings = {
+  CARD_WIDTH_PX: 150,
+  CARD_HEIGHT_PX: 130,
+
+  FIELD_WIDTH_PX: 100,
+  FIELD_HEIGHT_PX: 100,
+
+  CANVAS_WIDTH_PX: 1000,
+  CANVAS_HEIGHT_PX: 800,
+}
