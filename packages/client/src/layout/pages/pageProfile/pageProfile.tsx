@@ -10,6 +10,7 @@ import {
   Form,
   Input,
 } from 'antd';
+import {Avatar} from '../../../components/Avatar/Avatar';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import styles from './styles.module.css';
 
@@ -46,49 +47,6 @@ export const PageProfile = () => {
     fetchUserData();
   }, []); 
 
-  const getBase64 = (img: FileType, callback: (url: string) => void) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result as string));
-    reader.readAsDataURL(img as unknown as Blob);
-  };
-
-  const beforeUpload = (file: FileType) => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJpgOrPng) {
-      message.error('You can only upload JPG/PNG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error('Image must be smaller than 2MB!');
-    }
-    return isJpgOrPng && isLt2M;
-  };
-
-  const handleChange: UploadProps['onChange'] = (info) => {
-    if (info.file.status === 'uploading') {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj as FileType, (url) => {
-        setLoading(false);
-        setImageUrl(url);
-      });
-    }
-  };
-
-  const uploadButton = (
-    <button style={{ border: 0, background: 'none' }} type="button">
-      {loading ? (
-        <LoadingOutlined rev={undefined} />
-      ) : (
-        <PlusOutlined rev={undefined} />
-      )}
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </button>
-  );
-
   const handlePasswordChange = (values: unknown) => {
     // Your password change logic here
     console.log('Received values:', values);
@@ -107,32 +65,7 @@ export const PageProfile = () => {
   return (
     <div className={styles.content}>
       {/* Avatar */}
-      <div>
-        <Upload
-          name="avatar"
-          listType="picture-circle"
-          className="avatar-uploader"
-          showUploadList={false}
-          action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-          beforeUpload={beforeUpload}
-          onChange={handleChange}
-        >
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt="avatar"
-              style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: '100px',
-                objectFit: 'cover',
-              }}
-            />
-          ) : (
-            uploadButton
-          )}
-        </Upload>
-      </div>
+      <Avatar src={userData.avatar}></Avatar>
 
       {/* Nickname */}
       <Title level={2}>Nickname</Title>
