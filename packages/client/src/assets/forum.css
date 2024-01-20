@@ -1,0 +1,96 @@
+.forum {
+  padding: 48px 48px;
+  text-align: left;
+
+  & .button-add {
+    margin-top: 40px;
+    text-align: right;
+  }
+
+  & .button-more {
+    text-align: right;
+  }
+
+  & .divider {
+    margin-bottom: 40px;
+  }
+}
+
+.forum-topic-list {
+  .ant-list-item {
+    padding: 16px 0;
+  }
+
+  .ant-avatar {
+    border: 1px solid #dedede;
+    margin-right: 5px;
+  }
+
+  .login {
+    font-weight: 700;
+  }
+
+  .self {
+    color: rgba(39, 104, 2, 0.65) !important;
+  }
+
+  .anticon {
+    padding: 0 2px;
+  }
+
+  .box-info-icon {
+    min-width: 100px;
+    vertical-align: top;
+    text-align: left;
+    color: rgba(0, 0, 0, 0.25);
+    font-size: 20px;
+  }
+
+  .box-topic-preview {
+    color: rgba(0, 0, 0, 0.45);
+    vertical-align: middle;
+
+    & .content {
+      padding-bottom: 25px;
+      border-bottom: 1px dashed #e7eaec;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      height: 20px;
+    }
+
+    & .info-create {
+      padding: 10px 0;
+      font-size: smaller;
+      line-height: 2;
+
+      & div {
+        padding: 0 10px;
+        border-left: 1px dashed #e7eaec;
+      }
+
+      & div:first-child {
+        padding-left: 0;
+        border-color: transparent;
+      }
+    }
+  }
+
+  .box-last-comment {
+    color: rgba(0, 0, 0, 0.45);
+    font-size: inherit;
+    line-height: 1.5;
+    text-align: left;
+
+    & .title {
+      color: rgba(0, 0, 0, 0.65);
+      font-size: smaller;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    & .text {
+      font-size: smaller;
+    }
+  }
+}

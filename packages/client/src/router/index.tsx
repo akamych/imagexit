@@ -7,14 +7,14 @@ import { PageSignUp } from '../layout/pages/pageSignUp'
 import { PageProfile } from '../layout/pages/pageProfile'
 import { PageGame } from '../layout/pages/pageGame'
 import { PageLeaderboard } from '../layout/pages/pageLeaderboard'
-import { PageForum } from '../layout/pages/pageForum'
-import { PageForumTopic } from '../layout/pages/pageForumTopic'
+import { PageForum } from '../layout/pages/forum/pageForum'
+import { PageForumTopic } from '../layout/pages/forum/pageForumTopic'
 
 export const usePagesRoutes = () => {
-  const [isAuthenticated, setisAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   useEffect(() => {
-    setisAuthenticated(true) // ! убрать после внедрения аутентификации
+    setIsAuthenticated(true) // ! убрать после внедрения аутентификации
   }, [])
 
   if (isAuthenticated) {
