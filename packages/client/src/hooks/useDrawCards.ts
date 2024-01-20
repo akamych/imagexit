@@ -81,12 +81,13 @@ export const UseDrawCards: UseDrawCards = (
           })
 
           setCardsElement(arr)
-          animationX += 10
           if (
             animationX >
             gameSettings.CANVAS_WIDTH_PX - gameSettings.CARD_WIDTH_PX
           ) {
             clearInterval(intervalX)
+          } else {
+            animationX += 10
           }
         }, 20)
 
@@ -100,10 +101,13 @@ export const UseDrawCards: UseDrawCards = (
           })
           setCardsElement(arr)
 
-          if (animationY === 0) {
+          if (
+            animationY ===
+            gameSettings.CANVAS_HEIGHT_PX - gameSettings.CARD_HEIGHT_PX
+          ) {
             clearInterval(intervalY)
           } else {
-            animationY -= 10
+            animationY += 10
           }
         }, 20)
       }
