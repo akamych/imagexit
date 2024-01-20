@@ -1,31 +1,38 @@
-import { useState } from 'react';
-import {
-  Typography,
-  Button,
-  Modal,
-  message,
-  Form,
-  Input,
-} from 'antd';
-import {Avatar} from '../../../components/Avatar/Avatar';
+// PageProfile.tsx
+import React, { useState } from 'react';
+import { Typography, Button, Modal, message, Form, Input } from 'antd';
+import { Avatar } from '../../../components/Avatar/Avatar';
+import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.css';
 
 const { Title, Paragraph } = Typography;
 
-export const PageProfile = () => {
+type UserData = {
+  id: number;
+  first_name: string;
+  second_name: string;
+  display_name: string;
+  login: string;
+  avatar: string;
+  email: string;
+  phone: string;
+};
+
+export const PageProfile: React.FC = () => {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string>();
-  const [userData, setUserData] = useState({
-      "id": 1349893,
-      "first_name": "Mr",
-      "second_name": "Random",
-      "display_name": "mrrandom",
-      "login": "mrrandom",
-      "avatar": "https://github.com/shadcn.png",
-      "email": "mr@random.com",
-      "phone": "123456789"
+  const [userData, setUserData] = useState<UserData>({
+    id: 1349893,
+    first_name: 'Mr',
+    second_name: 'Random',
+    display_name: 'mrrandom',
+    login: 'mrrandom',
+    avatar: 'https://github.com/shadcn.png',
+    email: 'mr@random.com',
+    phone: '123456789',
   });
+
+  const navigate = useNavigate();
 
   const handlePasswordChange = (values: unknown) => {
     // Your password change logic here
@@ -45,7 +52,7 @@ export const PageProfile = () => {
   return (
     <div className={styles.content}>
       {/* Avatar */}
-      <Avatar src={userData.avatar} width='100px'></Avatar>
+      <Avatar src={userData.avatar} width="100px"></Avatar>
 
       {/* Nickname */}
       <Title level={2}>Nickname</Title>
@@ -73,12 +80,7 @@ export const PageProfile = () => {
       </div>
 
       {/* Change Password Modal */}
-      <Modal
-        title="Change Password"
-        open={isPasswordModalOpen}
-        onCancel={handlePasswordCancel}
-        footer={null}
-      >
+      <Modal title="Change Password" open={isPasswordModalOpen} onCancel={handlePasswordCancel} footer={null}>
         {/* Password Change Form */}
         <Form onFinish={handlePasswordChange}>
           {/* Current Password */}
@@ -120,16 +122,16 @@ export const PageProfile = () => {
             ]}
           >
             <Input.Password placeholder="Repeat Password" />
-          </Form.Item>
+            </Form.Item>
 
-          {/* Save Button */}
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Save
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
-    </div>
-  );
+{/* Save Button */}
+<Form.Item>
+  <Button type="primary" htmlType="submit">
+    Save
+  </Button>
+</Form.Item>
+</Form>
+</Modal>
+</div>
+);
 };

@@ -1,6 +1,54 @@
-.avatarImage {
+/* styles.module.css */
+
+.container {
+    position: relative;
     width: 100px;
     height: 100px;
+  }
+  
+  .avatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 50%;
-    border: 1px solid grey;
-}
+  }
+  
+  .text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: #e0e0e0;
+    border-radius: 50%;
+    font-size: 20px;
+  }
+  
+  .userpicHover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  
+  .userpicHover label {
+    cursor: pointer;
+  }
+
+  .userpicHover label input {
+    display: none;
+  }
+  
+  .container:hover .userpicHover {
+    opacity: 1;
+  }
+  
