@@ -1,17 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Typography,
   Button,
   Modal,
-  Upload,
   message,
-  GetProp,
-  UploadProps,
   Form,
   Input,
 } from 'antd';
 import {Avatar} from '../../../components/Avatar/Avatar';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import styles from './styles.module.css';
 
 const { Title, Paragraph } = Typography;
@@ -26,26 +22,10 @@ export const PageProfile = () => {
       "second_name": "Random",
       "display_name": "mrrandom",
       "login": "mrrandom",
-      "avatar": "/d48fddcf-5954-454e-8cc7-b4b9f6ce36ae/c0784cb2-1f55-41b5-8378-31455060d0ec_noroot.png",
+      "avatar": "https://github.com/shadcn.png",
       "email": "mr@random.com",
       "phone": "123456789"
   });
-
-  type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch('https://ya-praktikum.tech/api/v2/auth/user');
-        const data = await response.json();
-        setUserData(data);
-      } catch (error) {
-        console.log('fetching error');
-      }
-    };
-
-    fetchUserData();
-  }, []); 
 
   const handlePasswordChange = (values: unknown) => {
     // Your password change logic here
@@ -65,7 +45,7 @@ export const PageProfile = () => {
   return (
     <div className={styles.content}>
       {/* Avatar */}
-      <Avatar src={userData.avatar}></Avatar>
+      <Avatar src={userData.avatar} width='100px'></Avatar>
 
       {/* Nickname */}
       <Title level={2}>Nickname</Title>
