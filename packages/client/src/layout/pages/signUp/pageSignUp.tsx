@@ -1,3 +1,12 @@
+import {
+  validateLoginCharacters,
+  validateNotOnlyNumbers,
+  validateContainsCapitalLetter,
+  validateContainsNumber,
+  validateOnlyNumbers,
+  validateNameCharacters,
+  validateFirstLetterIsCapital,
+} from '../../../utils/InputUtil'
 import './pageSignUp.css'
 import { Typography, Button, Form, Input, Select } from 'antd'
 
@@ -63,6 +72,16 @@ export const PageSignUp = () => {
               message: 'Пожалуйста, укажите ваш логин для авторизации!',
               whitespace: true,
             },
+            { min: 3, message: 'Не менее 3 символов.' },
+            { max: 20, message: 'Не более 20 символов.' },
+            {
+              message: 'Недопустимые символы',
+              validator: (_, value) => validateLoginCharacters(value),
+            },
+            {
+              message: 'Недопустимы только цифры',
+              validator: (_, value) => validateNotOnlyNumbers(value),
+            },
           ]}>
           <Input />
         </Form.Item>
@@ -76,6 +95,14 @@ export const PageSignUp = () => {
               message: 'Пожалуйста, укажите ваше имя!',
               whitespace: true,
             },
+            {
+              message: 'Недопустимый формат',
+              validator: (_, value) => validateNameCharacters(value),
+            },
+            {
+              message: 'С заглавной буквы, пожалуйста',
+              validator: (_, value) => validateFirstLetterIsCapital(value),
+            },
           ]}>
           <Input />
         </Form.Item>
@@ -88,6 +115,14 @@ export const PageSignUp = () => {
               required: true,
               message: 'Пожалуйста, укажите вашу фамилию!',
               whitespace: true,
+            },
+            {
+              message: 'Недопустимый формат',
+              validator: (_, value) => validateNameCharacters(value),
+            },
+            {
+              message: 'С заглавной буквы, пожалуйста',
+              validator: (_, value) => validateFirstLetterIsCapital(value),
             },
           ]}>
           <Input />
@@ -112,7 +147,15 @@ export const PageSignUp = () => {
         <Form.Item
           name="phone"
           label="Номер телефона"
-          rules={[{ required: true, message: 'Укажите ваш номер телефона!' }]}>
+          rules={[
+            { required: true, message: 'Укажите ваш номер телефона!' },
+            { min: 10, message: 'Не менее 10 символов.' },
+            { max: 15, message: 'Не более 15 символов.' },
+            {
+              message: 'Допустимы только цифры',
+              validator: (_, value) => validateOnlyNumbers(value),
+            },
+          ]}>
           <Input addonBefore={prefixSelector} />
         </Form.Item>
 
@@ -123,6 +166,16 @@ export const PageSignUp = () => {
             {
               required: true,
               message: 'Укажите ваш пароль!',
+            },
+            { min: 8, message: 'Не менее 8 символов.' },
+            { max: 40, message: 'Не более 40 символов.' },
+            {
+              message: 'Должна присутствовать хотя бы одна цифра',
+              validator: (_, value) => validateContainsNumber(value),
+            },
+            {
+              message: 'Должна присутствовать хотя бы одна заглавная буква',
+              validator: (_, value) => validateContainsCapitalLetter(value),
             },
           ]}
           hasFeedback>
