@@ -1,13 +1,13 @@
 import { Breadcrumb, Layout, Typography } from 'antd'
 import { WForumListTopics } from '../../../components/forum/WForumListTopics'
-import '../../../assets/forum.css'
+import './forum.css'
 
 export const PageForum = () => {
   const { Title } = Typography
   const { Content } = Layout
   const breadcrumb = [
     {
-      title: 'Home',
+      title: 'Главная',
     },
     {
       title: 'Форум',

@@ -2,17 +2,17 @@ import { Breadcrumb, Layout } from 'antd'
 import { Link, useParams } from 'react-router-dom'
 import { WForumListComments } from '../../../components/forum/WForumListComments'
 import { WForumTopicContent } from '../../../components/forum/WForumTopicContent'
-import '../../../assets/forum.css'
+import './forum.css'
 
 export const PageForumTopic = () => {
   const { Content } = Layout
   const { id } = useParams()
   const breadcrumb = [
     {
-      title: 'Home',
+      title: 'Главная',
     },
     {
-      title: <Link to="/forum">Forum</Link>,
+      title: <Link to="/forum">Форум</Link>,
     },
     {
       title: `Топик #${id} Название ... `,
