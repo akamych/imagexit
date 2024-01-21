@@ -2,14 +2,6 @@ import { Avatar, Col, Row, Table } from 'antd'
 import { ILeaderboardTable } from '../../types/leaderboard.types'
 
 export const WLeaderboardTable = (props: ILeaderboardTable) => {
-  const dataTOP10 = Array.from({ length: 10 }).map((_, i) => ({
-    id: i + 1,
-    login: `Login-${i}`,
-    avatar: `https://api.dicebear.com/7.x/miniavs/svg?seed=${i}`,
-    position: i + 1,
-    points: 1000 - i,
-  }))
-
   const columns = [
     {
       title: 'position',
@@ -42,7 +34,7 @@ export const WLeaderboardTable = (props: ILeaderboardTable) => {
             dataSource={props.users}
             columns={columns}
             pagination={false}
-            onRow={(record, index) => ({
+            onRow={record => ({
               style: {
                 background: record.id == props.selectId ? '#f6ffed' : 'default',
               },
