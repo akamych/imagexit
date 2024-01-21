@@ -55,6 +55,9 @@ export const PageLogin = () => {
             prefix={
               <UserOutlined className="site-form-item-icon" rev={undefined} />
             }
+            prefix={
+              <UserOutlined className="site-form-item-icon" rev={undefined} />
+            }
             placeholder="Логин"
           />
         </Form.Item>
@@ -77,6 +80,9 @@ export const PageLogin = () => {
             },
           ]}>
           <Input
+            prefix={
+              <LockOutlined className="site-form-item-icon" rev={undefined} />
+            }
             prefix={
               <LockOutlined className="site-form-item-icon" rev={undefined} />
             }
