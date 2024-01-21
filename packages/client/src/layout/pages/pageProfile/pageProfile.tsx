@@ -16,6 +16,7 @@ type UserData = {
   avatar: string;
   email: string;
   phone: string;
+  rank: number;
 };
 
 export const PageProfile: React.FC = () => {
@@ -30,9 +31,10 @@ export const PageProfile: React.FC = () => {
     avatar: 'https://github.com/shadcn.png',
     email: 'mr@random.com',
     phone: '123456789',
+    rank: 1
   });
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handlePasswordChange = (values: unknown) => {
     // Your password change logic here
@@ -55,10 +57,10 @@ export const PageProfile: React.FC = () => {
       <Avatar src={userData.avatar} width="100px"></Avatar>
 
       {/* Nickname */}
-      <Title level={2}>Nickname</Title>
+      <Title level={2}>{userData.display_name}</Title>
 
       {/* Player's Rank */}
-      <Paragraph>Player's Rank: 1st</Paragraph>
+      <Paragraph>Player's Rank: {userData.rank}</Paragraph>
 
       <div className={styles.btnGroup}>
         {/* Link to Change Password */}
