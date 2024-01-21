@@ -63,6 +63,7 @@ export const PageSignUp = () => {
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select>
+      <Select>
         <Option value="7">+7</Option>
       </Select>
     </Form.Item>
