@@ -1,8 +1,8 @@
-import '../../assets/leaderboard.css'
+import './leaderboard.css'
 import { Layout, Tabs, Typography } from 'antd'
 import type { TabsProps } from 'antd'
-import { WLeaderboardTOP10 } from '../../components/leaderboard/WLeaderboardTOP10'
-import { WLeaderboardSelf } from '../../components/leaderboard/WLeaderboardSelf'
+import { WLeaderboardTOP10 } from '../../../components/leaderboard/WLeaderboardTOP10'
+import { WLeaderboardSelf } from '../../../components/leaderboard/WLeaderboardSelf'
 
 export const PageLeaderboard = () => {
   const { Title } = Typography
