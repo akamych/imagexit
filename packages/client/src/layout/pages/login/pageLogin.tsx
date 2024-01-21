@@ -6,7 +6,7 @@ import './pageLogin.css'
 export const PageLogin = () => {
   const { Title } = Typography
 
-  const onFinish = values => {
+  const onFinish = (values: unknown) => {
     console.log('Ждёт реализации Апи', values)
   }
 
@@ -29,7 +29,9 @@ export const PageLogin = () => {
             },
           ]}>
           <Input
-            prefix={<UserOutlined className="site-form-item-icon" />}
+            prefix={
+              <UserOutlined className="site-form-item-icon" rev={undefined} />
+            }
             placeholder="Логин"
           />
         </Form.Item>
@@ -42,7 +44,9 @@ export const PageLogin = () => {
             },
           ]}>
           <Input
-            prefix={<LockOutlined className="site-form-item-icon" />}
+            prefix={
+              <LockOutlined className="site-form-item-icon" rev={undefined} />
+            }
             type="password"
             placeholder="Пароль"
           />
