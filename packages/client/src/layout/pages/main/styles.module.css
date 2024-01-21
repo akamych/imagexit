@@ -1,13 +1,43 @@
 .content { 
-    display: 'flex';
+    display: flex;
     flex-direction: column;
     align-items: center; 
-    justify-content: 'center';
-    background-image: 'https://masterpiecer-images.s3.yandex.net/bc7b97dd895911eea7306ac6a1596643.jpg';
+    justify-content: center;
+    background-image: url('https://playimaginarium.cosmodrome.games/_nuxt/img/main-bg.150152a.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    gap:40px;
+
+    font-family: Inter, Sans-serif;
 }
 
-h1{
-    color:black;
-    font-size: 60px;
+
+.content img{
+    width: 70%;
+    max-width: 600px;
+}
+
+.content p{
+    font-size: 20px;
     line-height: 150%;
+    font-weight: 400;
+}
+
+.playBtn{
+    width: 200px;
+    height: 60px;
+    border-radius: 12px;
+    font-size: 24px;
+    font-weight: 600;
+    background-color: #EE5520;
+}
+
+.playBtn:hover{
+    background-color: #A22996 !important;
+}
+
+.title {
+    color: white !important;
+    font-size: 60px !important;
 }

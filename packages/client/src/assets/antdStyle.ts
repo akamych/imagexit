@@ -7,6 +7,11 @@ export const headerStyle: React.CSSProperties = {
   backgroundColor: '#4096ff',
 }
 
+export const logoStyle: React.CSSProperties = {
+  height: 64,
+  background: 'url(https://playimaginarium.cosmodrome.games/_nuxt/img/slider-dec.a78b69e.png)'
+}
+
 export const contentStyle: React.CSSProperties = {
   textAlign: 'center',
   minHeight: 120,
@@ -27,11 +32,7 @@ export const footerStyle: React.CSSProperties = {
   color: '#fff',
   backgroundColor: '#4096ff',
 }
-/*
-export const layoutStyle = {
-  borderRadius: 8,
-  overflow: 'hidden',
-  width: 'calc(50% - 8px)',
-  maxWidth: 'calc(50% - 8px)',
+
+export const layoutStyle: React.CSSProperties = {
+  height: '100%'
 }
-*/

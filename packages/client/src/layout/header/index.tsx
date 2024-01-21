@@ -1,6 +1,8 @@
 import { Layout, Menu, MenuProps } from 'antd'
 import { itemsMenu } from '../../constants/menu'
 import { useState } from 'react'
+import styles from './styles.module.css'
+import { NavLink } from 'react-router-dom'
 
 export function LHeader() {
   const { Header } = Layout
@@ -14,7 +16,9 @@ export function LHeader() {
   return (
     <>
       <Header style={{ display: 'flex', alignItems: 'center' }}>
-        <div className="demo-logo" />
+        <NavLink to="/" rel="noopener noreferrer">
+          <div className={styles.logo} onClick={() => setCurrent('home')}/>
+        </NavLink>
         <Menu
           theme="dark"
           mode="horizontal"
