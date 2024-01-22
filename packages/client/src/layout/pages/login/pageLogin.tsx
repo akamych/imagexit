@@ -2,6 +2,12 @@ import { Typography, Button, Checkbox, Form, Input } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { NavLink } from 'react-router-dom'
 import './pageLogin.css'
+import {
+  validateLoginCharacters,
+  validateNotOnlyNumbers,
+  validateContainsCapitalLetter,
+  validateContainsNumber,
+} from '../../../utils/InputUtil'
 
 export const PageLogin = () => {
   const { Title } = Typography
@@ -27,6 +33,16 @@ export const PageLogin = () => {
               required: true,
               message: 'Укажите ваш логин',
             },
+            { min: 3, message: 'Не менее 3 символов.' },
+            { max: 20, message: 'Не более 20 символов.' },
+            {
+              message: 'Недопустимые символы',
+              validator: (_, value) => validateLoginCharacters(value),
+            },
+            {
+              message: 'Недопустимы только цифры',
+              validator: (_, value) => validateNotOnlyNumbers(value),
+            },
           ]}>
           <Input
             prefix={
@@ -41,6 +57,16 @@ export const PageLogin = () => {
             {
               required: true,
               message: 'Укажите ваш пароль',
+            },
+            { min: 8, message: 'Не менее 8 символов.' },
+            { max: 40, message: 'Не более 40 символов.' },
+            {
+              message: 'Должна присутствовать хотя бы одна цифра',
+              validator: (_, value) => validateContainsNumber(value),
+            },
+            {
+              message: 'Должна присутствовать хотя бы одна заглавная буква',
+              validator: (_, value) => validateContainsCapitalLetter(value),
             },
           ]}>
           <Input
