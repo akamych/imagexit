@@ -5,6 +5,14 @@ export const itemsMenu: MenuProps['items'] = [
   {
     label: (
       <NavLink to="/" rel="noopener noreferrer">
+        Logo
+      </NavLink>
+    ),
+    key: 'logo',
+  },
+  {
+    label: (
+      <NavLink to="/" rel="noopener noreferrer">
         Home
       </NavLink>
     ),
