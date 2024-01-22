@@ -1,3 +1,5 @@
+import React from 'react'
+
 export const headerStyle: React.CSSProperties = {
   textAlign: 'center',
   color: '#fff',
@@ -5,11 +7,6 @@ export const headerStyle: React.CSSProperties = {
   paddingInline: 48,
   lineHeight: '64px',
   backgroundColor: '#4096ff',
-}
-
-export const logoStyle: React.CSSProperties = {
-  height: 64,
-  background: 'url(https://playimaginarium.cosmodrome.games/_nuxt/img/slider-dec.a78b69e.png)'
 }
 
 export const contentStyle: React.CSSProperties = {
@@ -34,5 +31,5 @@ export const footerStyle: React.CSSProperties = {
 }
 
 export const layoutStyle: React.CSSProperties = {
-  height: '100%'
+  height: '100%',
 }
