@@ -7,15 +7,15 @@ import { PageSignUp } from '../layout/pages/signUp/pageSignUp'
 import { PageProfile } from '../layout/pages/pageProfile'
 import { PageGame } from '../layout/pages/pageGame'
 import { PageLeaderboard } from '../layout/pages/leaderboard/pageLeaderboard'
-import { PageForum } from '../layout/pages/pageForum'
-import { PageForumTopic } from '../layout/pages/pageForumTopic'
+import { PageForum } from '../layout/pages/forum/pageForum'
+import { PageForumTopic } from '../layout/pages/forum/pageForumTopic'
 import { Error500 } from '../layout/pages/page500/page500'
 
 export const usePagesRoutes = () => {
-  const [isAuthenticated, setisAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   useEffect(() => {
-    setisAuthenticated(true) // ! убрать после внедрения аутентификации
+    setIsAuthenticated(true) // ! убрать после внедрения аутентификации
   }, [])
 
   if (isAuthenticated) {
