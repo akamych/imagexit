@@ -1,7 +1,7 @@
 import { Alert, Button, Typography } from 'antd'
 import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { IProps } from '../../types/forum.types'
+import { IProps } from './forum.types'
 import { IPropsDefault } from '../../constants/data.forum'
 import { apiGetTopicContent } from '../../api/forum.api'
 import { alertStyle } from '../../assets/antdStyle'
@@ -11,61 +11,57 @@ export const WForumTopicContent = () => {
   const { id } = useParams()
   // -----
   const [ellipsis, setEllipsis] = useState(true)
-  const [dataTopic, setDataTopic] = useState<IProps>(IPropsDefault)
-
+  const [dataTopic, setDataTopic] = useState<IProps>(IPropsDefault) // !!! Удалить Переменную после реализации сохрания изменений через API
+  const [status, setStatus] = useState('') // ok|error|
+  const [message, setMessage] = useState('')
   // ------- data
-  const {
-    loading: loadingContent,
-    response: apiContent,
-    error: errorContent,
-  } = apiGetTopicContent() // API
-
+  const { loading, apiResTopic, apiDataTopic, apiStatus, apiMessage } =
+    apiGetTopicContent() // API
   const getContent = useCallback(
     async (id: number) => {
       try {
-        const data = await apiContent(id)
-        if (data) setDataTopic(data)
-      } catch (e) {
-        console.log(e)
+        await apiResTopic(id)
+      } catch (e: any) {
+        console.error(e)
       }
     },
-    [apiContent]
+    [apiResTopic]
   )
   // --------- Save
-  const saveTitle = useCallback(
-    async (title: string) => {
-      try {
-        //const res = await apiSaveTitle(title)
-        setDataTopic({ ...dataTopic, title: title })
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    [apiContent]
-  )
-  const saveContent = useCallback(
-    async (content: string) => {
-      try {
-        //const res = await apiSaveTitle(title)
-        setDataTopic({ ...dataTopic, content: content })
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    [apiContent]
-  )
+  const saveTitle = useCallback(async (title: string) => {
+    try {
+      //const res = await apiSaveTitle(title)
+      setDataTopic({ ...dataTopic, title: title })
+    } catch (e) {
+      console.log(e)
+    }
+  }, [])
+  const saveContent = useCallback(async (content: string) => {
+    try {
+      //const res = await apiSaveTitle(title)
+      setDataTopic({ ...dataTopic, content: content })
+    } catch (e) {
+      console.log(e)
+    }
+  }, [])
 
   // --------
   useEffect(() => {
     getContent(Number(id))
   }, [])
+
+  useEffect(() => {
+    // !!! Удалить useEffect после реализации сохрания изменений через API
+    setDataTopic(apiDataTopic)
+    setStatus(apiStatus)
+    setMessage(apiMessage)
+  }, [apiDataTopic, apiStatus, apiMessage])
+
   return (
     <>
-      {loadingContent && (
-        <Alert message="Загрузка" type="info" style={alertStyle} />
-      )}
-      {errorContent && (
-        <Alert message={errorContent} type="error" style={alertStyle} />
+      {loading && <Alert message="Загрузка" type="info" style={alertStyle} />}
+      {status == 'error' && (
+        <Alert message={message} type="error" style={alertStyle} />
       )}
       {dataTopic.created.self && (
         <>

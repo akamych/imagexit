@@ -2,6 +2,15 @@
   padding: 48px 48px;
   text-align: left;
 
+  .login {
+    font-weight: 700;
+    padding: 0 10px;
+
+    &.active {
+      color: rgba(39, 104, 2, 0.65) !important;
+    }
+  }
+
   & .button-add {
     margin-top: 40px;
     text-align: right;
@@ -24,14 +33,6 @@
   .ant-avatar {
     border: 1px solid #dedede;
     margin-right: 5px;
-  }
-
-  .login {
-    font-weight: 700;
-  }
-
-  .self {
-    color: rgba(39, 104, 2, 0.65) !important;
   }
 
   .anticon {
