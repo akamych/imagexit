@@ -21,7 +21,7 @@ export const WForumListComments = () => {
     setIsModalOpen(false)
   }, [])
   // ------
-  const ButtonAdd = () => {
+  const ButtonAdd = useMemo(() => {
     return (
       <div className="button-add">
         <Button type="primary" onClick={showModal}>
@@ -29,7 +29,7 @@ export const WForumListComments = () => {
         </Button>
       </div>
     )
-  }
+  }, [])
 
   // ------- data
   const { loading, apiResList, apiDataList, apiStatus, apiMessage } =
@@ -63,7 +63,7 @@ export const WForumListComments = () => {
           pageSize: 6,
         }}
         dataSource={apiDataList}
-        footer={<ButtonAdd />}
+        footer={ButtonAdd}
         renderItem={item => (
           <List.Item
             key={item.id}
@@ -85,7 +85,7 @@ export const WForumListComments = () => {
 
   return (
     <>
-      <ButtonAdd />
+      {ButtonAdd}
 
       <Divider className="divider" orientation="left">
         Комментарии

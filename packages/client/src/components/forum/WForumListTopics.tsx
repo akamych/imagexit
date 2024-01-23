@@ -101,7 +101,7 @@ export const WForumListTopics = () => {
   const handleCancel = useCallback(() => {
     setIsModalOpen(false)
   }, [])
-  const ButtonAdd = () => {
+  const ButtonAdd = useMemo(() => {
     return (
       <div className="button-add">
         <Button type="primary" onClick={showModal}>
@@ -109,7 +109,7 @@ export const WForumListTopics = () => {
         </Button>
       </div>
     )
-  }
+  }, [])
   // --------
 
   useEffect(() => {
@@ -128,7 +128,7 @@ export const WForumListTopics = () => {
           pageSize: 6,
         }}
         dataSource={apiDataList}
-        footer={<ButtonAdd />}
+        footer={ButtonAdd}
         renderItem={item => (
           <List.Item
             key={item.title}
@@ -149,7 +149,7 @@ export const WForumListTopics = () => {
       {loading && (
         <Alert message="Загрузка ... " type="info" style={alertStyle} />
       )}
-      <ButtonAdd />
+      {ButtonAdd}
       {BoxList}
       <Modal
         title="Добавление топика"
