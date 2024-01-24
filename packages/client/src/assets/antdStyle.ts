@@ -30,6 +30,10 @@ export const footerStyle: React.CSSProperties = {
   backgroundColor: '#4096ff',
 }
 
+export const alertStyle: React.CSSProperties = {
+  marginBottom: '20px',
+}
+
 export const layoutStyle: React.CSSProperties = {
   height: '100%',
 }
