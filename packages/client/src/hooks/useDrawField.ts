@@ -2,9 +2,15 @@ import { useState } from 'react'
 import { gameSettings } from '../constants/game'
 import { IFieldElement } from '../types/game'
 
+/*
+ * Хук нужен для работы с игровым полем
+ * */
 export const UseDrawField = (ctx: CanvasRenderingContext2D | null) => {
   const [fieldsElement, setFieldsElement] = useState<IFieldElement[]>([])
 
+  /*
+   * Метод отрисовывает игровое поле
+   * */
   const setPlace = () => {
     if (!ctx) {
       return

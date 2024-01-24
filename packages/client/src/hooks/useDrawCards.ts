@@ -13,53 +13,79 @@ type UseDrawCards = (
   animateCards: (x: number, y: number) => void
 }
 
+const CARD_COLUMNS = 3
+const CARD_MARGIN_PX = 10
+const ANIMATION_DURATION_MS = 20
+
+/*
+ * хук нужен для отрисовки карточек и их анимации
+ *
+ *
+ * */
 export const UseDrawCards: UseDrawCards = (
   ctx,
   cardsElement,
   setCardsElement,
   setSelectedCard
 ) => {
-  const drawCard = (img: CanvasImageSource, dx = 0, dy = 0) => {
-    ctx &&
-      ctx.drawImage(
-        img,
-        dx,
-        dy,
-        gameSettings.CARD_WIDTH_PX,
-        gameSettings.CARD_HEIGHT_PX
-      )
+  const clearCanvas = () => {
+    if (!ctx) {
+      return
+    }
+    ctx.clearRect(
+      0,
+      0,
+      gameSettings.CANVAS_WIDTH_PX,
+      gameSettings.CANVAS_HEIGHT_PX
+    )
   }
+
+  /*
+   * Отрисовка одной карточки с заданым положением
+   */
+  const drawCard = (img: CanvasImageSource, dx = 0, dy = 0) => {
+    if (!ctx) {
+      return
+    }
+    ctx.drawImage(
+      img,
+      dx,
+      dy,
+      gameSettings.CARD_WIDTH_PX,
+      gameSettings.CARD_HEIGHT_PX
+    )
+  }
+
+  /*
+   * Первоначальная отрисовка карточек при старте игры
+   * */
   const drawCards = () => {
-    let dx = gameSettings.CANVAS_WIDTH_PX / 2 - gameSettings.CARD_WIDTH_PX * 1.5
+    let dx = gameSettings.CARD_WIDTH_PX / 1.5
     let dy = gameSettings.CANVAS_HEIGHT_PX / 2 - gameSettings.CARD_HEIGHT_PX
     let counterCurrentLine = 0
-    ctx &&
-      ctx.clearRect(
-        0,
-        0,
-        gameSettings.CANVAS_WIDTH_PX,
-        gameSettings.CANVAS_HEIGHT_PX
-      )
+    clearCanvas()
+    const newCardsElement = cardsElement.map(card => {
+      if (counterCurrentLine === CARD_COLUMNS) {
+        dx = gameSettings.CARD_WIDTH_PX / 1.5
+        dy += gameSettings.CARD_HEIGHT_PX + CARD_MARGIN_PX
+      }
 
-    const newCardsElement: ICardElement[] = []
-    cardsElement.forEach(card => {
-      newCardsElement.push({
+      dx += gameSettings.CARD_WIDTH_PX + CARD_MARGIN_PX
+      counterCurrentLine += 1
+
+      return {
         ...card,
         top: dy,
         left: dx,
-      })
-
-      dx += gameSettings.CARD_WIDTH_PX + 10
-      counterCurrentLine += 1
-
-      if (counterCurrentLine === 3) {
-        dx = gameSettings.CANVAS_WIDTH_PX / 2 - gameSettings.CARD_WIDTH_PX * 1.5
-        dy += gameSettings.CARD_HEIGHT_PX + 10
       }
     })
     setCardsElement(newCardsElement)
   }
 
+  /*
+   * Анимация карточки после клика на нее
+   * Перемещает карточку в нижний правый угол
+   * */
   const animateCards = (x: number, y: number) => {
     cardsElement.forEach(function (element) {
       if (
@@ -87,9 +113,9 @@ export const UseDrawCards: UseDrawCards = (
           ) {
             clearInterval(intervalX)
           } else {
-            animationX += 10
+            animationX += CARD_MARGIN_PX
           }
-        }, 20)
+        }, ANIMATION_DURATION_MS)
 
         const intervalY = setInterval(() => {
           const arr = cardsElement.map(card => {
@@ -107,21 +133,15 @@ export const UseDrawCards: UseDrawCards = (
           ) {
             clearInterval(intervalY)
           } else {
-            animationY += 10
+            animationY += CARD_MARGIN_PX
           }
-        }, 20)
+        }, ANIMATION_DURATION_MS)
       }
     })
   }
 
   useEffect(() => {
-    ctx &&
-      ctx.clearRect(
-        0,
-        0,
-        gameSettings.CANVAS_WIDTH_PX,
-        gameSettings.CANVAS_HEIGHT_PX
-      )
+    clearCanvas()
     cardsElement.forEach(card => {
       drawCard(card.img, card.left, card.top)
     })

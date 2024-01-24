@@ -3,6 +3,9 @@ import { ICardElement } from '../types/game'
 import { toDataURL } from '../helpers/image'
 import { gameSettings } from '../constants/game'
 
+/*
+ * Хук отвечает за подготовку изображений для последующей отрисовке в игре
+ * */
 export const UseInitImage = () => {
   const [cardsElement, setCardsElement] = useState<ICardElement[]>([])
 

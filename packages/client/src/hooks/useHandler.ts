@@ -5,6 +5,9 @@ type UseHandler = (elem: HTMLElement | null) => {
   removeClick: (cb: (...props: any) => void) => void
 }
 
+/*
+ *
+ * */
 export const UseHandler: UseHandler = elem => {
   const ref = useRef<(...props: any) => void>()
 

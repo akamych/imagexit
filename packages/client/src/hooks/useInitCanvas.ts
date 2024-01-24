@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { gameSettings } from '../constants/game'
 
+/*
+ * Хук нужен для инициализации canvas
+ * */
 export const UseInitCanvas = () => {
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null)
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
@@ -16,13 +19,16 @@ export const UseInitCanvas = () => {
   }, [])
 
   const clearCanvas = () => {
-    ctx &&
-      ctx.clearRect(
-        0,
-        0,
-        gameSettings.CANVAS_WIDTH_PX,
-        gameSettings.CANVAS_HEIGHT_PX
-      )
+    if (!ctx) {
+      return
+    }
+
+    ctx.clearRect(
+      0,
+      0,
+      gameSettings.CANVAS_WIDTH_PX,
+      gameSettings.CANVAS_HEIGHT_PX
+    )
   }
   return { ctx, canvas, clearCanvas }
 }

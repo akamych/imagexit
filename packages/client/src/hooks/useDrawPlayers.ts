@@ -10,9 +10,15 @@ type UseDrawPlayers = (
   generatePlayers: () => void
 }
 
+/*
+ * Хук нужен для отрисовки игроков на игровом поле
+ * */
 export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement) => {
   const [players, setPlayers] = useState<IPlayerElement[]>([])
 
+  /*
+   * Метод генерирует рандомное количество игроков и рандомно распределяет их по игровому полю
+   * */
   const generatePlayers = () => {
     const arrPayer = Array.from({ length: randomInteger(2, 6) }).map(() => {
       const field = fieldsElement[randomInteger(0, fieldsElement.length - 1)]
