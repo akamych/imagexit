@@ -9,7 +9,7 @@ export const FallbackUI: React.FC = () => {
   const { Title } = Typography
   return (
     <div>
-      <Title>Something went wrong.</Title>
+      <Title>Что-то пошло не так</Title>
       <Title>¯\_(ツ)_/¯</Title>
     </div>
   )
