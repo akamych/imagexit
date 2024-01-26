@@ -17,7 +17,7 @@ export const itemsMenu: MenuProps['items'] = [
   {
     label: (
       <NavLink to="/" rel="noopener noreferrer">
-        Home
+        Главная
       </NavLink>
     ),
     key: 'home',
@@ -25,7 +25,7 @@ export const itemsMenu: MenuProps['items'] = [
   {
     label: (
       <NavLink to="/forum" rel="noopener noreferrer">
-        Forum
+        Форум
       </NavLink>
     ),
     key: 'forum',
@@ -33,7 +33,7 @@ export const itemsMenu: MenuProps['items'] = [
   {
     label: (
       <NavLink to="/leaderboard" rel="noopener noreferrer">
-        Leaderboard
+        Список лидеров
       </NavLink>
     ),
     key: 'leaderboard',
@@ -41,7 +41,7 @@ export const itemsMenu: MenuProps['items'] = [
   {
     label: (
       <NavLink to="/profile" rel="noopener noreferrer">
-        Profile
+        Профиль
       </NavLink>
     ),
     key: 'profile',
@@ -49,7 +49,7 @@ export const itemsMenu: MenuProps['items'] = [
   {
     label: (
       <NavLink to="/play" rel="noopener noreferrer">
-        Play
+        Играть
       </NavLink>
     ),
     key: 'play',
