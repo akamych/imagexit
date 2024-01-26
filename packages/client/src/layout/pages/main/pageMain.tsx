@@ -6,11 +6,11 @@ export const PageMain = () => {
   return (
     <div className={styles.content}>
       <img src="https://playimaginarium.cosmodrome.games/_nuxt/img/logo.ce33400.png" />
-      <p>
+      <h1>
         Онлайн версия популярной настольной игры.
         <br />
         Начни играть прямо сейчас и погрузись в мир воображения!
-      </p>
+      </h1>
       <Link to="/play">
         <Button className={styles.playBtn} type="primary">
           Играть
