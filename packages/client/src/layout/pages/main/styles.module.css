@@ -31,3 +31,12 @@
   font-weight: 600;
   background-color: #ee5520;
 }
+
+.playBtn:hover {
+  background-color: #a22996 !important;
+}
+
+.title {
+  color: white !important;
+  font-size: 60px !important;
+}
