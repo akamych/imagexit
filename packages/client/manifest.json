@@ -1,8 +1,0 @@
-{
-    "name": "Imaginarium",
-    "theme_color": "#001529",
-    "background_color": "#fff",
-    "display": "browser",
-    "scope": "/",
-    "start_url": "/"
-  }
