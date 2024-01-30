@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ICardElement } from '../types/game'
 
 /*
@@ -11,15 +11,6 @@ export const UseGameCore = () => {
   const [visibleField, setVisibleField] = useState(false)
 
   const [selectedCard, setSelectedCard] = useState<ICardElement | null>(null)
-
-  // открытие и закрытие полноэкранного режима
-  useEffect(() => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen()
-    } else if (document.exitFullscreen) {
-      document.exitFullscreen()
-    }
-  }, [fullScreen])
 
   return {
     isStartGame,
