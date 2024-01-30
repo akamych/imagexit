@@ -8,7 +8,7 @@ import { UseDrawCards } from '../../hooks/useDrawCards'
 import { UseHandler } from '../../hooks/useHandler'
 import { UseGameCore } from '../../hooks/useGameCore'
 import { useEffect } from 'react'
-import { inputContainer } from '../../assets/pageGameStyle'
+import { inputContainer, actionContainer } from '../../assets/pageGameStyle'
 
 export const PageGame = () => {
   const { Title } = Typography
@@ -20,6 +20,8 @@ export const PageGame = () => {
     selectedCard,
     visibleField,
     setVisibleField,
+    fullScreen,
+    setFullScreen,
   } = UseGameCore()
   const { ctx, canvas, clearCanvas } = UseInitCanvas()
   const { setPlace, fieldsElement } = UseDrawField(ctx)
@@ -69,9 +71,14 @@ export const PageGame = () => {
     setSelectedCard(null)
   }
 
+  const toggleFullScreen = () => {
+    setFullScreen(prev => !prev)
+  }
+
   return (
     <>
       <Title>Cтраница игры</Title>
+
       <Space style={inputContainer}>
         {selectedCard && <Input placeholder="Напишите ассоциацию" />}
       </Space>
@@ -81,7 +88,7 @@ export const PageGame = () => {
         width={gameSettings.CANVAS_WIDTH_PX}
         height={gameSettings.CANVAS_HEIGHT_PX}
         style={{ border: '1px solid black' }}></canvas>
-      <Space style={inputContainer}>
+      <Space style={actionContainer}>
         {isStartGame ? (
           <Button onClick={reloadGame}>Перезапустить игру</Button>
         ) : (
@@ -95,6 +102,9 @@ export const PageGame = () => {
         ) : (
           <Button onClick={initPlace}>Посмотреть игровое поле</Button>
         )}
+        <Button onClick={toggleFullScreen}>
+          {fullScreen ? <>Закрыть</> : <>Открыть</>} &nbsp;полноэкранный режим
+        </Button>
       </Space>
     </>
   )
