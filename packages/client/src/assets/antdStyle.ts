@@ -11,10 +11,12 @@ export const headerStyle: React.CSSProperties = {
 
 export const contentStyle: React.CSSProperties = {
   textAlign: 'center',
-  minHeight: 120,
+  minHeight: '100%',
   lineHeight: '20px',
   color: '#fff',
   backgroundColor: '#fff',
+  display: 'flex',
+  flexDirection: 'column',
 }
 
 export const siderStyle: React.CSSProperties = {
@@ -35,5 +37,5 @@ export const alertStyle: React.CSSProperties = {
 }
 
 export const layoutStyle: React.CSSProperties = {
-  height: '100%',
+  minHeight: '100%',
 }
