@@ -12,3 +12,15 @@ export const actionContainer: React.CSSProperties = {
   width: gameSettings.CANVAS_WIDTH_PX + 'px',
   margin: '0 auto',
 }
+
+export const sliderVertical: React.CSSProperties = {
+  display: 'inline-block',
+  height: 100,
+  position: 'absolute',
+  bottom: 5,
+  right: -40,
+}
+
+export const sliderVerticalContainer: React.CSSProperties = {
+  position: 'relative',
+}

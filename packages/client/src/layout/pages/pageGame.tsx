@@ -1,4 +1,4 @@
-import { Typography, Input, Space, Button } from 'antd'
+import { Typography, Input, Space, Button, Slider } from 'antd'
 import { UseDrawField } from '../../hooks/useDrawField'
 import { UseDrawPlayers } from '../../hooks/useDrawPlayers'
 import { gameSettings } from '../../constants/game'
@@ -8,7 +8,14 @@ import { UseDrawCards } from '../../hooks/useDrawCards'
 import { UseHandler } from '../../hooks/useHandler'
 import { UseGameCore } from '../../hooks/useGameCore'
 import { useEffect } from 'react'
-import { inputContainer, actionContainer } from '../../assets/pageGameStyle'
+import {
+  inputContainer,
+  actionContainer,
+  sliderVertical,
+  sliderVerticalContainer,
+} from '../../assets/pageGameStyle'
+import { UseMusic } from '../../hooks/useMusic'
+import { musicSettings } from '../../constants/common'
 
 export const PageGame = () => {
   const { Title } = Typography
@@ -23,6 +30,10 @@ export const PageGame = () => {
     fullScreen,
     setFullScreen,
   } = UseGameCore()
+
+  const { playMusic, setPlayMusic, startMusic, stopMusic, setMusicVolume } =
+    UseMusic()
+
   const { ctx, canvas, clearCanvas } = UseInitCanvas()
   const { setPlace, fieldsElement } = UseDrawField(ctx)
   const { cardsElement, setCardsElement } = UseInitImage()
@@ -73,11 +84,21 @@ export const PageGame = () => {
 
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
+      setFullScreen(true)
       document.documentElement.requestFullscreen()
     } else if (document.exitFullscreen) {
+      setFullScreen(false)
       document.exitFullscreen()
     }
-    setFullScreen(prev => !prev)
+  }
+
+  const togglePlayMusic = () => {
+    setPlayMusic(prev => !prev)
+    if (playMusic) {
+      stopMusic()
+    } else {
+      startMusic()
+    }
   }
 
   return (
@@ -110,6 +131,20 @@ export const PageGame = () => {
         <Button onClick={toggleFullScreen}>
           {fullScreen ? <>Закрыть</> : <>Открыть</>} &nbsp;полноэкранный режим
         </Button>
+        <div style={sliderVerticalContainer}>
+          <Button onClick={togglePlayMusic}>
+            {playMusic ? <>Выключить</> : <>Включить</>} &nbsp; музыку
+          </Button>
+          {playMusic && (
+            <div style={sliderVertical}>
+              <Slider
+                vertical
+                defaultValue={musicSettings.MUSIC_INIT_VOLUME}
+                onChange={setMusicVolume}
+              />
+            </div>
+          )}
+        </div>
       </Space>
     </>
   )
