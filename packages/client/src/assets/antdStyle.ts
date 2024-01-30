@@ -1,3 +1,5 @@
+import React from 'react'
+
 export const headerStyle: React.CSSProperties = {
   textAlign: 'center',
   color: '#fff',
@@ -31,11 +33,7 @@ export const footerStyle: React.CSSProperties = {
 export const alertStyle: React.CSSProperties = {
   marginBottom: '20px',
 }
-/*
-export const layoutStyle = {
-  borderRadius: 8,
-  overflow: 'hidden',
-  width: 'calc(50% - 8px)',
-  maxWidth: 'calc(50% - 8px)',
+
+export const layoutStyle: React.CSSProperties = {
+  height: '100%',
 }
-*/
