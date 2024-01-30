@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { PageMain } from '../layout/pages/pageMain'
+import { PageMain } from '../layout/pages/main/pageMain'
 import { PageNotFound } from '../layout/pages/page404/page404'
 import { PageLogin } from '../layout/pages/login/pageLogin'
 import { PageSignUp } from '../layout/pages/signUp/pageSignUp'
