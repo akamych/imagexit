@@ -84,10 +84,8 @@ export const PageGame = () => {
 
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
-      setFullScreen(true)
       document.documentElement.requestFullscreen()
     } else if (document.exitFullscreen) {
-      setFullScreen(false)
       document.exitFullscreen()
     }
   }
