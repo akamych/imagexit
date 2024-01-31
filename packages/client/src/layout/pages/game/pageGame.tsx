@@ -1,14 +1,15 @@
 import { Typography, Input, Space, Button } from 'antd'
-import { UseDrawField } from '../../hooks/useDrawField'
-import { UseDrawPlayers } from '../../hooks/useDrawPlayers'
-import { gameSettings } from '../../constants/game'
-import { UseInitCanvas } from '../../hooks/useInitCanvas'
-import { UseInitImage } from '../../hooks/useInitImage'
-import { UseDrawCards } from '../../hooks/useDrawCards'
-import { UseHandler } from '../../hooks/useHandler'
-import { UseGameCore } from '../../hooks/useGameCore'
+import { UseDrawField } from '../../../hooks/useDrawField'
+import { UseDrawPlayers } from '../../../hooks/useDrawPlayers'
+import { gameSettings } from '../../../constants/game'
+import { UseInitCanvas } from '../../../hooks/useInitCanvas'
+import { UseInitImage } from '../../../hooks/useInitImage'
+import { UseDrawCards } from '../../../hooks/useDrawCards'
+import { UseHandler } from '../../../hooks/useHandler'
+import { UseGameCore } from '../../../hooks/useGameCore'
 import { useEffect } from 'react'
-import { inputContainer } from '../../assets/pageGameStyle'
+import { inputContainer } from '../../../assets/pageGameStyle'
+import './game.css'
 
 export const PageGame = () => {
   const { Title } = Typography
@@ -70,7 +71,7 @@ export const PageGame = () => {
   }
 
   return (
-    <>
+    <div className="content">
       <Title>Cтраница игры</Title>
       <Space style={inputContainer}>
         {selectedCard && <Input placeholder="Напишите ассоциацию" />}
@@ -96,6 +97,6 @@ export const PageGame = () => {
           <Button onClick={initPlace}>Посмотреть игровое поле</Button>
         )}
       </Space>
-    </>
+    </div>
   )
 }
