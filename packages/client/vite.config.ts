@@ -16,7 +16,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         app: './index.html', // entry HTML file
-        'service-worker': './sw.js', // the path to service worker file
+        'service-worker': './src/sw.js', // the path to service worker file
       },
       output: {
         entryFileNames: assetInfo => {
