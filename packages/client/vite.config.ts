@@ -12,19 +12,4 @@ export default defineConfig({
     __SERVER_PORT__: process.env.SERVER_PORT,
   },
   plugins: [react()],
-  build: {
-    rollupOptions: {
-      input: {
-        app: './index.html', // entry HTML file
-        'service-worker': './src/sw.js', // the path to service worker file
-      },
-      output: {
-        entryFileNames: assetInfo => {
-          return assetInfo.name === 'service-worker'
-            ? '[name].js' // put service worker in root
-            : 'assets/js/[name]-[hash].js' // others in `assets/js/`
-        },
-      },
-    },
-  },
 })
