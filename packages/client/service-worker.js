@@ -56,7 +56,7 @@ async function handleAssetRequest(request) {
         let response = await cache.match(request);
         if (!response) {
             response = await fetch(request);
-            await cache.put(request, response.clone());
+            await cache.put(request, response.clone())
         }
         return response;
     } catch (error) {
