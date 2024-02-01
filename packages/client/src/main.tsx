@@ -5,7 +5,7 @@ import './index.css'
 import 'normalize.css'
 
 function startServiceWorker() {
-  if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  if (process.env.NODE_ENV && 'serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
         .register('/service-worker.js')
