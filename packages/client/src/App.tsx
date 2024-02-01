@@ -21,6 +21,7 @@ function App() {
     <BrowserRouter>
       <Provider store={store}>
         <div className="App">
+          Вот тут будет жить ваше приложение :)
           <Pages />
         </div>
       </Provider>
