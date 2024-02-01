@@ -8,7 +8,6 @@ const URLS = [
     '/assets/images/cards/5.jpeg',
     '/assets/images/cards/6.jpeg',
     '/index.html',
-    '/src/main.tsx',
     '/assets/images/logo.png',
     '/assets/images/mascot.png',
     '/assets/images/mainbg.jpg',
@@ -28,12 +27,34 @@ self.addEventListener('install', async event => {
 
 self.addEventListener('activate', event => console.log('activate')); 
 
-self.addEventListener('fetch', event => {
-    console.log('Fetch: ', event.request.url)
-    event.respondWith(cacheFirst(event.request))
+self.addEventListener('fetch', async event => {
+    try{
+        // Смотрим, если запрос на файл из папки /assets
+        if (event.request.url.includes('/assets/')) {
+            return handleAssetRequest(event.request);
+        }
+        // Для остальных запросов сначала смотрим в кэш
+        cacheFirst(event.request);
+    }catch(error){
+        console.error('Fetch error:', error);
+    }
 }); 
 
 async function cacheFirst(request){
     const cached = await caches.match(request);
     return cached ?? await fetch(request);
+}
+
+async function handleAssetRequest(event) {
+    try {
+        const cache = await caches.open(CACHE_NAME);
+        let response = await cache.match(request);
+        if (!response) {
+            response = await fetch(request);
+            await cache.put(request, response.clone());
+        }
+        return response;
+    } catch (error) {
+        console.error('Ошибка обрабоки запроса в папку /assets:', error);
+    }
 }
