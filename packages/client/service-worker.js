@@ -29,7 +29,7 @@ self.addEventListener('activate', event => console.log('activate'));
 
 self.addEventListener('fetch', event => {
     console.log('Fetch: ', event.request.url)
-    // event.respondWith(cacheFirst(event.request))
+    event.respondWith(cacheFirst(event.request))
 }); 
 
 async function cacheFirst(request){
