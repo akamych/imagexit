@@ -8,6 +8,7 @@ const URLS = [
     '/assets/images/cards/5.jpeg',
     '/assets/images/cards/6.jpeg',
     '/index.html',
+    '/src/main.tsx',
     '/assets/images/logo.png',
     '/assets/images/mascot.png',
     '/assets/images/mainbg.jpg',
