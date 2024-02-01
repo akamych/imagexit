@@ -15,8 +15,15 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: './index.html', // entry HTML file
+        app: './index.html', // entry HTML file
         'service-worker': './sw.js', // the path to service worker file
+      },
+      output: {
+        entryFileNames: assetInfo => {
+          return assetInfo.name === 'service-worker'
+            ? '[name].js' // put service worker in root
+            : 'assets/js/[name]-[hash].js' // others in `assets/js/`
+        },
       },
     },
   },
