@@ -7,10 +7,10 @@ const URLS = [
     '/assets/images/cards/4.jpeg',
     '/assets/images/cards/5.jpeg',
     '/assets/images/cards/6.jpeg',
-    '/src/main.tsx',
-    '/src/index.css',
-    '/src/App.tsx',
-    '/src/App.css'
+    '/index.html',
+    '/assets/images/logo.png',
+    '/assets/images/mascot.png',
+    '/assets/images/mainbg.jpg',
 ];
 
 self.addEventListener('install', async event => {

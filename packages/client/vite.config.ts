@@ -12,4 +12,12 @@ export default defineConfig({
     __SERVER_PORT__: process.env.SERVER_PORT,
   },
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      input: {
+        main: './index.html', // entry HTML file
+        'service-worker': './sw.js', // the path to service worker file
+      },
+    },
+  },
 })
