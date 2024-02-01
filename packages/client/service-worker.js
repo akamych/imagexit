@@ -1,16 +1,16 @@
 const CACHE_NAME = 'app-cache-v1';
 const URLS = [
     '/',
-    '/assets/images/cards/1.jpeg',
-    '/assets/images/cards/2.jpeg',
-    '/assets/images/cards/3.jpeg',
-    '/assets/images/cards/4.jpeg',
-    '/assets/images/cards/5.jpeg',
-    '/assets/images/cards/6.jpeg',
+    // '/assets/images/cards/1.jpeg',
+    // '/assets/images/cards/2.jpeg',
+    // '/assets/images/cards/3.jpeg',
+    // '/assets/images/cards/4.jpeg',
+    // '/assets/images/cards/5.jpeg',
+    // '/assets/images/cards/6.jpeg',
     '/index.html',
-    '/assets/images/logo.png',
-    '/assets/images/mascot.png',
-    '/assets/images/mainbg.jpg',
+    // '/assets/images/logo.png',
+    // '/assets/images/mascot.png',
+    // '/assets/images/mainbg.jpg',
 ];
 
 self.addEventListener('install', async event => {
@@ -45,7 +45,7 @@ async function cacheFirst(request){
     return cached ?? await fetch(request);
 }
 
-async function handleAssetRequest(event) {
+async function handleAssetRequest(request) {
     try {
         const cache = await caches.open(CACHE_NAME);
         let response = await cache.match(request);
@@ -55,6 +55,6 @@ async function handleAssetRequest(event) {
         }
         return response;
     } catch (error) {
-        console.error('Ошибка обрабоки запроса в папку /assets:', error);
+        console.error('Ошибка обрабоки запроса в /assets:', error);
     }
 }
