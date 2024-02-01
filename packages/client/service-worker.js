@@ -2,15 +2,6 @@ const CACHE_NAME = 'app-cache-v1';
 const URLS = [
     '/',
     '/index.html',
-    // '/assets/images/cards/1.jpeg',
-    // '/assets/images/cards/2.jpeg',
-    // '/assets/images/cards/3.jpeg',
-    // '/assets/images/cards/4.jpeg',
-    // '/assets/images/cards/5.jpeg',
-    // '/assets/images/cards/6.jpeg',
-    // '/assets/images/logo.png',
-    // '/assets/images/mascot.png',
-    // '/assets/images/mainbg.jpg',
 ];
 
 self.addEventListener('install', async event => {
@@ -29,7 +20,6 @@ self.addEventListener('activate', () => console.log('activate'));
 self.addEventListener('fetch', async event => {
     try {
         console.log('Fetch: ', event.request.url);
-        // Check if the request is for an asset file in the /assets folder
         if (event.request.url.includes('/assets/')) {
             event.respondWith(handleAssetRequest(event.request));
         } else {
@@ -43,10 +33,17 @@ self.addEventListener('fetch', async event => {
 async function cacheFirst(request) {
     try {
         const cached = await caches.match(request);
-        return cached || fetch(request);
+        if (cached) {
+            return cached;
+        }
+        const response = await fetch(request);
+        
+        const cache = await caches.open(CACHE_NAME);
+        await cache.put(request, response.clone());
+        
+        return response;
     } catch (error) {
         console.error('Cache first error:', error);
-        throw error;
     }
 }
 
