@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import './App.css'
 import { Pages } from './layout/Layout'
 import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import store from './store/Store'
 
 function App() {
   useEffect(() => {
@@ -17,10 +19,11 @@ function App() {
   }, [])
   return (
     <BrowserRouter>
-      <div className="App">
-        Вот тут будет жить ваше приложение :)
-        <Pages />
-      </div>
+      <Provider store={store}>
+        <div className="App">
+          <Pages />
+        </div>
+      </Provider>
     </BrowserRouter>
   )
 }
