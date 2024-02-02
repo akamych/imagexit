@@ -5,11 +5,10 @@ import './index.css'
 import 'normalize.css'
 
 function startServiceWorker() {
-  // import.meta.env.PROD &&
-  if ('serviceWorker' in navigator) {
+  if (import.meta.env.PROD && 'serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
-        .register('/sw.js')
+        .register('/service-worker.js')
         .then(registration => {
           console.log(
             'ServiceWorker registration successful with  scope: ',
