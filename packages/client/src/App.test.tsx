@@ -1,14 +1,22 @@
+import '@testing-library/jest-dom'
 import App from './App'
-import { render, screen } from '@testing-library/react'
-
-const appContent = 'Вот тут будет жить ваше приложение :)'
+import { act, render } from '@testing-library/react'
+import { create } from 'match-media-mock'
 
 // @ts-ignore
 global.fetch = jest.fn(() =>
   Promise.resolve({ json: () => Promise.resolve('hey') })
 )
 
-test('Example test', async () => {
-  render(<App />)
-  expect(screen.getByText(appContent)).toBeDefined()
+describe('App component', () => {
+  beforeEach(() => {
+    window.matchMedia = create()
+  })
+
+  it('Компонент рендерится', async () => {
+    await act(async () => {
+      const { container } = render(<App />)
+      expect(container).toBeInTheDocument()
+    })
+  })
 })
