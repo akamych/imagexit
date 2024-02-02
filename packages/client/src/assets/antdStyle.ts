@@ -17,6 +17,7 @@ export const contentStyle: React.CSSProperties = {
   backgroundColor: '#fff',
   display: 'flex',
   flexDirection: 'column',
+  alignItems: 'center',
 }
 
 export const siderStyle: React.CSSProperties = {
