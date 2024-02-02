@@ -8556,6 +8556,11 @@ wcwidth@^1.0.0, wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
+web-audio-mock@^0.1.9:
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/web-audio-mock/-/web-audio-mock-0.1.9.tgz#23d46d6376ec9a18acb73afb236e2ba5b43c83f2"
+  integrity sha512-oFHZ3k9MBJPsJymt0XNj+YZUcizFMeG5LbbeLetS+AnZIKokEdtCR8nkgGQSnjlrTTJI5YPCpD6XUFnAUovgXA==
+
 webidl-conversions@^3.0.0:
   version "3.0.1"
   resolved "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-3.0.1.tgz"

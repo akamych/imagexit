@@ -28,7 +28,6 @@ export const PageGame = () => {
     visibleField,
     setVisibleField,
     fullScreen,
-    setFullScreen,
   } = UseGameCore()
 
   const { playMusic, setPlayMusic, startMusic, stopMusic, setMusicVolume } =

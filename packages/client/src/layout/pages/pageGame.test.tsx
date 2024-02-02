@@ -4,10 +4,12 @@ import { BrowserRouter } from 'react-router-dom' // Импортируйте Bro
 import { create } from 'match-media-mock'
 import { PageGame } from './pageGame'
 import { setupJestCanvasMock } from 'jest-canvas-mock'
+import 'web-audio-mock'
 
 describe('PageGame component', () => {
   beforeEach(() => {
     window.matchMedia = create()
+
     jest.resetAllMocks()
     setupJestCanvasMock()
   })
