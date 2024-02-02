@@ -12,3 +12,21 @@
   flex: 1;
   font-family: Inter, Sans-serif;
 }
+
+.layers {
+  position: relative;
+
+  & .layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  & .layer1 {
+    z-index: 0;
+  }
+
+  & .layer2 {
+    z-index: 1;
+  }
+}

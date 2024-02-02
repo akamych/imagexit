@@ -10,6 +10,7 @@ import { UseGameCore } from '../../../hooks/useGameCore'
 import { useEffect } from 'react'
 import { inputContainer } from '../../../assets/pageGameStyle'
 import './game.css'
+import { WStepScoring } from '../../../components/game/WStepScoring'
 
 export const PageGame = () => {
   const { Title } = Typography
@@ -25,7 +26,7 @@ export const PageGame = () => {
   const { ctx, canvas, clearCanvas } = UseInitCanvas()
   const { setPlace, fieldsElement } = UseDrawField(ctx)
   const { cardsElement, setCardsElement } = UseInitImage()
-  const { generatePlayers } = UseDrawPlayers(ctx, fieldsElement)
+  //const { generatePlayers } = UseDrawPlayers(ctx, fieldsElement)
   const { drawCards, animateCards, drawCard } = UseDrawCards(
     ctx,
     cardsElement,
@@ -51,7 +52,7 @@ export const PageGame = () => {
   const nextStep = () => {
     clearCanvas()
     setPlace()
-    generatePlayers()
+    //generatePlayers()
     selectedCard &&
       drawCard(selectedCard.img, selectedCard.left, selectedCard.top)
   }
@@ -76,12 +77,23 @@ export const PageGame = () => {
       <Space style={inputContainer}>
         {selectedCard && <Input placeholder="Напишите ассоциацию" />}
       </Space>
+      <div
+        className="layers"
+        style={{
+          width: gameSettings.CANVAS_WIDTH_PX,
+          height: gameSettings.CANVAS_HEIGHT_PX,
+        }}>
+        <canvas
+          id="canvas"
+          className="layer"
+          width={gameSettings.CANVAS_WIDTH_PX}
+          height={gameSettings.CANVAS_HEIGHT_PX}
+          style={{ border: '1px solid black' }}></canvas>
 
-      <canvas
-        id="canvas"
-        width={gameSettings.CANVAS_WIDTH_PX}
-        height={gameSettings.CANVAS_HEIGHT_PX}
-        style={{ border: '1px solid black' }}></canvas>
+        {visibleField && (
+          <WStepScoring ctx={ctx} fieldsElement={fieldsElement} />
+        )}
+      </div>
       <Space style={inputContainer}>
         {isStartGame ? (
           <Button onClick={reloadGame}>Перезапустить игру</Button>
