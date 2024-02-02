@@ -1,3 +1,5 @@
+import React from 'react'
+
 export const headerStyle: React.CSSProperties = {
   textAlign: 'center',
   color: '#fff',
@@ -9,10 +11,13 @@ export const headerStyle: React.CSSProperties = {
 
 export const contentStyle: React.CSSProperties = {
   textAlign: 'center',
-  minHeight: 120,
+  minHeight: '100%',
   lineHeight: '20px',
   color: '#fff',
   backgroundColor: '#fff',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
 }
 
 export const siderStyle: React.CSSProperties = {
@@ -27,11 +32,11 @@ export const footerStyle: React.CSSProperties = {
   color: '#fff',
   backgroundColor: '#4096ff',
 }
-/*
-export const layoutStyle = {
-  borderRadius: 8,
-  overflow: 'hidden',
-  width: 'calc(50% - 8px)',
-  maxWidth: 'calc(50% - 8px)',
+
+export const alertStyle: React.CSSProperties = {
+  marginBottom: '20px',
 }
-*/
+
+export const layoutStyle: React.CSSProperties = {
+  minHeight: '100%',
+}

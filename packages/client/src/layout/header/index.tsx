@@ -14,7 +14,6 @@ export function LHeader() {
   return (
     <>
       <Header style={{ display: 'flex', alignItems: 'center' }}>
-        <div className="demo-logo" />
         <Menu
           theme="dark"
           mode="horizontal"
