@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom'
 function App() {
   useEffect(() => {
     const fetchServerData = async () => {
-      // const url = `http://localhost:${__SERVER_PORT__}`
+      // после подключения сервера раскомментировать const url = `http://localhost:${__SERVER_PORT__}`
       const url = `http://localhost`
       const response = await fetch(url)
       const data = await response.json()
