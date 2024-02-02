@@ -1,5 +1,17 @@
 const CACHE_NAME = 'app-cache-v1'
-const URLS = ['/', '/index.html']
+const URLS = [
+    '/',
+    '/index.html',
+    '/assets/images/logo.png',
+    '/assets/images/mainbg.png',
+    '/assets/images/mascot.png',
+    '/assets/images/cards/1.jpeg',
+    '/assets/images/cards/2.jpeg',
+    '/assets/images/cards/3.jpeg',
+    '/assets/images/cards/4.jpeg',
+    '/assets/images/cards/5.jpeg',
+    '/assets/images/cards/6.jpeg',
+  ]
 
 self.addEventListener('install', async event => {
   console.log('install')
@@ -16,13 +28,8 @@ self.addEventListener('activate', () => console.log('activate'))
 
 self.addEventListener('fetch', async event => {
   try {
-    console.log('Fetch: ', event.request.url)
-
-    if (event.clientId && event.clientId.startsWith('chrome-extension')) {
-      return
-    }
-
     if (event.request.url.includes('/assets/')) {
+      console.log('Fetch: ', event.request.url)
       event.respondWith(handleAssetRequest(event.request))
     } else {
       event.respondWith(cacheFirst(event.request))
