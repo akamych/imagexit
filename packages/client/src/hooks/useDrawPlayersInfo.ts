@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react'
 import { gameSettings } from '../constants/game'
-import { ICardElement, IFieldElement, IPlayerElement } from '../types/game'
+import {
+  ICardElement,
+  IFieldElement,
+  IPlayerElement,
+  IPlayerInfo,
+} from '../types/game'
 import { randomInteger } from '../helpers/number'
 import { UseInitImage } from './useInitImage'
+import { getApiPlayersInfo } from '../components/game/testData'
 
 type UseDrawPlayersInfo = (
   ctx: CanvasRenderingContext2D | null,
@@ -41,43 +47,12 @@ const сoordinates = [
     HEIGHT: BoxHEIGHT,
   },
 ]
-const getApiPlayersInfo = [
-  {
-    key: 'px1',
-    login: 'login 1',
-    color: 'rgba(0,0,0,1)',
-  },
-  {
-    key: 'px2',
-    login: 'login 2',
-    color: 'rgba(179,36,0,1)',
-  },
-  {
-    key: 'px3',
-    login: 'login 3',
-    color: 'rgba(255,136,0,1)',
-  },
-  {
-    key: 'px4',
-    login: 'login 4',
-    color: 'rgba(60, 179, 113,1)',
-  },
-  {
-    key: 'px5',
-    login: 'login 5',
-    color: 'rgba(30, 144, 255,1)',
-  },
-  {
-    key: 'px6',
-    login: 'login 6',
-    color: 'rgba(106, 90, 205,1)',
-  },
-]
+
 /*
  * Хук нужен для отрисовки информации о игроках
  * */
 export const UseDrawPlayersInfo: UseDrawPlayersInfo = (ctx, card) => {
-  const [players, setPlayers] = useState<IPlayerInfoElement[]>([])
+  const [players, setPlayers] = useState<IPlayerInfo[]>([])
   const fontSizeLogin = 18
   const offset = 30
   /*

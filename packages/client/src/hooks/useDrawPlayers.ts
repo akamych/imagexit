@@ -2,17 +2,17 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { gameSettings, playerColors } from '../constants/game'
 import {
   ICellElement,
-  IPlayerInfoElement,
-  IPlayerInfoPoint,
-  IPlayersPoint,
+  IPlayerInfo,
+  IRaundInfo,
   defaultIPlayersPoint,
 } from '../types/game'
-import { getPlayersJSON } from '../components/game/lib'
+import { getPlayersJSON } from '../components/game/testData'
 
 // ---------- Types
 type UseDrawPlayers = (
   ctx: CanvasRenderingContext2D | null,
-  fieldsElement: ICellElement[]
+  fieldsElement: ICellElement[],
+  animationField: boolean
 ) => {
   generatePlayers: () => void
 }
@@ -46,7 +46,7 @@ const printCircl = (
   ctx.fillStyle = color
   ctx.fill()
   ctx.lineWidth = 0
-  ctx.strokeStyle = '#000'
+  ctx.strokeStyle = 'rgba(63,74,83,0.3)'
   ctx.stroke()
 }
 /*
@@ -56,27 +56,28 @@ const getCoordinatesCell = (numberPlayers: number) => {
   const arr = []
   const R = gameSettings.FIELD_HEIGHT_PX * 0.4 // радиус окружности для размещения игроков.
   const corner = ((360 / numberPlayers) * Math.PI) / 180
-  // console.log('угол corner', corner)
-  // console.log('numberPlayers', numberPlayers)
+
   for (let i = 0; i < numberPlayers; i++) {
-    // console.log('cos i', i * corner, Math.cos(i * corner))
-    // console.log('sin i', i * corner, Math.sin(i * corner))
     arr.push({
       x: Math.round(R * Math.cos(i * corner)),
       y: Math.round(R * Math.sin(i * corner)),
     })
   }
-  //console.log('getCoordinatesCell', arr)
+
   return arr
 }
 /*
  * Хук нужен для отрисовки игроков на игровом поле
  * */
 
-export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement) => {
+export const UseDrawPlayers: UseDrawPlayers = (
+  ctx,
+  fieldsElement,
+  animationField
+) => {
   // fieldsElement - координаты ячеек игрового поля
-  const [players, setPlayers] = useState<IPlayerInfoElement[]>([]) // информация о игроках: логин и пр
-  const [points, setPoints] = useState<IPlayersPoint>(defaultIPlayersPoint) // баллы игроков за ход
+  const [players, setPlayers] = useState<IPlayerInfo[]>([]) // информация о игроках: логин и пр
+  const [points, setPoints] = useState<IRaundInfo>(defaultIPlayersPoint) // баллы игроков за ход
   const [animationXY, setAnimationXY] = useState<IanimationXYnow[]>([])
   const updateAnimationXY = (index: number, newItem: any) => {
     setAnimationXY(prevItems => {
@@ -92,7 +93,7 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement) => {
     return getCoordinatesCell(players.length)
   }, [players])
 
-  const R = gameSettings.FIELD_HEIGHT_PX * 0.4 // радиус окружности для размещения игроков.
+  // const R = gameSettings.FIELD_HEIGHT_PX * 0.4 // радиус окружности для размещения игроков.
   const clearCanvas = () => {
     if (!ctx) {
       return
@@ -118,19 +119,7 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement) => {
     setPoints(pointsJSON)
     return true
   }
-  /*
-  function getPoints(userId: string): IPlayerInfoPoint | null {
-    let result = null
-    if (points) {
-      points.players.forEach(item => {
-        if (userId == item.userId) {
-          result = item
-        }
-      })
-    }
-    return result
-  }
-*/
+
   // функция вычиляет координаты игрока на поле N в зависимости от количества игроков
   function coordinateCalculation(cellNumber: number, indexPlayer: number) {
     const x =
@@ -173,12 +162,17 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement) => {
     }
 
     if (goToCell != null) {
-      //console.log('x_start', x_start, 'y_start', y_start)
-      //console.log('x_finish', x_finish, 'y_finish', y_finish)
       const { x: x_finish, y: y_finish } = coordinateCalculation(
         goToCell,
         index
       )
+
+      // ---- уравнение прямой  on
+      //const k = (y_finish - y_start) / (x_finish - x_start)
+      //const b = y_start - k * x_start
+
+      // ---- уравнение прямой  off
+
       let x_delta = Math.abs(x_finish - x_start)
       const x_sign = Math.sign(x_finish - x_start)
 
@@ -187,7 +181,6 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement) => {
 
       console.log('goToCell', goToCell, 'x_delta', x_delta, 'y_delta', y_delta)
 
-      // while (x_delta > 0 || y_delta > 0) {}
       let stepX = animationXY[index].stepX
       let stepY = animationXY[index].stepY
       if (x_delta == 0 && y_delta == 0) {
@@ -196,10 +189,11 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement) => {
         stepY = 0
       } else {
         moving = true
+
         // равномерное движение
         if (stepY == 0 || stepX == 0) {
-          stepY = offset
-          stepX = (offset * x_delta) / y_delta
+          stepY = offset // k * offset + b
+          stepX = offset
         }
       }
 
@@ -250,10 +244,7 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement) => {
 
     return true
   }
-  // ---
-  useEffect(() => {
-    clearCanvas()
-  }, [])
+
   // ---
   useEffect(() => {
     // const arrCoordCell = getCoordinatesCell(points.players.length)
@@ -264,7 +255,7 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement) => {
     const arrayXY: IanimationXYnow[] = []
     points.players.forEach((item, index) => {
       // getPoints(player.userId)
-      if (item.pointsAdd > 0) {
+      if (item.pointsAdd != 0) {
         animationFlag = true
       }
       const { x, y } = coordinateCalculation(item.pointsOld, index)
@@ -282,21 +273,6 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement) => {
         pointFinish:
           points.players[index].pointsOld + points.players[index].pointsAdd,
       })
-      /*
-      updateAnimationXY(index, {
-        x: x,
-        y: y,
-        color: playerColors[index],
-        moving: true,
-        pointStart: points.players[index].pointsOld,
-        goToCell:
-          points.players[index].pointsOld +
-          Math.sign(points.players[index].pointsAdd),
-        pointFinish:
-          points.players[index].pointsOld + points.players[index].pointsAdd,
-      })
-*/
-      // если хоть у одного игрока количество баллов за ход > 0  = показать анимацию showAnimationOnTheBoard(pointsData)
     })
     setAnimationXY(arrayXY)
     console.log('setAnimationXY')
@@ -320,6 +296,7 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement) => {
     if (!ctx) {
       return
     }
+
     if (animationXY.length > 0) {
       clearCanvas()
       animationXY.forEach((item, index) => {
@@ -327,9 +304,18 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement) => {
       })
       setTimeout(() => {
         showAnimationOnTheBoard()
-      }, 20)
+      }, 5)
     }
   }, [animationXY])
+
+  useEffect(() => {
+    console.log('useEffect animationField')
+    if (animationField == false) {
+      activeIndex.current = null
+      setAnimationXY([])
+      clearCanvas()
+    }
+  }, [animationField])
 
   return {
     generatePlayers,

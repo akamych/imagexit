@@ -15,6 +15,7 @@
 
 .layers {
   position: relative;
+  margin-top: 50px;
 
   & .layer {
     position: absolute;
@@ -29,4 +30,20 @@
   & .layer2 {
     z-index: 1;
   }
+
+  & .layer3 {
+    z-index: 1;
+  }
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+.w100 {
+  width: 1000px;
+}
+.mb-footer {
+  margin-bottom: 40px;
 }

@@ -10,6 +10,7 @@ import { ICellElement } from '../../types/game'
 interface IWStepScoring {
   ctx: CanvasRenderingContext2D | null
   fieldsElement: ICellElement[]
+  init: boolean
 }
 export const WStepScoring = (props: IWStepScoring) => {
   const { setPlace, fieldsElement } = UseDrawField(props.ctx)
@@ -22,7 +23,6 @@ export const WStepScoring = (props: IWStepScoring) => {
     if (!ctxLayer2) {
       return
     }
-
     ctxLayer2.clearRect(
       0,
       0,
@@ -31,6 +31,7 @@ export const WStepScoring = (props: IWStepScoring) => {
     )
   }
   const { generatePlayers } = UseDrawPlayers(ctxLayer2, props.fieldsElement)
+
   useEffect(() => {
     const canvasInit: HTMLCanvasElement = document.getElementById(
       'layer2'
@@ -39,10 +40,16 @@ export const WStepScoring = (props: IWStepScoring) => {
     const ctx2 = canvasInit.getContext('2d')
     setCtxLayer2(ctx2)
   }, [])
+
   useEffect(() => {
     generatePlayers()
   }, [ctxLayer2])
 
+  useEffect(() => {
+    if (props.init) {
+      generatePlayers()
+    }
+  }, [props.init])
   return (
     <>
       WStepScoring

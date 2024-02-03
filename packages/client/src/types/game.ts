@@ -27,24 +27,31 @@ export interface IPlayerElement {
   scope: number
 }
 
-export interface IPlayerInfoElement {
+export interface IPlayerInfo {
   userId: string
   login: string
   color: string
 }
 
-export interface IPlayerInfoPoint {
+export interface IRaundPlayerInfo {
   userId: string
   selectedCard: number
   master: boolean
   pointsOld: number
   pointsAdd: number
 }
-export interface IPlayersPoint {
-  move_number: number
-  players: IPlayerInfoPoint[]
+export interface IRaundInfo {
+  id: number
+  masterUserId: string
+  masterAssociation: string
+  mastercardId: number
+  players: IRaundPlayerInfo[]
 }
-export const defaultIPlayersPoint = {
-  move_number: 0,
-  players: <IPlayerInfoPoint[]>[],
+
+export const defaultIPlayersPoint: IRaundInfo = {
+  id: 0,
+  masterUserId: '',
+  masterAssociation: '',
+  mastercardId: 0,
+  players: <IRaundPlayerInfo[]>[],
 }

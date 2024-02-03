@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { gameSettings } from '../constants/game'
-import { ICellElement, IFieldElement } from '../types/game'
+import { ICellElement } from '../types/game'
 
 /*
  * Хук нужен для работы с игровым полем
@@ -65,12 +65,15 @@ export const UseDrawField = (ctx: CanvasRenderingContext2D | null) => {
     }
 
     const arr: ICellElement[] = []
+    const gameBoardOffsetTop = gameSettings.GAME_BOARD_TOP_PX
+    const gameBoardBottom_Y =
+      gameSettings.GAME_BOARD_HEIGHT_PX + gameBoardOffsetTop // высота игрового поля
     // начало координат игрового поля. Из левого нижнего угла.
-    let x = 0 + gameSettings.FIELD_WIDTH_PX / 2
-    let y = gameSettings.CANVAS_HEIGHT_PX
+    let x = gameSettings.GAME_BOARD_LEFT_PX // 0 + gameSettings.FIELD_WIDTH_PX / 2
+    let y = gameBoardBottom_Y
 
     let offset_design = false // смещение ячейки относительно оси для создания эффекта неравномеоности
-    const offset_x = gameSettings.FIELD_WIDTH_PX + 30
+    const offset_x = gameSettings.FIELD_WIDTH_PX + 20
     const offset_y = gameSettings.FIELD_HEIGHT_PX
     let directionMovement = -1 // направление движения. вверх= -1, вниз +1
 
@@ -78,14 +81,14 @@ export const UseDrawField = (ctx: CanvasRenderingContext2D | null) => {
       // проверка верхнего края поля
       if (directionMovement == -1) {
         // first
-        if (y + directionMovement * offset_y < 0) {
+        if (y + directionMovement * offset_y < gameBoardOffsetTop) {
           x += offset_x * 1.4
           directionMovement = -1 * directionMovement
           offset_design = false
         } else {
           // last
-          if (y + directionMovement * offset_y * 2 < 0) {
-            x += offset_x * 0.6
+          if (y + directionMovement * offset_y * 2 < gameBoardOffsetTop) {
+            x += offset_x * 0.7
             offset_design = false
           }
           y += directionMovement * offset_y
@@ -93,20 +96,14 @@ export const UseDrawField = (ctx: CanvasRenderingContext2D | null) => {
       } else {
         // проверка нижнего края поля
         // first
-        if (
-          y + directionMovement * offset_y * 2 >
-          gameSettings.CANVAS_HEIGHT_PX
-        ) {
+        if (y + directionMovement * offset_y * 2 > gameBoardBottom_Y) {
           x += offset_x * 1.4
           directionMovement = -1 * directionMovement
           offset_design = false
         } else {
           // last
-          if (
-            y + directionMovement * offset_y * 3 >
-            gameSettings.CANVAS_HEIGHT_PX
-          ) {
-            x += offset_x * 0.6
+          if (y + directionMovement * offset_y * 3 > gameBoardBottom_Y) {
+            x += offset_x * 0.7
             offset_design = false
           }
 
@@ -126,7 +123,7 @@ export const UseDrawField = (ctx: CanvasRenderingContext2D | null) => {
         y: y,
       })
       printСellBg(ctx, x, y) // отрисовка облака
-      printСellText(ctx, i, x, y) // отрисовка текста в облаке
+      printСellText(ctx, i == 0 ? 'старт' : String(i), x, y) // отрисовка текста в облаке
     }
     // 0 - ячейка старта
 
