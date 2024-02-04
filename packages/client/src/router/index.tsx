@@ -12,7 +12,7 @@ import { PageForumTopic } from '../layout/pages/forum/pageForumTopic'
 import { Error500 } from '../layout/pages/page500/page500'
 
 export const usePagesRoutes = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(true)
 
   useEffect(() => {
     setIsAuthenticated(true) // ! убрать после внедрения аутентификации

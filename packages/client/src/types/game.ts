@@ -47,6 +47,13 @@ export interface IRaundInfo {
   mastercardId: number
   players: IRaundPlayerInfo[]
 }
+export const defaultRaundInfo: IRaundInfo = {
+  id: 0,
+  masterUserId: '',
+  masterAssociation: '',
+  mastercardId: 0,
+  players: [],
+}
 
 export const defaultIPlayersPoint: IRaundInfo = {
   id: 0,

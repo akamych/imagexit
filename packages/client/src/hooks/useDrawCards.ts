@@ -141,10 +141,12 @@ export const UseDrawCards: UseDrawCards = (
   }
 
   useEffect(() => {
+    /*
     clearCanvas()
     cardsElement.forEach(card => {
       drawCard(card.img, card.left, card.top)
     })
+    */
   }, [cardsElement])
 
   return {

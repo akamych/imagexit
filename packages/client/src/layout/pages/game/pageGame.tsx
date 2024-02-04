@@ -1,4 +1,4 @@
-import { Input, Space, Button, Slider, Row, Col } from 'antd'
+import { Input, Space, Button, Slider, Row, Col, Modal } from 'antd'
 import { UseDrawField } from '../../../hooks/useDrawField'
 import { UseDrawPlayers } from '../../../hooks/useDrawPlayers'
 import { UseInitCanvas } from '../../../hooks/useInitCanvas'
@@ -6,7 +6,7 @@ import { UseInitImage } from '../../../hooks/useInitImage'
 import { UseDrawCards } from '../../../hooks/useDrawCards'
 // import { UseHandler } from '../../../hooks/useHandler'
 import { UseGameCore } from '../../../hooks/useGameCore'
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   inputContainer,
   actionContainer,
@@ -16,8 +16,16 @@ import {
 import { UseMusic } from '../../../hooks/useMusic'
 import { musicSettings } from '../../../constants/common'
 import { UseDrawContent } from '../../../hooks/useDrawContent'
-import { getApiPlayersInfo } from '../../../components/game/testData'
-import { roundedRectPath, writeLogin } from '../../../components/game/lib'
+import {
+  getApiPlayersInfo,
+  getApiRaundInfo,
+} from '../../../components/game/testData'
+import {
+  buttonCanvas,
+  roundedRectPath,
+  writeLogin,
+  writeLoginFinish,
+} from '../../../components/game/lib'
 import {
   gameContent,
   gameSettings,
@@ -25,6 +33,8 @@ import {
 } from '../../../constants/game'
 import './game.css'
 import { FullscreenOutlined } from '@ant-design/icons'
+import { WgameStepStart } from '../../../components/game/WgameStepStart'
+import { IPlayerInfo, defaultRaundInfo } from '../../../types/game'
 
 export const PageGame = () => {
   //const { Title } = Typography
@@ -46,12 +56,15 @@ export const PageGame = () => {
     setPlayersInfo,
     playersInfo,
     raundInfo,
+    setRaundInfo,
+    difficulty,
+    setDifficulty,
   } = UseGameCore()
 
   const { playMusic, setPlayMusic, startMusic, stopMusic, setMusicVolume } =
     UseMusic()
 
-  const { ctx, clearCanvas, ctx2, clearCanvas2, ctx3, canvas3 } =
+  const { ctx, clearCanvas, ctx2, clearCanvas2, ctx3, canvas3, clearCanvas3 } =
     UseInitCanvas()
   const { setPlace, fieldsElement } = UseDrawField(ctx)
   const { cardsElement, setCardsElement } = UseInitImage()
@@ -67,12 +80,24 @@ export const PageGame = () => {
     setSelectedCard
   )
   // const { addClick, removeClick } = UseHandler(canvas)
-  const { writeTitle, writeTask, writeText, displayContent } =
+  const { writeTitle, writeTask, writeText, writeSrting, displayContent } =
     UseDrawContent(ctx)
-  //==============
+  // ==============
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const showModal = () => {
+    setIsModalOpen(true)
+  }
+
+  const сloseModal = () => {
+    setIsModalOpen(false)
+  }
+
+  // ==============
   const ClearScreen = () => {
     clearCanvas()
     clearCanvas2()
+    clearCanvas3()
   }
   // ===================== CONTENT
   // Посмотреть игровое поле
@@ -90,16 +115,71 @@ export const PageGame = () => {
       gameSettings.GAME_BOARD_TOP_PX + 80
     )
   }
+  // ====================== START
   const stepStart = () => {
-    // обнулить переменные раунда
-    setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
-    setIsStartGame(true)
-    setVisibleField(false)
-    setSelectedCard(null)
+    //setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
+    setIsStartGame(false)
+    const left = gameSettings.CONTENT_LEFT_PX
     writeTitle(gameContent[gameStep].title)
     writeTask(gameContent[gameStep].task)
+    writeSrting(
+      'Уровень сложности: ' + difficulty,
+      typographySettings.smallText.color,
+      left,
+      gameSettings.GAME_BOARD_TOP_PX + 40
+    )
+    writeSrting(
+      'Команда: (от 3 до 7)',
+      typographySettings.smallText.color,
+      left,
+      gameSettings.GAME_BOARD_TOP_PX + 70
+    )
+    writeLogin(
+      ctx,
+      playersInfo,
+      null,
+      left + 30,
+      gameSettings.GAME_BOARD_TOP_PX + 100
+    )
+    buttonModal(
+      ctx3,
+      canvas3,
+      'Выбрать',
+      gameSettings.CONTENT_WIDTH_PX,
+      gameSettings.GAME_BOARD_TOP_PX + 40,
+      170,
+      40
+    )
+    if (
+      difficulty != null &&
+      playersInfo.length > 2 &&
+      playersInfo.length <= 7
+    ) {
+      buttonCanvas(
+        ctx3,
+        canvas3,
+        'red',
+        'играть',
+        '#fff',
+        typographySettings.title.offset.left,
+        gameSettings.GAME_BOARD_TOP_PX + 320,
+        170,
+        40,
+        setNextGameStep
+      )
+    }
   }
+  // ---- будет сохраняться в глобальном стейте
+  const startSettingsSave = (team: IPlayerInfo[], difficultyInput: string) => {
+    console.log('teamSave', team)
+    setPlayersInfo(team)
+    setDifficulty(difficultyInput)
+    ClearScreen()
+  }
+  // ===============================
   const stepAssociation = () => {
+    //setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
+    setIsStartGame(true)
     displayContent(gameStep)
   }
   const stepCards = () => {
@@ -142,11 +222,34 @@ export const PageGame = () => {
     )
   }
   const stepFinish = () => {
+    setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
+    setRaundInfo(getApiRaundInfo)
+    setIsStartGame(false)
     writeTitle('Финал')
+    writeLoginFinish(
+      ctx,
+      playersInfo,
+      raundInfo,
+      gameSettings.CANVAS_WIDTH_PX / 2 - 80,
+      gameSettings.GAME_BOARD_TOP_PX
+    )
+    buttonCanvas(
+      ctx3,
+      canvas3,
+      'yellow',
+      'Еще партейку, пожалуй',
+      '#000',
+      gameSettings.CANVAS_WIDTH_PX / 2 - 100,
+      gameSettings.CANVAS_HEIGHT_PX - 200,
+      200,
+      40,
+      ReturnToGame
+    )
   }
   // ===================== Steps ROUTER
   const routerGame = () => {
     console.log('routerGame step', gameStep)
+    ClearScreen()
     setAnimationField(false)
     if (!visibleField) {
       switch (gameStep) {
@@ -172,7 +275,7 @@ export const PageGame = () => {
           stepFinish()
           break
         default:
-          stepStart()
+          setGameStep('start')
       }
     } else {
       gameBoad()
@@ -184,6 +287,9 @@ export const PageGame = () => {
   const ReturnToGame = () => {
     ClearScreen()
     setVisibleField(false)
+    setSelectedCard(null)
+    setRaundInfo(defaultRaundInfo) // обнулить переменные раунда
+    setIsStartGame(false)
   }
 
   function buttonMenu(
@@ -230,6 +336,51 @@ export const PageGame = () => {
       false
     )
   }
+  function buttonModal(
+    ctx: CanvasRenderingContext2D | null,
+    canvas: HTMLCanvasElement | null,
+    str: string,
+    imageX: number,
+    imageY: number,
+    imageWidth: number,
+    imageHeight: number
+  ) {
+    if (!ctx) {
+      return
+    }
+    if (!canvas) {
+      return
+    }
+    ctx.save()
+    ctx.fillStyle = 'blue'
+    ctx.fill(
+      new Path2D(roundedRectPath(imageX, imageY, imageWidth, imageHeight, 10))
+    )
+    ctx.font = `${typographySettings.text.fontSize}px ${typographySettings.text.fontFamily}`
+    //- ---
+    ctx.fillStyle = typographySettings.text.color
+    ctx.textBaseline = 'middle'
+    ctx.textAlign = 'center'
+    ctx.fillText(str, imageX + imageWidth / 2, imageY + imageHeight / 2)
+    ctx.restore()
+    // ---
+    canvas.addEventListener(
+      'click',
+      (event: any) => {
+        const isClickedInsideImage =
+          event.offsetX >= imageX &&
+          event.offsetX <= imageX + imageWidth &&
+          event.offsetY >= imageY &&
+          event.offsetY <= imageY + imageHeight
+
+        if (isClickedInsideImage) {
+          showModal()
+        }
+      },
+      false
+    )
+  }
+
   /*
   useEffect(() => {
     if (isStartGame) {
@@ -244,24 +395,31 @@ export const PageGame = () => {
     if (!visibleField) {
       setAnimationField(false)
     }
-    ClearScreen()
+
     routerGame()
     let str = 'Игровое поле'
     if (visibleField) {
       str = 'Вернуться к игре'
     }
-    buttonMenu(
-      ctx3,
-      canvas3,
-      str,
-      gameSettings.CANVAS_WIDTH_PX - 175,
-      5,
-      170,
-      40
-    )
+    if (isStartGame) {
+      buttonMenu(
+        ctx3,
+        canvas3,
+        str,
+        gameSettings.CANVAS_WIDTH_PX - 175,
+        5,
+        170,
+        40
+      )
+    }
   }, [gameStep, visibleField, isStartGame])
 
   useEffect(() => {
+    routerGame()
+  }, [playersInfo])
+
+  useEffect(() => {
+    console.log('load page default')
     routerGame()
   }, [])
 
@@ -303,7 +461,6 @@ export const PageGame = () => {
             style={{
               border: '1px solid black',
             }}></canvas>
-
           <canvas
             id="canvas2"
             className="layer layer2"
@@ -328,23 +485,25 @@ export const PageGame = () => {
                     <Button onClick={setNextGameStep}>
                       Следующий шаг (для режима разработки)
                     </Button>
-                    <Button
-                      onClick={() => {
-                        setGameStep('results')
-                      }}>
-                      Для проверки: шаг Подведение итогов
-                    </Button>
                   </>
                 )}
               </>
             ) : (
               <Button
                 onClick={() => {
-                  setGameStep('start')
+                  setGameStep('association')
                 }}>
                 Начать игру
               </Button>
             )}
+          </Col>
+          <Col span={8}>
+            <Button
+              onClick={() => {
+                setGameStep('finish')
+              }}>
+              Финиш (тестовый)
+            </Button>
           </Col>
         </Row>
         <Row className="w100 mb-footer">
@@ -363,16 +522,6 @@ export const PageGame = () => {
                 }}>
                 Начать игру
               </Button>
-            )}
-          </Col>
-
-          <Col span={8} offset={8} className="text-right">
-            {visibleField ? (
-              <Button onClick={ReturnToGame}>Вернуться к игре</Button>
-            ) : (
-              <>
-                <Button onClick={gameBoad}>Посмотреть игровое поле</Button>
-              </>
             )}
           </Col>
         </Row>
@@ -397,6 +546,19 @@ export const PageGame = () => {
           </div>
         </Space>
       </div>
+      <Modal
+        title=" "
+        open={isModalOpen}
+        onOk={сloseModal}
+        onCancel={сloseModal}
+        footer={null}>
+        {gameStep == 'start' && (
+          <WgameStepStart
+            сloseModal={сloseModal}
+            startSettingsSave={startSettingsSave}
+          />
+        )}
+      </Modal>
     </>
   )
 }

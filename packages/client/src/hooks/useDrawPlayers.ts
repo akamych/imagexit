@@ -112,7 +112,7 @@ export const UseDrawPlayers: UseDrawPlayers = (
     if (!ctx) {
       return
     }
-    clearCanvas()
+    //clearCanvas()
     setAnimationXY([])
     const { playerJSON, pointsJSON } = getPlayersJSON()
     setPlayers(playerJSON)

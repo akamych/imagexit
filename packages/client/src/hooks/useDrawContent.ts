@@ -4,6 +4,7 @@ type IUseDrawContent = (ctx: CanvasRenderingContext2D | null) => {
   writeTitle: (text: string) => void
   writeTask: (text: string) => void
   writeText: (text: string, offsetTop: number) => void
+  writeSrting: (text: string, color: string, x: number, y: number) => void
   bg_content: () => void
   displayContent: (step: string) => void
 }
@@ -157,6 +158,17 @@ export const UseDrawContent: IUseDrawContent = ctx => {
       textString.fontSize * 1.5
     )
   }
+  const writeSrting = (text: string, color: string, x: number, y: number) => {
+    if (!ctx) {
+      return
+    }
+    ctx.font = `${textString.fontSize}px ${textString.fontFamily}`
+    ctx.fillStyle = textString.color
+    ctx.textBaseline = 'top'
+    ctx.textAlign = 'start'
+
+    wrapText(ctx, text, x, y, textString.width, textString.fontSize * 1.5)
+  }
   // useEffect(() => {}, [])
 
   const displayContent = (step: string) => {
@@ -172,5 +184,6 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     writeTask,
     writeText,
     displayContent,
+    writeSrting,
   }
 }

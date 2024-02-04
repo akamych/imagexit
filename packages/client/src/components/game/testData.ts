@@ -1,18 +1,19 @@
 import { playerColors } from '../../constants/game'
 import { IPlayerInfo, IRaundInfo, IRaundPlayerInfo } from '../../types/game'
 
-export const dataRaundInfoTest = {
-  number: 1,
-  masterUserId: 3,
+export const dataRaundInfoTest: IRaundInfo = {
+  id: 1,
+  masterUserId: '',
   masterAssociation: 'Приятная суета',
   mastercardId: 5,
+  players: [],
 }
 
 /*
  * Метод генерирует рандомное количество игроков и рандомно распределяет их по игровому полю
  * */
 export const getPlayersJSON = () => {
-  const number = 3
+  const number = 7
   const playerJSON = <IPlayerInfo[]>[]
   const points = <IRaundPlayerInfo[]>[]
 
@@ -26,7 +27,7 @@ export const getPlayersJSON = () => {
       userId: 'W3' + i,
       selectedCard: i,
       master: i == 2 ? true : false,
-      pointsOld: 15 + i,
+      pointsOld: 15 - i,
       pointsAdd: i == 2 ? -3 : i + 1,
     }) //  pointsAdd: i == 2 ? -3 : i + 1,
   }
