@@ -31,6 +31,7 @@ export const WLeaderboardTable = (props: ILeaderboardTable) => {
       <Row>
         <Col span={10} offset={7}>
           <Table
+            rowKey="uid"
             dataSource={props.users}
             columns={columns}
             pagination={false}
