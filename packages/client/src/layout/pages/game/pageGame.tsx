@@ -71,10 +71,13 @@ export const PageGame = () => {
     setPlace()
     generatePlayers()
     writeTitle('Игровое поле')
-    /*
-    selectedCard &&
-      drawCard(selectedCard.img, selectedCard.left, selectedCard.top)
-      */
+    writeLogin(
+      ctx,
+      playersInfo,
+      raundInfo,
+      20,
+      gameSettings.GAME_BOARD_TOP_PX + 80
+    )
   }
   const stepStart = () => {
     // обнулить переменные раунда
