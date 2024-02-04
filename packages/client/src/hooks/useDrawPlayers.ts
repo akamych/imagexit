@@ -122,14 +122,18 @@ export const UseDrawPlayers: UseDrawPlayers = (
 
   // функция вычиляет координаты игрока на поле N в зависимости от количества игроков
   function coordinateCalculation(cellNumber: number, indexPlayer: number) {
-    const x =
-      fieldsElement[cellNumber].x +
-      gameSettings.FIELD_HEIGHT_PX / 2 +
-      coordsOnCell[indexPlayer].x
-    const y =
-      fieldsElement[cellNumber].y +
-      gameSettings.FIELD_HEIGHT_PX / 2 +
-      coordsOnCell[indexPlayer].y
+    let x = 0
+    let y = 0
+    if (fieldsElement) {
+      x =
+        fieldsElement[cellNumber].x +
+        gameSettings.FIELD_HEIGHT_PX / 2 +
+        coordsOnCell[indexPlayer].x
+      y =
+        fieldsElement[cellNumber].y +
+        gameSettings.FIELD_HEIGHT_PX / 2 +
+        coordsOnCell[indexPlayer].y
+    }
     return { x, y }
   }
   //function animationOneStep(playerIndex, xy_now, point_way) {}
@@ -259,6 +263,7 @@ export const UseDrawPlayers: UseDrawPlayers = (
         animationFlag = true
       }
       const { x, y } = coordinateCalculation(item.pointsOld, index)
+
       arrayXY.push({
         x: x,
         y: y,
