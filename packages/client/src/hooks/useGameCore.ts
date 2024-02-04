@@ -12,12 +12,33 @@ export const UseGameCore = () => {
   const [fullScreen, setFullScreen] = useState(false)
   const [visibleField, setVisibleField] = useState(false)
   const [animationField, setAnimationField] = useState(false)
-
   const [playersInfo, setPlayersInfo] = useState<IPlayerInfo[]>([]) // информация о игроках
   const [gameStep, setGameStep] = useState('start') // шаг в игре, статус
   const [raundInfo, setRaundInfo] = useState<IRaundInfo>(getApiRaundInfo()) // информация о раунде в игре
 
   const [selectedCard, setSelectedCard] = useState<ICardElement | null>(null)
+
+  // ----------
+  const setNextGameStep = () => {
+    console.log('gameStep', gameStep)
+    if (gameStep == 'results') {
+      setGameStep(stepsInTheGame[1])
+    } else {
+      const stepNow = stepsInTheGame.indexOf(gameStep)
+      console.log('gameStep stepNow', stepNow)
+      setGameStep(stepsInTheGame[stepNow + 1])
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) {
+        setFullScreen(false)
+      } else {
+        setFullScreen(true)
+      }
+    })
+  }, [])
 
   return {
     isStartGame,
@@ -28,5 +49,14 @@ export const UseGameCore = () => {
     animationField,
     setAnimationField,
     setVisibleField,
+    fullScreen,
+    setFullScreen,
+    gameStep,
+    setGameStep,
+    setNextGameStep,
+    setPlayersInfo,
+    playersInfo,
+    raundInfo,
+    setRaundInfo,
   }
 }

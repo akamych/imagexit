@@ -1,5 +1,4 @@
 import { gameContent, gameSettings } from '../constants/game'
-import { IPlayerInfo } from '../types/game'
 
 type IUseDrawContent = (ctx: CanvasRenderingContext2D | null) => {
   writeTitle: (text: string) => void
@@ -45,7 +44,6 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     offset: { left: 50, top: 150 },
     width: 400,
   }
-  // ===========================================
 
   // ===========================================
   // переносить текст

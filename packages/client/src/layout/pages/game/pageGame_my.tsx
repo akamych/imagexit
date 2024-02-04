@@ -1,11 +1,10 @@
-import { Input, Space, Button, Slider, Row, Col } from 'antd'
+import { Input, Space, Button, Row, Col } from 'antd'
 import { UseDrawField } from '../../../hooks/useDrawField'
 import { UseDrawPlayers } from '../../../hooks/useDrawPlayers'
-
 import { UseInitCanvas } from '../../../hooks/useInitCanvas'
 import { UseInitImage } from '../../../hooks/useInitImage'
 import { UseDrawCards } from '../../../hooks/useDrawCards'
-import { UseHandler } from '../../../hooks/useHandler'
+// import { UseHandler } from '../../../hooks/useHandler'
 import { UseGameCore } from '../../../hooks/useGameCore'
 import { useEffect } from 'react'
 import {
@@ -14,8 +13,6 @@ import {
   sliderVertical,
   sliderVerticalContainer,
 } from '../../../assets/pageGameStyle'
-import { UseMusic } from '../../../hooks/useMusic'
-import { musicSettings } from '../../../constants/common'
 import { UseDrawContent } from '../../../hooks/useDrawContent'
 import { getApiPlayersInfo } from '../../../components/game/testData'
 import { roundedRectPath, writeLogin } from '../../../components/game/lib'
@@ -25,10 +22,9 @@ import {
   typographySettings,
 } from '../../../constants/game'
 import './game.css'
-import { FullscreenOutlined } from '@ant-design/icons'
 
 export const PageGame = () => {
-  //const { Title } = Typography
+  // const { Title } = Typography
   // состояния будут перенесены в глобальное хранилице
 
   const {
@@ -37,10 +33,9 @@ export const PageGame = () => {
     setSelectedCard,
     selectedCard,
     visibleField,
-    setVisibleField,
-    fullScreen,
     animationField,
     setAnimationField,
+    setVisibleField,
     gameStep,
     setGameStep,
     setNextGameStep,
@@ -48,26 +43,23 @@ export const PageGame = () => {
     playersInfo,
     raundInfo,
   } = UseGameCore()
-
-  const { playMusic, setPlayMusic, startMusic, stopMusic, setMusicVolume } =
-    UseMusic()
-
-  const { ctx, canvas, clearCanvas, ctx2, clearCanvas2, ctx3, canvas3 } =
+  const { ctx, clearCanvas, ctx2, clearCanvas2, ctx3, canvas3 } =
     UseInitCanvas()
   const { setPlace, fieldsElement } = UseDrawField(ctx)
   const { cardsElement, setCardsElement } = UseInitImage()
+
   const { generatePlayers } = UseDrawPlayers(
     ctx2,
     fieldsElement,
     animationField
   )
-  const { drawCards, animateCards, drawCard } = UseDrawCards(
+  const { drawCard } = UseDrawCards(
     ctx2,
     cardsElement,
     setCardsElement,
     setSelectedCard
   )
-  // const { addClick, removeClick } = UseHandler(canvas)
+  // const { addClick, removeClick } = UseHandler(canvas2)
   const { writeTitle, writeTask, writeText, displayContent } =
     UseDrawContent(ctx)
   //==============
@@ -75,6 +67,7 @@ export const PageGame = () => {
     clearCanvas()
     clearCanvas2()
   }
+
   // ===================== CONTENT
   // Посмотреть игровое поле
   const gameBoad = () => {
@@ -93,12 +86,13 @@ export const PageGame = () => {
   }
   const stepStart = () => {
     // обнулить переменные раунда
-    setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
-    setIsStartGame(true)
     setVisibleField(false)
+    setIsStartGame(true)
     setSelectedCard(null)
     writeTitle(gameContent[gameStep].title)
     writeTask(gameContent[gameStep].task)
+
+    setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
   }
   const stepAssociation = () => {
     displayContent(gameStep)
@@ -151,9 +145,6 @@ export const PageGame = () => {
     setAnimationField(false)
     if (!visibleField) {
       switch (gameStep) {
-        case 'start':
-          stepStart()
-          break
         case 'association':
           stepAssociation()
           break
@@ -231,6 +222,8 @@ export const PageGame = () => {
       false
     )
   }
+
+  // --------------
   /*
   useEffect(() => {
     if (isStartGame) {
@@ -240,13 +233,13 @@ export const PageGame = () => {
     }
   }, [isStartGame])
   */
+
   // -------------- РОУТИНГ
   useEffect(() => {
     if (!visibleField) {
       setAnimationField(false)
     }
     ClearScreen()
-    routerGame()
     let str = 'Игровое поле'
     if (visibleField) {
       str = 'Вернуться к игре'
@@ -260,144 +253,106 @@ export const PageGame = () => {
       170,
       40
     )
-  }, [gameStep, visibleField, isStartGame])
 
-  useEffect(() => {
     routerGame()
-  }, [])
+  }, [gameStep, visibleField])
 
-  const toggleFullScreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen()
-    } else if (document.exitFullscreen) {
-      document.exitFullscreen()
-    }
-  }
-
-  const togglePlayMusic = () => {
-    setPlayMusic(prev => !prev)
-    if (playMusic) {
-      stopMusic()
-    } else {
-      startMusic()
-    }
-  }
-
+  // --------------
   return (
-    <>
-      <div className="content">
-        {/*<Title>Cтраница игры</Title>*/}
-        <Space style={inputContainer}>
-          {selectedCard && <Input placeholder="Напишите ассоциацию" />}
-        </Space>
-        <div
-          className="layers"
+    <div className="content">
+      {/*<Title>Cтраница игры</Title>*/}
+      <Space style={inputContainer}>
+        {selectedCard && <Input placeholder="Напишите ассоциацию" />}
+      </Space>
+      <div
+        className="layers"
+        style={{
+          width: gameSettings.CANVAS_WIDTH_PX,
+          height: gameSettings.CANVAS_HEIGHT_PX,
+        }}>
+        <canvas
+          id="canvas"
+          className="layer"
+          width={gameSettings.CANVAS_WIDTH_PX}
+          height={gameSettings.CANVAS_HEIGHT_PX}
           style={{
-            width: gameSettings.CANVAS_WIDTH_PX,
-            height: gameSettings.CANVAS_HEIGHT_PX,
-          }}>
-          <canvas
-            id="canvas"
-            className="layer"
-            width={gameSettings.CANVAS_WIDTH_PX}
-            height={gameSettings.CANVAS_HEIGHT_PX}
-            style={{
-              border: '1px solid black',
-            }}></canvas>
+            border: '1px solid black',
+          }}></canvas>
 
-          <canvas
-            id="canvas2"
-            className="layer layer2"
-            width={gameSettings.CANVAS_WIDTH_PX}
-            height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
-          <canvas
-            id="canvas3"
-            className="layer layer3"
-            width={gameSettings.CANVAS_WIDTH_PX}
-            height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
-        </div>
-        <Row className="w100">
-          <Col span={8} offset={8}>
-            {isStartGame ? (
-              <>
-                {visibleField ? (
-                  <Button onClick={ReturnToGame} className="success">
-                    Вернуться к игре
-                  </Button>
-                ) : (
-                  <>
-                    <Button onClick={setNextGameStep}>
-                      Следующий шаг (для режима разработки)
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        setGameStep('results')
-                      }}>
-                      Для проверки: шаг Подведение итогов
-                    </Button>
-                  </>
-                )}
-              </>
-            ) : (
-              <Button
-                onClick={() => {
-                  setGameStep('start')
-                }}>
-                Начать игру
-              </Button>
-            )}
-          </Col>
-        </Row>
-        <Row className="w100 mb-footer">
-          <Col span={8} className="text-left">
-            {isStartGame ? (
-              <Button
-                onClick={() => {
-                  setGameStep('start')
-                }}>
-                Перезапустить игру
-              </Button>
-            ) : (
-              <Button
-                onClick={() => {
-                  setGameStep('start')
-                }}>
-                Начать игру
-              </Button>
-            )}
-          </Col>
-
-          <Col span={8} offset={8} className="text-right">
-            {visibleField ? (
-              <Button onClick={ReturnToGame}>Вернуться к игре</Button>
-            ) : (
-              <>
-                <Button onClick={gameBoad}>Посмотреть игровое поле</Button>
-              </>
-            )}
-          </Col>
-        </Row>
-        <Space style={actionContainer}>
-          <Button onClick={toggleFullScreen}>
-            <FullscreenOutlined />
-            {fullScreen ? <>Закрыть</> : <>Открыть</>} &nbsp;полноэкранный режим
-          </Button>
-          <div style={sliderVerticalContainer}>
-            <Button onClick={togglePlayMusic}>
-              {playMusic ? <>Выключить</> : <>Включить</>} &nbsp; музыку
-            </Button>
-            {playMusic && (
-              <div style={sliderVertical}>
-                <Slider
-                  vertical
-                  defaultValue={musicSettings.MUSIC_INIT_VOLUME}
-                  onChange={setMusicVolume}
-                />
-              </div>
-            )}
-          </div>
-        </Space>
+        <canvas
+          id="canvas2"
+          className="layer layer2"
+          width={gameSettings.CANVAS_WIDTH_PX}
+          height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
+        <canvas
+          id="canvas3"
+          className="layer layer3"
+          width={gameSettings.CANVAS_WIDTH_PX}
+          height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
       </div>
-    </>
+
+      <Row className="w100">
+        <Col span={8} offset={8}>
+          {isStartGame ? (
+            <>
+              {visibleField ? (
+                <Button onClick={ReturnToGame} className="success">
+                  Вернуться к игре
+                </Button>
+              ) : (
+                <>
+                  <Button onClick={setNextGameStep}>
+                    Следующий шаг (для режима разработки)
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setGameStep('results')
+                    }}>
+                    Для проверки: шаг Подведение итогов
+                  </Button>
+                </>
+              )}
+            </>
+          ) : (
+            <Button
+              onClick={() => {
+                setGameStep('start')
+              }}>
+              Начать игру
+            </Button>
+          )}
+        </Col>
+      </Row>
+
+      <Row className="w100 mb-footer">
+        <Col span={8} className="text-left">
+          {isStartGame ? (
+            <Button
+              onClick={() => {
+                setGameStep('start')
+              }}>
+              Перезапустить игру
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                setGameStep('start')
+              }}>
+              Начать игру
+            </Button>
+          )}
+        </Col>
+
+        <Col span={8} offset={8} className="text-right">
+          {visibleField ? (
+            <Button onClick={ReturnToGame}>Вернуться к игре</Button>
+          ) : (
+            <>
+              <Button onClick={gameBoad}>Посмотреть игровое поле</Button>
+            </>
+          )}
+        </Col>
+      </Row>
+    </div>
   )
 }
