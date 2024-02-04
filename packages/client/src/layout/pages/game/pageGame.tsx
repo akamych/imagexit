@@ -1,11 +1,10 @@
 import { Input, Space, Button, Slider, Row, Col } from 'antd'
 import { UseDrawField } from '../../../hooks/useDrawField'
 import { UseDrawPlayers } from '../../../hooks/useDrawPlayers'
-
 import { UseInitCanvas } from '../../../hooks/useInitCanvas'
 import { UseInitImage } from '../../../hooks/useInitImage'
 import { UseDrawCards } from '../../../hooks/useDrawCards'
-import { UseHandler } from '../../../hooks/useHandler'
+// import { UseHandler } from '../../../hooks/useHandler'
 import { UseGameCore } from '../../../hooks/useGameCore'
 import { useEffect } from 'react'
 import {
@@ -52,7 +51,7 @@ export const PageGame = () => {
   const { playMusic, setPlayMusic, startMusic, stopMusic, setMusicVolume } =
     UseMusic()
 
-  const { ctx, canvas, clearCanvas, ctx2, clearCanvas2, ctx3, canvas3 } =
+  const { ctx, clearCanvas, ctx2, clearCanvas2, ctx3, canvas3 } =
     UseInitCanvas()
   const { setPlace, fieldsElement } = UseDrawField(ctx)
   const { cardsElement, setCardsElement } = UseInitImage()
@@ -61,7 +60,7 @@ export const PageGame = () => {
     fieldsElement,
     animationField
   )
-  const { drawCards, animateCards, drawCard } = UseDrawCards(
+  const { drawCard } = UseDrawCards(
     ctx2,
     cardsElement,
     setCardsElement,
@@ -379,7 +378,7 @@ export const PageGame = () => {
         </Row>
         <Space style={actionContainer}>
           <Button onClick={toggleFullScreen}>
-            <FullscreenOutlined />
+            <FullscreenOutlined rev={undefined} />
             {fullScreen ? <>Закрыть</> : <>Открыть</>} &nbsp;полноэкранный режим
           </Button>
           <div style={sliderVerticalContainer}>
