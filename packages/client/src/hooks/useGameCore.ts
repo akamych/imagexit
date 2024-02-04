@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ICardElement, IPlayerInfo, IRaundInfo } from '../types/game'
 import { stepsInTheGame } from '../constants/game'
 import { getApiRaundInfo } from '../components/game/testData'
@@ -9,6 +9,7 @@ import { getApiRaundInfo } from '../components/game/testData'
  * */
 export const UseGameCore = () => {
   const [isStartGame, setIsStartGame] = useState(false)
+  const [fullScreen, setFullScreen] = useState(false)
   const [visibleField, setVisibleField] = useState(false)
   const [animationField, setAnimationField] = useState(false)
 
@@ -17,18 +18,6 @@ export const UseGameCore = () => {
   const [raundInfo, setRaundInfo] = useState<IRaundInfo>(getApiRaundInfo()) // информация о раунде в игре
 
   const [selectedCard, setSelectedCard] = useState<ICardElement | null>(null)
-
-  // ----------
-  const setNextGameStep = () => {
-    console.log('gameStep', gameStep)
-    if (gameStep == 'results') {
-      setGameStep(stepsInTheGame[1])
-    } else {
-      const stepNow = stepsInTheGame.indexOf(gameStep)
-      console.log('gameStep stepNow', stepNow)
-      setGameStep(stepsInTheGame[stepNow + 1])
-    }
-  }
 
   return {
     isStartGame,
@@ -39,12 +28,5 @@ export const UseGameCore = () => {
     animationField,
     setAnimationField,
     setVisibleField,
-    gameStep,
-    setGameStep,
-    setNextGameStep,
-    raundInfo,
-    setRaundInfo,
-    playersInfo,
-    setPlayersInfo,
   }
 }
