@@ -5,7 +5,7 @@ import styles from './styles.module.css'
 export const PageMain = () => {
   return (
     <div className={styles.content}>
-      <img src="https://playimaginarium.cosmodrome.games/_nuxt/img/logo.ce33400.png" />
+      <img src="/assets/images/logo.png" />
       <h1>
         Онлайн версия популярной настольной игры.
         <br />
