@@ -6,7 +6,7 @@ import { UseInitImage } from '../../../hooks/useInitImage'
 import { UseDrawCards } from '../../../hooks/useDrawCards'
 // import { UseHandler } from '../../../hooks/useHandler'
 import { UseGameCore } from '../../../hooks/useGameCore'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   inputContainer,
   actionContainer,

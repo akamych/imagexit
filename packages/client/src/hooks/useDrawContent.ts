@@ -146,12 +146,19 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     if (!ctx) {
       return
     }
-    ctx.font = `${textString.fontSize}px ${textString.fontFamily}`
-    ctx.fillStyle = textString.color
+    ctx.font = `${typographySettings.textString.fontSize}px ${typographySettings.textString.fontFamily}`
+    ctx.fillStyle = typographySettings.textString.color
     ctx.textBaseline = 'top'
     ctx.textAlign = 'start'
 
-    wrapText(ctx, text, x, y, textString.width, textString.fontSize * 1.5)
+    wrapText(
+      ctx,
+      text,
+      x,
+      y,
+      typographySettings.textString.width,
+      typographySettings.textString.fontSize * 1.5
+    )
   }
 
   const displayContent = (step: string) => {
