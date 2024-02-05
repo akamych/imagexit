@@ -123,4 +123,11 @@ export const typographySettings = {
     fontFamily: 'Arial',
     color: '#dedede',
   },
+  textString: {
+    fontSize: 14,
+    fontFamily: 'Arial',
+    color: '#fff',
+    offset: { left: 50, top: 150 },
+    width: 400,
+  },
 }
