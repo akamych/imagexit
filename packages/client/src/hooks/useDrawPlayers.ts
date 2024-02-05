@@ -28,7 +28,7 @@ type UseDrawPlayers = (
  * @param goToCell - к какой ячейке сейчас движется. По умолчанию - стартовая
  * @param pointFinish - номер финальной ячейки на игровом поле
  */
-type IanimationXYnow = {
+type IAnimationXYNow = {
   x: number
   y: number
   color: string
@@ -102,10 +102,10 @@ export const UseDrawPlayers: UseDrawPlayers = (
   const [players, setPlayers] = useState<IPlayerInfo[]>([]) // информация о игроках: логин и пр
   const [points, setPoints] = useState<IRaundInfo>(defaultIPlayersPoint) // баллы игроков за ход
   /** Массив с координатами и коофициентами где сейчас находится фишка, из какой точки движется, в какую точку движется */
-  const [animationXY, setAnimationXY] = useState<IanimationXYnow[]>([])
-  const updateAnimationXY = (index: number, newItem: any) => {
+  const [animationXY, setAnimationXY] = useState<IAnimationXYNow[]>([])
+  const updateAnimationXY = (index: number, newItem: IAnimationXYNow) => {
     setAnimationXY(prevItems => {
-      const newItems = [...prevItems] // Создаем копию массива
+      const newItems: IAnimationXYNow[] = [...prevItems] // Создаем копию массива
       newItems[index] = newItem // Меняем элемент в заданном индексе
       return newItems // Возвращаем новый массив
     })
@@ -253,7 +253,7 @@ export const UseDrawPlayers: UseDrawPlayers = (
   useEffect(() => {
     let animationFlag = false
     /** массив начальных положений фишек */
-    const arrayXY: IanimationXYnow[] = []
+    const arrayXY: IAnimationXYNow[] = []
     points.players.forEach((item, index) => {
       if (item.pointsAdd != 0) {
         animationFlag = true
