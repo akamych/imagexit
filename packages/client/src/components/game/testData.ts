@@ -12,7 +12,7 @@ export const dataRaundInfoTest = {
  * Метод генерирует рандомное количество игроков и рандомно распределяет их по игровому полю
  * */
 export const getPlayersJSON = () => {
-  const number = 3
+  const number = 7
   const playerJSON = <IPlayerInfo[]>[]
   const points = <IRaundPlayerInfo[]>[]
 
@@ -26,7 +26,7 @@ export const getPlayersJSON = () => {
       userId: 'W3' + i,
       selectedCard: i,
       master: i == 2 ? true : false,
-      pointsOld: 15 + i,
+      pointsOld: 15,
       pointsAdd: i == 2 ? -3 : i + 1,
     }) //  pointsAdd: i == 2 ? -3 : i + 1,
   }
