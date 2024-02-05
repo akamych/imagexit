@@ -1,4 +1,8 @@
-import { gameContent, gameSettings } from '../constants/game'
+import {
+  gameContent,
+  gameSettings,
+  typographySettings,
+} from '../constants/game'
 
 type IUseDrawContent = (ctx: CanvasRenderingContext2D | null) => {
   writeTitle: (text: string) => void
@@ -8,45 +12,22 @@ type IUseDrawContent = (ctx: CanvasRenderingContext2D | null) => {
   displayContent: (step: string) => void
 }
 
-/*
- * хук нужен для отрисовки заголовков и текстов
- *
- *
- * */
+/**
+ * Хук нужен для отрисовки заголовков и текстов
+ * @param ctx - canvas
+ * @returns функции bg_content, writeTitle, writeTask, writeText, displayContent
+ */
 export const UseDrawContent: IUseDrawContent = ctx => {
-  // ======================= Параметры и координаты объектов на странице
-  // color: '#676a6c',
-  // --- ход
-  const raund = {
-    fontSize: 22,
-    fontFamily: 'Arial',
-    color: '#fff',
-    offset: { left: 10, top: 10 },
-  }
-  const title = {
-    fontSize: 22,
-    fontFamily: 'Arial',
-    color: '#fff',
-    offset: { left: gameSettings.CONTENT_WIDTH_PX / 2, top: 10 },
-  }
-  // --- ход
-  const task = {
-    fontSize: 16,
-    fontFamily: 'Arial',
-    color: '#fff',
-    offset: { left: 50, top: 50 },
-    width: 400,
-  }
-  const textString = {
-    fontSize: 14,
-    fontFamily: 'Arial',
-    color: '#fff',
-    offset: { left: 50, top: 150 },
-    width: 400,
-  }
-
-  // ===========================================
-  // переносить текст
+  /**
+   * Функция печатает текст с переносом слов в указанном диапазоне координат
+   * @param ctx - canvas
+   * @param text - текст для вывода
+   * @param marginLeft - отступ слева от края canvas
+   * @param marginTop - отступ сверху от края canvas
+   * @param maxWidth - максимальная ширина текста
+   * @param lineHeight - высота строки
+   * @returns
+   */
   function wrapText(
     ctx: CanvasRenderingContext2D | null,
     text: string,
@@ -74,9 +55,7 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     }
     ctx.fillText(line, marginLeft, marginTop)
   }
-  /*
-   * Отрисовка фона
-   */
+  /** Отрисовка фона */
   const bg_content = () => {
     if (!ctx) {
       return
@@ -89,76 +68,80 @@ export const UseDrawContent: IUseDrawContent = ctx => {
       gameSettings.CONTENT_HEIGHT_PX
     )
   }
-  // информация о номере Раунда в игре
+
+  /**
+   * Выводит информацию о номере Раунда в игре
+   * @param roundNumber
+   * @returns
+   */
   const writeRaundNumber = (roundNumber: number) => {
     if (!ctx) {
       return
     }
-    ctx.font = `${title.fontSize}px ${title.fontFamily}`
-    ctx.fillStyle = title.color
+    ctx.font = `${typographySettings.title.fontSize}px ${typographySettings.title.fontFamily}`
+    ctx.fillStyle = typographySettings.title.color
     ctx.textBaseline = 'top'
     ctx.textAlign = 'start'
     ctx.fillText(
       'Раунд ' + String(roundNumber),
-      raund.offset.left,
-      raund.offset.top
+      typographySettings.raund.offset.left,
+      typographySettings.raund.offset.top
     )
   }
-  /*
-   * Отрисовка одной карточки с заданым положением
-   */
+  /** Отрисовка Заголовка. Координаты и настройки прописаны в константах */
   const writeTitle = (text: string) => {
     if (!ctx) {
       return
     }
-    ctx.font = `${title.fontSize}px ${title.fontFamily}`
-    ctx.fillStyle = title.color
+    ctx.font = `${typographySettings.title.fontSize}px ${typographySettings.title.fontFamily}`
+    ctx.fillStyle = typographySettings.title.color
     ctx.textBaseline = 'top'
     ctx.textAlign = 'center'
     ctx.fillText(
       text,
-      gameSettings.CONTENT_LEFT_PX + title.offset.left,
-      gameSettings.CONTENT_TOP_PX + title.offset.top
+      gameSettings.CONTENT_LEFT_PX + typographySettings.title.offset.left,
+      gameSettings.CONTENT_TOP_PX + typographySettings.title.offset.top
     )
   }
+  /** Отрисовка Задания. Координаты и настройки прописаны в константах */
   const writeTask = (text: string) => {
     if (!ctx) {
       return
     }
-    ctx.font = `${task.fontSize}px ${task.fontFamily}`
-    ctx.fillStyle = task.color
+    ctx.font = `${typographySettings.task.fontSize}px ${typographySettings.task.fontFamily}`
+    ctx.fillStyle = typographySettings.task.color
     ctx.textBaseline = 'top'
     ctx.textAlign = 'start'
 
     wrapText(
       ctx,
       text,
-      gameSettings.CONTENT_LEFT_PX + task.offset.left,
-      gameSettings.CONTENT_TOP_PX + task.offset.top,
-      task.width,
-      task.fontSize * 1.5
+      gameSettings.CONTENT_LEFT_PX + typographySettings.task.offset.left,
+      gameSettings.CONTENT_TOP_PX + typographySettings.task.offset.top,
+      typographySettings.task.width,
+      typographySettings.task.fontSize * 1.5
     )
   }
+  /** Отрисовка текста. Координаты и настройки прописаны в константах */
   const writeText = (text: string, offsetTop: number) => {
     if (!ctx) {
       return
     }
-    ctx.font = `${textString.fontSize}px ${textString.fontFamily}`
-    ctx.fillStyle = textString.color
+    ctx.font = `${typographySettings.textString.fontSize}px ${typographySettings.textString.fontFamily}`
+    ctx.fillStyle = typographySettings.textString.color
     ctx.textBaseline = 'top'
     ctx.textAlign = 'start'
 
     wrapText(
       ctx,
       text,
-      gameSettings.CONTENT_LEFT_PX + textString.offset.left,
+      gameSettings.CONTENT_LEFT_PX + typographySettings.textString.offset.left,
       gameSettings.CONTENT_TOP_PX + offsetTop,
-      textString.width,
-      textString.fontSize * 1.5
+      typographySettings.textString.width,
+      typographySettings.textString.fontSize * 1.5
     )
   }
-  // useEffect(() => {}, [])
-
+  /** Отрисовка заголовка, задания и текста для хода.*/
   const displayContent = (step: string) => {
     writeRaundNumber(3)
     // bg_content()
