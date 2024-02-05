@@ -14,11 +14,7 @@ describe('UseDrawPlayers hook', () => {
       drawImage: jest.fn(),
       fillRect: jest.fn(),
     } as unknown as CanvasRenderingContext2D
-    /*
-    cardsElement = [
-      { id: 1, img: new Image(), left: 0, top: 0, width: 100, height: 100 },
-    ]
-    */
+
     fieldsElement = [{ x: 0, y: 0 }]
     animationField = true
 

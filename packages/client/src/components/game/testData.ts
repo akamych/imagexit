@@ -27,7 +27,7 @@ export const getPlayersJSON = () => {
       userId: 'W3' + i,
       selectedCard: i,
       master: i == 2 ? true : false,
-      pointsOld: 15 - i,
+      pointsOld: 15 + i,
       pointsAdd: i == 2 ? -3 : i + 1,
     }) //  pointsAdd: i == 2 ? -3 : i + 1,
   }
