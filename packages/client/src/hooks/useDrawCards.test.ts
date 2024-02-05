@@ -37,7 +37,8 @@ describe('UseDrawCards hook', () => {
   it('Анимация карточек отрабатывает', () => {
     result.current.animateCards(50, 50)
   })
-
+  /*
+тест не актуален. На данный момент этот функционал отключен. Метод реализации будет переделан
   it('После обновления данных в cardsElement происходит рендер', () => {
     const { rerender } = renderHook(
       ({ cards }) => UseDrawCards(ctx, cards, setCardsElement, setSelectedCard),
@@ -55,4 +56,5 @@ describe('UseDrawCards hook', () => {
     expect(ctx.drawImage).toHaveBeenCalled()
     expect(setCardsElement).toHaveBeenCalled()
   })
+  */
 })
