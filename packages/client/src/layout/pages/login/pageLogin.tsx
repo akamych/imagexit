@@ -1,6 +1,7 @@
 import { Typography, Button, Checkbox, Form, Input } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { NavLink } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import './pageLogin.css'
 import {
   validateLoginCharacters,
@@ -8,12 +9,18 @@ import {
   validateContainsCapitalLetter,
   validateContainsNumber,
 } from '../../../utils/InputUtil'
+import { selectError } from '../../../store/reducers/AuthReducer'
+import { AppDispatch } from '../../../store/Store'
+import { loginAction } from '../../../store/actions/AuthActions'
+import { LoginDto } from '../../../types/store'
 
 export const PageLogin = () => {
   const { Title } = Typography
-
-  const onFinish = (values: unknown) => {
-    console.log('Ждёт реализации Апи', values)
+  const dispatch: AppDispatch = useDispatch<AppDispatch>()
+  const authError = useSelector(selectError)
+  const onFinish = (values: LoginDto) => {
+    const { login, password } = values
+    dispatch(loginAction({ login, password }))
   }
 
   return (
@@ -27,7 +34,7 @@ export const PageLogin = () => {
         }}
         onFinish={onFinish}>
         <Form.Item
-          name="username"
+          name="login"
           rules={[
             {
               required: true,
@@ -99,6 +106,8 @@ export const PageLogin = () => {
             создать аккаунт
           </NavLink>
         </Form.Item>
+
+        {authError && <p>{authError}</p>}
       </Form>
     </>
   )
