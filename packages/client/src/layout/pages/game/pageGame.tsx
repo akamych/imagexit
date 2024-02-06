@@ -4,7 +4,7 @@ import { UseDrawPlayers } from '../../../hooks/useDrawPlayers'
 import { UseInitCanvas } from '../../../hooks/useInitCanvas'
 import { UseInitImage } from '../../../hooks/useInitImage'
 import { UseDrawCards } from '../../../hooks/useDrawCards'
-// import { UseHandler } from '../../../hooks/useHandler'
+import { UseHandler } from '../../../hooks/useHandler'
 import { UseGameCore } from '../../../hooks/useGameCore'
 import { useEffect, useState } from 'react'
 import {
@@ -19,6 +19,7 @@ import { UseDrawContent } from '../../../hooks/useDrawContent'
 import {
   getApiPlayersInfo,
   getApiRaundInfo,
+  getPlayersJSON,
 } from '../../../components/game/testData'
 import {
   buttonCanvas,
@@ -73,13 +74,14 @@ export const PageGame = () => {
     fieldsElement,
     animationField
   )
-  const { drawCard } = UseDrawCards(
-    ctx2,
+  const { drawCards, animateCards, drawCard } = UseDrawCards(
+    ctx3,
     cardsElement,
     setCardsElement,
-    setSelectedCard
+    setSelectedCard,
+    gameStep
   )
-  // const { addClick, removeClick } = UseHandler(canvas)
+  const { addClick, removeClick } = UseHandler(canvas3)
   const { writeTitle, writeTask, writeText, writeSrting, displayContent } =
     UseDrawContent(ctx)
   // ==============
@@ -107,10 +109,11 @@ export const PageGame = () => {
     setPlace()
     generatePlayers()
     writeTitle('Игровое поле')
+    const { playerJSON, pointsJSON } = getPlayersJSON() // тестовые данные
     writeLogin(
       ctx,
-      playersInfo,
-      raundInfo,
+      playerJSON,
+      pointsJSON,
       20,
       gameSettings.GAME_BOARD_TOP_PX + 80
     )
@@ -178,15 +181,28 @@ export const PageGame = () => {
   }
   // ===============================
   const stepAssociation = () => {
-    //setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
+    // тестовые данные
+    // const { playerJSON, pointsJSON } = getPlayersJSON()
+    // setPlayersInfo(playerJSON)
+    // setRaundInfo(pointsJSON)
+
+    // setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
     setIsStartGame(true)
     displayContent(gameStep)
   }
   const stepCards = () => {
     displayContent(gameStep)
+    drawCards()
   }
   const stepVoting = () => {
     displayContent(gameStep)
+    drawCards()
+    //addClick(animateCards)
+    /*
+    cardsElement.forEach(card => {
+       drawCard(card.img, card.left, card.top)
+    })
+    */
   }
   const stepScoring = () => {
     displayContent(gameStep)
@@ -212,16 +228,17 @@ export const PageGame = () => {
     displayContent(gameStep)
     writeTitle(gameContent[gameStep].title)
     writeTask(gameContent[gameStep].task)
-
+    const { playerJSON, pointsJSON } = getPlayersJSON() // тестовые данные
     writeLogin(
       ctx,
-      playersInfo,
-      raundInfo,
+      playerJSON,
+      pointsJSON,
       20,
       gameSettings.GAME_BOARD_TOP_PX + 80
     )
   }
   const stepFinish = () => {
+    setAnimationField(false)
     setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
     setRaundInfo(getApiRaundInfo)
     setIsStartGame(false)
@@ -381,15 +398,10 @@ export const PageGame = () => {
     )
   }
 
-  /*
+  /** Вешаем слушатель события на карточки  */
   useEffect(() => {
-    if (isStartGame) {
-      addClick(animateCards)
-    } else {
-      removeClick(animateCards)
-    }
-  }, [isStartGame])
-  */
+    addClick(animateCards)
+  }, [cardsElement])
   // -------------- РОУТИНГ
   useEffect(() => {
     if (!visibleField) {
@@ -445,8 +457,34 @@ export const PageGame = () => {
       <div className="content">
         {/*<Title>Cтраница игры</Title>*/}
         <Space style={inputContainer}>
-          {selectedCard && <Input placeholder="Напишите ассоциацию" />}
+          {gameStep == 'association' && (
+            <Input placeholder="Напишите ассоциацию" />
+          )}
         </Space>
+
+        <Row className="w100">
+          <Col span={8} offset={12}>
+            <Button type="primary" onClick={toggleFullScreen}>
+              <FullscreenOutlined rev={undefined} />
+              {fullScreen ? <>Закрыть</> : <>Открыть</>} &nbsp;полноэкранный
+              режим
+            </Button>
+          </Col>
+          <Col span={3}>
+            <Button type="primary" onClick={togglePlayMusic}>
+              {playMusic ? <>Выключить</> : <>Включить</>} &nbsp; музыку
+            </Button>
+            {playMusic && (
+              <div style={sliderVertical}>
+                <Slider
+                  vertical
+                  defaultValue={musicSettings.MUSIC_INIT_VOLUME}
+                  onChange={setMusicVolume}
+                />
+              </div>
+            )}
+          </Col>
+        </Row>
         <div
           className="layers"
           style={{
@@ -459,7 +497,8 @@ export const PageGame = () => {
             width={gameSettings.CANVAS_WIDTH_PX}
             height={gameSettings.CANVAS_HEIGHT_PX}
             style={{
-              border: '1px solid black',
+              border: '1px solid rgba(255,255,255,0.4)',
+              backgroundColor: 'rgba(255,255,255,0.1)',
             }}></canvas>
           <canvas
             id="canvas2"
@@ -473,16 +512,32 @@ export const PageGame = () => {
             height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
         </div>
         <Row className="w100">
-          <Col span={8} offset={8}>
+          <Col span={8} className="text-left">
+            {isStartGame ? (
+              <Button
+                type="primary"
+                onClick={() => {
+                  setGameStep('start')
+                }}>
+                Перезапустить игру
+              </Button>
+            ) : (
+              <></>
+            )}
+          </Col>
+          <Col span={8}>
             {isStartGame ? (
               <>
                 {visibleField ? (
-                  <Button onClick={ReturnToGame} className="success">
+                  <Button
+                    type="primary"
+                    onClick={ReturnToGame}
+                    className="success">
                     Вернуться к игре
                   </Button>
                 ) : (
                   <>
-                    <Button onClick={setNextGameStep}>
+                    <Button type="primary" onClick={setNextGameStep}>
                       Следующий шаг (для режима разработки)
                     </Button>
                   </>
@@ -490,6 +545,7 @@ export const PageGame = () => {
               </>
             ) : (
               <Button
+                type="primary"
                 onClick={() => {
                   setGameStep('association')
                 }}>
@@ -499,6 +555,7 @@ export const PageGame = () => {
           </Col>
           <Col span={8}>
             <Button
+              type="primary"
               onClick={() => {
                 setGameStep('finish')
               }}>
@@ -506,45 +563,7 @@ export const PageGame = () => {
             </Button>
           </Col>
         </Row>
-        <Row className="w100 mb-footer">
-          <Col span={8} className="text-left">
-            {isStartGame ? (
-              <Button
-                onClick={() => {
-                  setGameStep('start')
-                }}>
-                Перезапустить игру
-              </Button>
-            ) : (
-              <Button
-                onClick={() => {
-                  setGameStep('start')
-                }}>
-                Начать игру
-              </Button>
-            )}
-          </Col>
-        </Row>
-        <Space style={actionContainer}>
-          <Button onClick={toggleFullScreen}>
-            <FullscreenOutlined rev={undefined} />
-            {fullScreen ? <>Закрыть</> : <>Открыть</>} &nbsp;полноэкранный режим
-          </Button>
-          <div style={sliderVerticalContainer}>
-            <Button onClick={togglePlayMusic}>
-              {playMusic ? <>Выключить</> : <>Включить</>} &nbsp; музыку
-            </Button>
-            {playMusic && (
-              <div style={sliderVertical}>
-                <Slider
-                  vertical
-                  defaultValue={musicSettings.MUSIC_INIT_VOLUME}
-                  onChange={setMusicVolume}
-                />
-              </div>
-            )}
-          </div>
-        </Space>
+        <Row className="w100 mb-footer"></Row>
       </div>
       <Modal
         title=" "

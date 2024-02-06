@@ -15,7 +15,7 @@
 
 .layers {
   position: relative;
-  margin-top: 50px;
+  margin-top: 0px;
 
   & .layer {
     position: absolute;
