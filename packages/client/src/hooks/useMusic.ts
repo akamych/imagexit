@@ -10,7 +10,7 @@ export const UseMusic = () => {
   }, [])
 
   const [source, setSource] = useState(audioContext.createBufferSource())
-  const gainNode = useMemo(() => audioContext.createGain(), []) // Create a GainNode for volume control
+  const gainNode = useMemo(() => audioContext.createGain(), [])
 
   const startMusic = async () => {
     const newSource = audioContext.createBufferSource()
