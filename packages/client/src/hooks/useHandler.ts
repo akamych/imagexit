@@ -26,7 +26,6 @@ export const UseHandler: UseHandler = elem => {
       const x = event.clientX - elemRect.left
       const y = event.clientY - elemRect.top
 
-      console.log('handlerClick elem', x, y)
       ref.current && ref.current(x, y)
       removeClick()
     },

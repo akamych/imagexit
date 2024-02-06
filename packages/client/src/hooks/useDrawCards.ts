@@ -90,8 +90,6 @@ export const UseDrawCards: UseDrawCards = (
    * */
   const animateCards = (x: number, y: number) => {
     cards.forEach(function (element) {
-      console.log('animateCards search', element)
-
       if (
         y > element.top &&
         y < element.top + element.height &&
@@ -99,7 +97,7 @@ export const UseDrawCards: UseDrawCards = (
         x < element.left + element.width
       ) {
         setSelectedCard(element)
-        console.log('animateCards setSelectedCard', element)
+
         let animationX = element.left
         let animationY = element.top
         const intervalX = setInterval(() => {
@@ -152,7 +150,6 @@ export const UseDrawCards: UseDrawCards = (
         drawCard(card.img, card.left, card.top)
       })
     }
-    //console.log('useEffect cardsElement', cardsElement)
   }, [cards, gameStep])
 
   return {
