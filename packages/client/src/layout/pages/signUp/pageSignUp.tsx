@@ -1,3 +1,5 @@
+import { AppDispatch } from '../../../store/Store'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   validateLoginCharacters,
   validateNotOnlyNumbers,
@@ -9,6 +11,9 @@ import {
 } from '../../../utils/InputUtil'
 import './pageSignUp.css'
 import { Typography, Button, Form, Input, Select } from 'antd'
+import { selectError } from '../../../store/reducers/AuthReducer'
+import { SignUpDto } from '../../../types/store'
+import { signupAction } from '../../../store/actions/AuthActions'
 
 const formItemLayout = {
   labelCol: {
@@ -38,9 +43,21 @@ export const PageSignUp = () => {
   const { Title } = Typography
   const { Option } = Select
   const [form] = Form.useForm()
+  const dispatch: AppDispatch = useDispatch<AppDispatch>()
+  const authError = useSelector(selectError)
 
-  const onFinish = (values: unknown) => {
-    console.log('Ждём реализации апи: ', values)
+  const onFinish = (values: SignUpDto) => {
+    const { first_name, second_name, login, email, password, phone } = values
+    dispatch(
+      signupAction({
+        first_name,
+        second_name,
+        login,
+        email,
+        password,
+        phone,
+      })
+    )
   }
 
   const prefixSelector = (
@@ -209,6 +226,7 @@ export const PageSignUp = () => {
             Создать аккаунт
           </Button>
         </Form.Item>
+        {authError && <p>{authError}</p>}
       </Form>
     </>
   )
