@@ -1,5 +1,6 @@
 import React, { useState, useEffect, ReactNode } from 'react'
 import { Typography } from 'antd'
+import './errorBoundary.css'
 
 interface ErrorBoundaryProps {
   children: ReactNode
@@ -8,7 +9,7 @@ interface ErrorBoundaryProps {
 export const FallbackUI: React.FC = () => {
   const { Title } = Typography
   return (
-    <div>
+    <div className="error-boundary">
       <Title>Что-то пошло не так</Title>
       <Title>¯\_(ツ)_/¯</Title>
     </div>
