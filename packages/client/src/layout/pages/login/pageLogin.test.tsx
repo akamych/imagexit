@@ -4,6 +4,10 @@ import { BrowserRouter } from 'react-router-dom' // Импортируйте Bro
 import { create } from 'match-media-mock'
 import { PageLogin } from './pageLogin'
 
+jest.mock('react-redux', () => ({
+  useSelector: jest.fn(),
+  useDispatch: jest.fn(),
+}))
 describe('PageLogin component', () => {
   beforeEach(() => {
     window.matchMedia = create()
@@ -36,7 +40,7 @@ describe('PageLogin component', () => {
       </BrowserRouter>
     )
 
-    expect(container.querySelector('#normal_login_username')).not.toBeNull()
+    expect(container.querySelector('#normal_login_login')).not.toBeNull()
     expect(container.querySelector('#normal_login_password')).not.toBeNull()
   })
 })
