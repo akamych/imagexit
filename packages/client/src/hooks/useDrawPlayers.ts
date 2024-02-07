@@ -1,11 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { gameSettings, playerColors } from '../constants/game'
-import {
-  ICellElement,
-  IPlayerInfo,
-  IRaundInfo,
-  defaultIPlayersPoint,
-} from '../types/game'
+import { ICellElement, IPlayerInfo, IRaundInfo, defaultIPlayersPoint } from '../types/game'
 import { getPlayersJSON } from '../components/game/testData'
 
 type UseDrawPlayers = (
@@ -48,17 +43,11 @@ type IAnimationXYNow = {
  * @param color - цвет фишки
  * @returns
  */
-const printCircl = (
-  ctx: CanvasRenderingContext2D | null,
-  centerX: number,
-  centerY: number,
-  color: string
-) => {
+const drawСircle = (ctx: CanvasRenderingContext2D | null, centerX: number, centerY: number, color: string) => {
   if (!ctx) {
     return
   }
   const radius = 10
-
   ctx.beginPath()
   ctx.arc(centerX, centerY, radius, 0, 30, false)
   ctx.fillStyle = color
@@ -94,11 +83,7 @@ const getCoordinatesCell = (numberPlayers: number) => {
  * @param {ICellElement[]} fieldsElement - координаты ячеек игрового поля
  * @param {boolean} animationField - активна ли анимация. false = если игровое поле скрывают
  */
-export const UseDrawPlayers: UseDrawPlayers = (
-  ctx,
-  fieldsElement,
-  animationField
-) => {
+export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationField) => {
   const [players, setPlayers] = useState<IPlayerInfo[]>([]) // информация о игроках: логин и пр
   const [points, setPoints] = useState<IRaundInfo>(defaultIPlayersPoint) // баллы игроков за ход
 
@@ -125,12 +110,7 @@ export const UseDrawPlayers: UseDrawPlayers = (
     if (!ctx) {
       return
     }
-    ctx.clearRect(
-      0,
-      0,
-      gameSettings.CANVAS_WIDTH_PX,
-      gameSettings.CANVAS_HEIGHT_PX
-    )
+    ctx.clearRect(0, 0, gameSettings.CANVAS_WIDTH_PX, gameSettings.CANVAS_HEIGHT_PX)
   }
 
   /*
@@ -153,14 +133,8 @@ export const UseDrawPlayers: UseDrawPlayers = (
    * @param indexPlayer - номер игрока относительно распределения по кругу внутри ячейки игрового поля
    */
   function coordinateCalculation(cellNumber: number, indexPlayer: number) {
-    const x =
-      fieldsElement[cellNumber].x +
-      gameSettings.FIELD_WIDTH_PX / 2 +
-      coordsOnCell[indexPlayer].x
-    const y =
-      fieldsElement[cellNumber].y +
-      gameSettings.FIELD_HEIGHT_PX / 2 +
-      coordsOnCell[indexPlayer].y
+    const x = fieldsElement[cellNumber].x + gameSettings.FIELD_WIDTH_PX / 2 + coordsOnCell[indexPlayer].x
+    const y = fieldsElement[cellNumber].y + gameSettings.FIELD_HEIGHT_PX / 2 + coordsOnCell[indexPlayer].y
     return { x, y }
   }
 
@@ -207,10 +181,7 @@ export const UseDrawPlayers: UseDrawPlayers = (
         moving = true
 
         /** Координаты точки назначения - точку назначения только установили*/
-        const { x: xFinish, y: yFinish } = coordinateCalculation(
-          goToCell,
-          index
-        )
+        const { x: xFinish, y: yFinish } = coordinateCalculation(goToCell, index)
 
         /** коофициенты уравнения прямой y=kx+b */
         k = (yFinish - y) / (xFinish - x)
@@ -221,10 +192,7 @@ export const UseDrawPlayers: UseDrawPlayers = (
     if (goToCell != null) {
       if (moving == true) {
         /** Координаты точки назначения */
-        const { x: xFinish, y: yFinish } = coordinateCalculation(
-          goToCell,
-          index
-        )
+        const { x: xFinish, y: yFinish } = coordinateCalculation(goToCell, index)
 
         const xDelta = Math.abs(xFinish - x)
         const xSign = Math.sign(xFinish - x)
@@ -235,10 +203,7 @@ export const UseDrawPlayers: UseDrawPlayers = (
 
           // ---- Finish
           if (goToCell == animationXY[index].pointFinish) {
-            activeIndex.current =
-              animationXY.length >= activeIndex.current
-                ? activeIndex.current + 1
-                : null
+            activeIndex.current = animationXY.length >= activeIndex.current ? activeIndex.current + 1 : null
           }
         } else {
           moving = true
@@ -255,8 +220,7 @@ export const UseDrawPlayers: UseDrawPlayers = (
           b: b,
           pointStart: animationXY[index].pointStart,
           goToCell: goToCell,
-          pointFinish:
-            points.players[index].pointsOld + points.players[index].pointsAdd,
+          pointFinish: points.players[index].pointsOld + points.players[index].pointsAdd,
         })
       }
     }
@@ -282,8 +246,7 @@ export const UseDrawPlayers: UseDrawPlayers = (
         b: 0,
         pointStart: points.players[index].pointsOld,
         goToCell: points.players[index].pointsOld,
-        pointFinish:
-          points.players[index].pointsOld + points.players[index].pointsAdd,
+        pointFinish: points.players[index].pointsOld + points.players[index].pointsAdd,
       })
     })
     setAnimationXY(arrayXY)
@@ -307,7 +270,7 @@ export const UseDrawPlayers: UseDrawPlayers = (
     if (animationXY.length > 0) {
       clearCanvas()
       animationXY.forEach(item => {
-        printCircl(ctx, item.x, item.y, item.color)
+        drawСircle(ctx, item.x, item.y, item.color)
       })
       setTimeout(() => {
         showAnimationOnTheBoard()
