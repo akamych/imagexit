@@ -142,7 +142,6 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
    * Функция анимации фишек на поле
    * @description Если анимация разрешена, то фишки передвигаются по очереди
    */
-
   function showAnimationOnTheBoard() {
     /** Шаг передвижения фишки */
     const offset = 1
@@ -189,40 +188,38 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
       }
     }
 
-    if (goToCell != null) {
-      if (moving == true) {
-        /** Координаты точки назначения */
-        const { x: xFinish, y: yFinish } = coordinateCalculation(goToCell, index)
+    if (goToCell != null && moving == true) {
+      /** Координаты точки назначения */
+      const { x: xFinish, y: yFinish } = coordinateCalculation(goToCell, index)
 
-        const xDelta = Math.abs(xFinish - x)
-        const xSign = Math.sign(xFinish - x)
-        const yDelta = Math.abs(yFinish - y)
+      const xDelta = Math.abs(xFinish - x)
+      const xSign = Math.sign(xFinish - x)
+      const yDelta = Math.abs(yFinish - y)
 
-        if (xDelta == 0 && yDelta == 0) {
-          moving = false
+      if (xDelta == 0 && yDelta == 0) {
+        moving = false
 
-          // ---- Finish
-          if (goToCell == animationXY[index].pointFinish) {
-            activeIndex.current = animationXY.length >= activeIndex.current ? activeIndex.current + 1 : null
-          }
-        } else {
-          moving = true
+        // ---- Finish
+        if (goToCell == animationXY[index].pointFinish) {
+          activeIndex.current = animationXY.length >= activeIndex.current ? activeIndex.current + 1 : null
         }
-        x = x + xSign * offset
-        y = k * x + b
-
-        updateAnimationXY(index, {
-          x: x,
-          y: y,
-          color: animationXY[index].color,
-          moving: moving,
-          k: k,
-          b: b,
-          pointStart: animationXY[index].pointStart,
-          goToCell: goToCell,
-          pointFinish: points.players[index].pointsOld + points.players[index].pointsAdd,
-        })
+      } else {
+        moving = true
       }
+      x = x + xSign * offset
+      y = k * x + b
+
+      updateAnimationXY(index, {
+        x: x,
+        y: y,
+        color: animationXY[index].color,
+        moving: moving,
+        k: k,
+        b: b,
+        pointStart: animationXY[index].pointStart,
+        goToCell: goToCell,
+        pointFinish: points.players[index].pointsOld + points.players[index].pointsAdd,
+      })
     }
   }
 
