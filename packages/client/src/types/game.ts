@@ -55,3 +55,12 @@ export const defaultIPlayersPoint: IRaundInfo = {
   mastercardId: 0,
   players: <IRaundPlayerInfo[]>[],
 }
+
+export type IcheckLimits = {
+  directionMovement: number
+  x: number
+  y: number
+  offsetX: number
+  offsetY: number
+  offsetDesign: boolean
+}
