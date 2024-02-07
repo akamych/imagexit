@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { render } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom' // Импортируйте BrowserRouter
+import { BrowserRouter } from 'react-router-dom'
 import { create } from 'match-media-mock'
 import { PageGame } from './pageGame'
 import { setupJestCanvasMock } from 'jest-canvas-mock'

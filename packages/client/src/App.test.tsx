@@ -2,6 +2,7 @@ import '@testing-library/jest-dom'
 import App from './App'
 import { act, render } from '@testing-library/react'
 import { create } from 'match-media-mock'
+import 'react-redux'
 
 // @ts-ignore
 global.fetch = jest.fn(() =>

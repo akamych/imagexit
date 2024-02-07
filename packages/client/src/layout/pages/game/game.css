@@ -1,0 +1,49 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url('https://playimaginarium.cosmodrome.games/_nuxt/img/main-bg.150152a.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  gap: 40px;
+  flex: 1;
+  font-family: Inter, Sans-serif;
+}
+
+.layers {
+  position: relative;
+  margin-top: 50px;
+
+  & .layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  & .layer1 {
+    z-index: 0;
+  }
+
+  & .layer2 {
+    z-index: 1;
+  }
+
+  & .layer3 {
+    z-index: 1;
+  }
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+.w100 {
+  width: 1000px;
+}
+.mb-footer {
+  margin-bottom: 40px;
+}
