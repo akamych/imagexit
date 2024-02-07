@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import './App.css'
 import { Pages } from './layout/Layout'
 import { BrowserRouter } from 'react-router-dom'
+import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary'
 import { Provider } from 'react-redux'
 import store from './store/Store'
 
@@ -18,6 +19,7 @@ function App() {
     fetchServerData()
   }, [])
   return (
+    <ErrorBoundary>
     <BrowserRouter>
       <Provider store={store}>
         <div className="App">
@@ -26,6 +28,7 @@ function App() {
         </div>
       </Provider>
     </BrowserRouter>
+    </ErrorBoundary>
   )
 }
 
