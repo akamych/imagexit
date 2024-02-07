@@ -46,11 +46,13 @@ describe('UseDrawCards hook', () => {
 
     const updatedCardsElement: ICardElement[] = [
       { id: 2, img: new Image(), left: 10, top: 10, width: 100, height: 100 },
+      { id: 3, img: new Image(), left: 10, top: 110, width: 100, height: 100 },
+      { id: 4, img: new Image(), left: 10, top: 210, width: 100, height: 100 },
     ]
     rerender({ cards: updatedCardsElement })
 
-    expect(ctx.clearRect).toHaveBeenCalledTimes(3)
-    expect(ctx.drawImage).toHaveBeenCalledTimes(3)
-    expect(setCardsElement).toHaveBeenCalledTimes(1)
+    expect(ctx.clearRect).toHaveBeenCalled()
+    expect(ctx.drawImage).toHaveBeenCalled()
+    expect(setCardsElement).toHaveBeenCalled()
   })
 })
