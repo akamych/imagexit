@@ -64,9 +64,10 @@ export const PageGame = () => {
     setCardsElement,
     setSelectedCard
   )
-
+  // Хук отрисовки контента
   const { writeTitle, writeTask, writeText, displayContent } =
     UseDrawContent(ctx)
+
   // ---
   const ClearScreen = () => {
     clearCanvas()
