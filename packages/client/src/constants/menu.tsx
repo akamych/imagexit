@@ -6,10 +6,7 @@ export const itemsMenu: MenuProps['items'] = [
   {
     label: (
       <NavLink to="/" rel="noopener noreferrer">
-        <img
-          style={logoStyle}
-          src="https://playimaginarium.cosmodrome.games/_nuxt/img/slider-dec.a78b69e.png"
-        />
+        <img style={logoStyle} src="/assets/images/mascot.png" />
       </NavLink>
     ),
     key: 'logo',

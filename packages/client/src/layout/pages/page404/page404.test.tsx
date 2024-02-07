@@ -4,6 +4,11 @@ import { BrowserRouter } from 'react-router-dom' // Импортируйте Bro
 import { create } from 'match-media-mock'
 import { PageNotFound } from './page404'
 
+jest.mock('react-redux', () => ({
+  useSelector: jest.fn(),
+  useDispatch: jest.fn(),
+}))
+
 describe('PageNotFound component', () => {
   beforeEach(() => {
     window.matchMedia = create()

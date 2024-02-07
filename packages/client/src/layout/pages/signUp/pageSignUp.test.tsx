@@ -3,7 +3,10 @@ import { render } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom' // Импортируйте BrowserRouter
 import { create } from 'match-media-mock'
 import { PageSignUp } from './pageSignUp'
-
+jest.mock('react-redux', () => ({
+  useSelector: jest.fn(),
+  useDispatch: jest.fn(),
+}))
 describe('PageSignUp component', () => {
   beforeEach(() => {
     window.matchMedia = create()
