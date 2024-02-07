@@ -3,12 +3,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import './pageLogin.css'
-import {
-  validateLoginCharacters,
-  validateNotOnlyNumbers,
-  validateContainsCapitalLetter,
-  validateContainsNumber,
-} from '../../../utils/InputUtil'
+import { validateLoginCharacters, validateNotOnlyNumbers, validateContainsCapitalLetter, validateContainsNumber } from '../../../utils/InputUtil'
 import { selectError } from '../../../store/reducers/AuthReducer'
 import { AppDispatch } from '../../../store/Store'
 import { loginAction } from '../../../store/actions/AuthActions'
@@ -51,15 +46,7 @@ export const PageLogin = () => {
               validator: (_, value) => validateNotOnlyNumbers(value),
             },
           ]}>
-          <Input
-            prefix={
-              <UserOutlined className="site-form-item-icon" rev={undefined} />
-            }
-            prefix={
-              <UserOutlined className="site-form-item-icon" rev={undefined} />
-            }
-            placeholder="Логин"
-          />
+          <Input prefix={<UserOutlined className="site-form-item-icon" rev={undefined} />} placeholder="Логин" />
         </Form.Item>
         <Form.Item
           name="password"
@@ -79,16 +66,7 @@ export const PageLogin = () => {
               validator: (_, value) => validateContainsCapitalLetter(value),
             },
           ]}>
-          <Input
-            prefix={
-              <LockOutlined className="site-form-item-icon" rev={undefined} />
-            }
-            prefix={
-              <LockOutlined className="site-form-item-icon" rev={undefined} />
-            }
-            type="password"
-            placeholder="Пароль"
-          />
+          <Input prefix={<LockOutlined className="site-form-item-icon" rev={undefined} />} type="password" placeholder="Пароль" />
         </Form.Item>
         <Form.Item>
           <Form.Item name="remember" valuePropName="checked" noStyle>
@@ -101,10 +79,7 @@ export const PageLogin = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="login-form-button">
+          <Button type="primary" htmlType="submit" className="login-form-button">
             Войти
           </Button>
           или&nbsp;
