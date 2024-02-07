@@ -14,7 +14,7 @@ export const UseGameCore = () => {
   const [animationField, setAnimationField] = useState(false)
   const [playersInfo, setPlayersInfo] = useState<IPlayerInfo[]>([]) // информация о игроках
   const [gameStep, setGameStep] = useState('start') // шаг в игре, статус
-  const [raundInfo, setRaundInfo] = useState<IRaundInfo>(getApiRaundInfo()) // информация о раунде в игре
+  const [raundInfo, setRaundInfo] = useState<IRaundInfo>(getApiRaundInfo(7)) // информация о раунде в игре
   const [selectedCard, setSelectedCard] = useState<ICardElement | null>(null)
 
   // ----------

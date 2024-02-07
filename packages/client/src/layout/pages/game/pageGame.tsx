@@ -94,7 +94,7 @@ export const PageGame = () => {
   // ----- Шаг: Новая игра
   const stepStart = () => {
     // обнулить переменные раунда
-    setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
+    setPlayersInfo(getApiPlayersInfo(7)) // получаем данные о игроках getApiPlayersInfo
     setIsStartGame(true)
     setVisibleField(false)
     setSelectedCard(null)
@@ -227,7 +227,7 @@ export const PageGame = () => {
     // ---
     canvas.addEventListener(
       'click',
-      (event: any) => {
+      (event: MouseEvent) => {
         const isClickedInsideImage =
           event.offsetX >= imageX &&
           event.offsetX <= imageX + imageWidth &&
