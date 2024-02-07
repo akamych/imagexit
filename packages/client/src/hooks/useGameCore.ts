@@ -15,17 +15,14 @@ export const UseGameCore = () => {
   const [playersInfo, setPlayersInfo] = useState<IPlayerInfo[]>([]) // информация о игроках
   const [gameStep, setGameStep] = useState('start') // шаг в игре, статус
   const [raundInfo, setRaundInfo] = useState<IRaundInfo>(getApiRaundInfo()) // информация о раунде в игре
-
   const [selectedCard, setSelectedCard] = useState<ICardElement | null>(null)
 
   // ----------
   const setNextGameStep = () => {
-    console.log('gameStep', gameStep)
     if (gameStep == 'results') {
       setGameStep(stepsInTheGame[1])
     } else {
       const stepNow = stepsInTheGame.indexOf(gameStep)
-      console.log('gameStep stepNow', stepNow)
       setGameStep(stepsInTheGame[stepNow + 1])
     }
   }

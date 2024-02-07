@@ -4,7 +4,6 @@ import { UseDrawPlayers } from '../../../hooks/useDrawPlayers'
 import { UseInitCanvas } from '../../../hooks/useInitCanvas'
 import { UseInitImage } from '../../../hooks/useInitImage'
 import { UseDrawCards } from '../../../hooks/useDrawCards'
-// import { UseHandler } from '../../../hooks/useHandler'
 import { UseGameCore } from '../../../hooks/useGameCore'
 import { useEffect } from 'react'
 import {
@@ -27,7 +26,6 @@ import './game.css'
 import { FullscreenOutlined } from '@ant-design/icons'
 
 export const PageGame = () => {
-  //const { Title } = Typography
   // состояния будут перенесены в глобальное хранилице
 
   const {
@@ -66,16 +64,17 @@ export const PageGame = () => {
     setCardsElement,
     setSelectedCard
   )
-  // const { addClick, removeClick } = UseHandler(canvas)
+
   const { writeTitle, writeTask, writeText, displayContent } =
     UseDrawContent(ctx)
-  //==============
+  // ---
   const ClearScreen = () => {
     clearCanvas()
     clearCanvas2()
   }
   // ===================== CONTENT
-  // Посмотреть игровое поле
+
+  // ----- Посмотреть игровое поле
   const gameBoad = () => {
     setVisibleField(true)
     setAnimationField(true)
@@ -90,6 +89,8 @@ export const PageGame = () => {
       gameSettings.GAME_BOARD_TOP_PX + 80
     )
   }
+
+  // ----- Шаг: Новая игра
   const stepStart = () => {
     // обнулить переменные раунда
     setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
@@ -99,19 +100,25 @@ export const PageGame = () => {
     writeTitle(gameContent[gameStep].title)
     writeTask(gameContent[gameStep].task)
   }
+
+  // ----- Шаг: Ведущий придумывает ассоциацию
   const stepAssociation = () => {
     displayContent(gameStep)
   }
+
+  // ----- Шаг: Выбор карты для ассоциации
   const stepCards = () => {
     displayContent(gameStep)
   }
+
+  // ----- Шаг: Голосование
   const stepVoting = () => {
     displayContent(gameStep)
   }
+
+  // ----- Шаг: Подсчет голосов
   const stepScoring = () => {
     displayContent(gameStep)
-    console.log('cardsElement', cardsElement)
-    // drawCards()
     writeText('Ведущего', gameSettings.CARD_TOP_PX - 60)
     drawCard(
       cardsElement[0].img,
@@ -125,6 +132,8 @@ export const PageGame = () => {
       500
     )
   }
+
+  // ----- Шаг: Результаты раунда
   const stepResults = () => {
     setAnimationField(true)
     setPlace()
@@ -132,7 +141,6 @@ export const PageGame = () => {
     displayContent(gameStep)
     writeTitle(gameContent[gameStep].title)
     writeTask(gameContent[gameStep].task)
-
     writeLogin(
       ctx,
       playersInfo,
@@ -141,12 +149,14 @@ export const PageGame = () => {
       gameSettings.GAME_BOARD_TOP_PX + 80
     )
   }
+
+  // ----- Шаг: Окончание игры
   const stepFinish = () => {
     writeTitle('Финал')
   }
-  // ===================== Steps ROUTER
+
+  // ===================== ROUTER
   const routerGame = () => {
-    console.log('routerGame step', gameStep)
     setAnimationField(false)
     if (!visibleField) {
       switch (gameStep) {
@@ -230,15 +240,7 @@ export const PageGame = () => {
       false
     )
   }
-  /*
-  useEffect(() => {
-    if (isStartGame) {
-      addClick(animateCards)
-    } else {
-      removeClick(animateCards)
-    }
-  }, [isStartGame])
-  */
+
   // -------------- РОУТИНГ
   useEffect(() => {
     if (!visibleField) {

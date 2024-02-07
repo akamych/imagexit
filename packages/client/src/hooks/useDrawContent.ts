@@ -8,14 +8,14 @@ type IUseDrawContent = (ctx: CanvasRenderingContext2D | null) => {
   writeTitle: (text: string) => void
   writeTask: (text: string) => void
   writeText: (text: string, offsetTop: number) => void
-  bg_content: () => void
+  bgContent: () => void
   displayContent: (step: string) => void
 }
 
 /**
  * Хук нужен для отрисовки заголовков и текстов
  * @param ctx - canvas
- * @returns функции bg_content, writeTitle, writeTask, writeText, displayContent
+ * @returns функции bgContent, writeTitle, writeTask, writeText, displayContent
  */
 export const UseDrawContent: IUseDrawContent = ctx => {
   /**
@@ -56,7 +56,7 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     ctx.fillText(line, marginLeft, marginTop)
   }
   /** Отрисовка фона */
-  const bg_content = () => {
+  const bgContent = () => {
     if (!ctx) {
       return
     }
@@ -144,13 +144,12 @@ export const UseDrawContent: IUseDrawContent = ctx => {
   /** Отрисовка заголовка, задания и текста для хода.*/
   const displayContent = (step: string) => {
     writeRaundNumber(3)
-    // bg_content()
     writeTitle(gameContent[step].title)
     writeTask(gameContent[step].task)
   }
 
   return {
-    bg_content,
+    bgContent,
     writeTitle,
     writeTask,
     writeText,
