@@ -1,14 +1,26 @@
-import { createReducer } from '@reduxjs/toolkit'
-import { updateUser } from '../actions/AvatarActions'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from '../Store'
 
-const initialState = {
-  user: {},
+interface AvatarState {
+  src: string | null
 }
 
-const avatarReducer = createReducer(initialState, builder => {
-  builder.addCase(updateUser, (state, action) => {
-    state.user = action.payload
-  })
+const initialAvatarState: AvatarState = {
+  src: null,
+}
+
+const avatarSlice = createSlice({
+  name: 'avatar',
+  initialState: initialAvatarState,
+  reducers: {
+    updateAvatarSrc: (state, action: PayloadAction<string | null>) => {
+      state.src = action.payload
+    },
+  },
 })
 
-export default avatarReducer
+export const { updateAvatarSrc } = avatarSlice.actions
+
+export default avatarSlice.reducer
+
+export const selectAvatarSrc = (state: RootState) => state.avatar.src

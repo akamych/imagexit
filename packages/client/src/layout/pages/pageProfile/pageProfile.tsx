@@ -1,8 +1,8 @@
-// PageProfile.tsx
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../store/Store'
 import { selectUser } from '../../../store/reducers/AuthReducer'
+import { selectAvatarSrc } from '../../../store/reducers/AvatarReducer'
 import { Typography, Button, Modal, message, Form, Input } from 'antd'
 import { Avatar } from '../../../components/Avatar/Avatar'
 import styles from './styles.module.css'
@@ -15,7 +15,7 @@ const RESOURCES = `${API_URL}/resources/`
 export const PageProfile: React.FC = () => {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
   const user = useSelector((state: RootState) => selectUser(state))
-  console.log('USER: ', user)
+  const avatarSrc = useSelector((state: RootState) => selectAvatarSrc(state))
 
   const handlePasswordChange = (values: unknown) => {
     console.log('Received values:', values)
@@ -34,7 +34,7 @@ export const PageProfile: React.FC = () => {
   return (
     <div className={styles.content}>
       {/* Avatar */}
-      {user && <Avatar src={RESOURCES + user.avatar || ''} width="100px"></Avatar>}
+      {user && <Avatar src={RESOURCES + (avatarSrc || user.avatar) || ''} width="100px"></Avatar>}
 
       {/* Nickname */}
       {user && <Title level={2}>{user.first_name + ' ' + user.second_name}</Title>}

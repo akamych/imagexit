@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import styles from './styles.module.css'
 import { useDispatch } from 'react-redux'
-import { updateUser } from '../../store/actions/AvatarActions'
+import { updateAvatarSrc } from '../../store/reducers/AvatarReducer' // Import the action creator
+
+const API_URL = 'https://ya-praktikum.tech/api/v2/user'
 
 interface AvatarProps {
   name?: string
@@ -9,8 +11,6 @@ interface AvatarProps {
   width?: string
   alt?: string
 }
-
-const API_URL = 'https://ya-praktikum.tech/api/v2/user'
 
 export const Avatar: React.FC<AvatarProps> = ({ name, src, width, alt }) => {
   const dispatch = useDispatch()
@@ -31,12 +31,10 @@ export const Avatar: React.FC<AvatarProps> = ({ name, src, width, alt }) => {
         credentials: 'include',
       })
       if (response.ok) {
-        // Extract the new avatar URL from the response
         const user = await response.json()
-        console.log('Response:', user)
+        const newAvatarSrc = user.avatar
 
-        // Dispatch an action to update the user data in the Redux store
-        dispatch(updateUser(user))
+        dispatch(updateAvatarSrc(newAvatarSrc))
       } else {
         console.error('Failed to upload avatar')
       }

@@ -26,6 +26,7 @@ export const updateUserProfileAvatar = createAsyncThunk(
         throw new Error(error.reason) // Throw an error if request is not successful
       } else {
         const newUser = await response.json() // Assuming server returns updated user data
+        console.log('AVATAR ACTIONS: ', newUser)
         return newUser // Return the updated user data
       }
     } catch (error) {
