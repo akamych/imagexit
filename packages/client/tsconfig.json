@@ -16,11 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "paths": {
-    "@": ["src/"],
-    "@components/*": ["src/components/*"],
-    "@pages/*": ["src/pages/*"]
-  },
   "include": ["src", "service-worker.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
