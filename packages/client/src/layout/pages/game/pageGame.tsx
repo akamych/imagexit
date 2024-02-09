@@ -59,7 +59,7 @@ export const PageGame = () => {
     setPlace()
     generatePlayers()
     writeTitle('Игровое поле')
-    const { playerJSON, pointsJSON } = getPlayersJSON() // тестовые данные
+    const { playerJSON, pointsJSON } = getPlayersJSON(7) // тестовые данные
     writeLogin(ctx, playerJSON, pointsJSON, 20, gameSettings.GAME_BOARD_TOP_PX + 80)
   }
   // ====================== START
@@ -125,13 +125,13 @@ export const PageGame = () => {
     displayContent(gameStep)
     writeTitle(gameContent[gameStep].title)
     writeTask(gameContent[gameStep].task)
-    const { playerJSON, pointsJSON } = getPlayersJSON() // тестовые данные
+    const { playerJSON, pointsJSON } = getPlayersJSON(7) // тестовые данные
     writeLogin(ctx, playerJSON, pointsJSON, 20, gameSettings.GAME_BOARD_TOP_PX + 80)
   }
   const stepFinish = () => {
     setAnimationField(false)
-    setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
-    setRaundInfo(getApiRaundInfo)
+    setPlayersInfo(getApiPlayersInfo(7)) // получаем данные о игроках getApiPlayersInfo
+    setRaundInfo(getApiRaundInfo(7))
     setIsStartGame(false)
     writeTitle('Финал')
     writeLoginFinish(ctx, playersInfo, raundInfo, gameSettings.CANVAS_WIDTH_PX / 2 - 80, gameSettings.GAME_BOARD_TOP_PX)
@@ -203,7 +203,7 @@ export const PageGame = () => {
     // ---
     canvas.addEventListener(
       'click',
-      (event: any) => {
+      (event: MouseEvent) => {
         const isClickedInsideImage = event.offsetX >= imageX && event.offsetX <= imageX + imageWidth && event.offsetY >= imageY && event.offsetY <= imageY + imageHeight
 
         if (isClickedInsideImage) {
@@ -233,7 +233,7 @@ export const PageGame = () => {
     // ---
     canvas.addEventListener(
       'click',
-      (event: any) => {
+      (event: MouseEvent) => {
         const isClickedInsideImage = event.offsetX >= imageX && event.offsetX <= imageX + imageWidth && event.offsetY >= imageY && event.offsetY <= imageY + imageHeight
 
         if (isClickedInsideImage) {
