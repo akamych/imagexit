@@ -1,22 +1,18 @@
-import {
-  gameContent,
-  gameSettings,
-  typographySettings,
-} from '../constants/game'
+import { gameContent, gameSettings, typographySettings } from '../constants/game'
 
 type IUseDrawContent = (ctx: CanvasRenderingContext2D | null) => {
   writeTitle: (text: string) => void
   writeTask: (text: string) => void
   writeText: (text: string, offsetTop: number) => void
   writeSrting: (text: string, color: string, x: number, y: number) => void
-  bg_content: () => void
+  bgContent: () => void
   displayContent: (step: string) => void
 }
 
 /**
  * Хук нужен для отрисовки заголовков и текстов
  * @param ctx - canvas
- * @returns функции bg_content, writeTitle, writeTask, writeText, displayContent
+ * @returns функции bgContent, writeTitle, writeTask, writeText, displayContent
  */
 export const UseDrawContent: IUseDrawContent = ctx => {
   /**
@@ -29,14 +25,7 @@ export const UseDrawContent: IUseDrawContent = ctx => {
    * @param lineHeight - высота строки
    * @returns
    */
-  function wrapText(
-    ctx: CanvasRenderingContext2D | null,
-    text: string,
-    marginLeft: number,
-    marginTop: number,
-    maxWidth: number,
-    lineHeight: number
-  ) {
+  function wrapText(ctx: CanvasRenderingContext2D | null, text: string, marginLeft: number, marginTop: number, maxWidth: number, lineHeight: number) {
     if (!ctx) {
       return
     }
@@ -57,17 +46,12 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     ctx.fillText(line, marginLeft, marginTop)
   }
   /** Отрисовка фона */
-  const bg_content = () => {
+  const bgContent = () => {
     if (!ctx) {
       return
     }
     ctx.fillStyle = 'rgba(255,255,255,0.3)'
-    ctx.fillRect(
-      gameSettings.CONTENT_LEFT_PX,
-      gameSettings.CONTENT_TOP_PX,
-      gameSettings.CONTENT_WIDTH_PX,
-      gameSettings.CONTENT_HEIGHT_PX
-    )
+    ctx.fillRect(gameSettings.CONTENT_LEFT_PX, gameSettings.CONTENT_TOP_PX, gameSettings.CONTENT_WIDTH_PX, gameSettings.CONTENT_HEIGHT_PX)
   }
 
   /**
@@ -83,11 +67,7 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     ctx.fillStyle = typographySettings.title.color
     ctx.textBaseline = 'top'
     ctx.textAlign = 'start'
-    ctx.fillText(
-      'Раунд ' + String(roundNumber),
-      typographySettings.raund.offset.left,
-      typographySettings.raund.offset.top
-    )
+    ctx.fillText('Раунд ' + String(roundNumber), typographySettings.raund.offset.left, typographySettings.raund.offset.top)
   }
   /** Отрисовка Заголовка. Координаты и настройки прописаны в константах */
   const writeTitle = (text: string) => {
@@ -98,11 +78,7 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     ctx.fillStyle = typographySettings.title.color
     ctx.textBaseline = 'top'
     ctx.textAlign = 'center'
-    ctx.fillText(
-      text,
-      gameSettings.CONTENT_LEFT_PX + typographySettings.title.offset.left,
-      gameSettings.CONTENT_TOP_PX + typographySettings.title.offset.top
-    )
+    ctx.fillText(text, gameSettings.CONTENT_LEFT_PX + typographySettings.title.offset.left, gameSettings.CONTENT_TOP_PX + typographySettings.title.offset.top)
   }
   /** Отрисовка Задания. Координаты и настройки прописаны в константах */
   const writeTask = (text: string) => {
@@ -114,14 +90,7 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     ctx.textBaseline = 'top'
     ctx.textAlign = 'start'
 
-    wrapText(
-      ctx,
-      text,
-      gameSettings.CONTENT_LEFT_PX + typographySettings.task.offset.left,
-      gameSettings.CONTENT_TOP_PX + typographySettings.task.offset.top,
-      typographySettings.task.width,
-      typographySettings.task.fontSize * 1.5
-    )
+    wrapText(ctx, text, gameSettings.CONTENT_LEFT_PX + typographySettings.task.offset.left, gameSettings.CONTENT_TOP_PX + typographySettings.task.offset.top, typographySettings.task.width, typographySettings.task.fontSize * 1.5)
   }
   /** Отрисовка текста. Координаты и настройки прописаны в константах */
   const writeText = (text: string, offsetTop: number) => {
@@ -133,14 +102,7 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     ctx.textBaseline = 'top'
     ctx.textAlign = 'start'
 
-    wrapText(
-      ctx,
-      text,
-      gameSettings.CONTENT_LEFT_PX + typographySettings.textString.offset.left,
-      gameSettings.CONTENT_TOP_PX + offsetTop,
-      typographySettings.textString.width,
-      typographySettings.textString.fontSize * 1.5
-    )
+    wrapText(ctx, text, gameSettings.CONTENT_LEFT_PX + typographySettings.textString.offset.left, gameSettings.CONTENT_TOP_PX + offsetTop, typographySettings.textString.width, typographySettings.textString.fontSize * 1.5)
   }
   const writeSrting = (text: string, color: string, x: number, y: number) => {
     if (!ctx) {
@@ -151,25 +113,18 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     ctx.textBaseline = 'top'
     ctx.textAlign = 'start'
 
-    wrapText(
-      ctx,
-      text,
-      x,
-      y,
-      typographySettings.textString.width,
-      typographySettings.textString.fontSize * 1.5
-    )
+    wrapText(ctx, text, x, y, typographySettings.textString.width, typographySettings.textString.fontSize * 1.5)
   }
 
   const displayContent = (step: string) => {
     writeRaundNumber(3)
-    // bg_content()
+    // bgContent()
     writeTitle(gameContent[step].title)
     writeTask(gameContent[step].task)
   }
 
   return {
-    bg_content,
+    bgContent,
     writeTitle,
     writeTask,
     writeText,

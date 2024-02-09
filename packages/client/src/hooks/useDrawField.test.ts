@@ -21,7 +21,6 @@ describe('UseDrawField Hook', () => {
       result.current.setPlace()
 
       expect(ctx.drawImage).toHaveBeenCalled()
-      // expect(ctx.fillRect).toHaveBeenCalled()
       expect(ctx.fillText).toHaveBeenCalled()
     })
   })

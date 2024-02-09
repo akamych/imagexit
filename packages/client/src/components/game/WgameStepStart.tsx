@@ -1,14 +1,5 @@
 import { useState } from 'react'
-import {
-  Alert,
-  Button,
-  Checkbox,
-  Divider,
-  Form,
-  Input,
-  Select,
-  Typography,
-} from 'antd'
+import { Alert, Button, Checkbox, Divider, Form, Input, Select, Typography } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 import { playerColors } from '../../constants/game'
 import { IPlayerInfo } from '../../types/game'
@@ -80,30 +71,20 @@ export const WgameStepStart = (props: IWgameStepStart) => {
   //=================
   return (
     <>
-      <Form
-        name="basic"
-        initialValues={{ remember: true }}
-        form={form}
-        onFinish={onFinish}
-        autoComplete="off">
+      <Form name="basic" initialValues={{ remember: true }} form={form} onFinish={onFinish} autoComplete="off">
         <Title level={2}>Новая игра</Title>
         <Divider plain className="mt-divider">
           Сложность игры
         </Divider>
 
-        <Form.Item
-          label="Сложность"
-          name="difficulty"
-          rules={[{ required: true, message: 'Выберите сложность' }]}>
+        <Form.Item label="Сложность" name="difficulty" rules={[{ required: true, message: 'Выберите сложность' }]}>
           <Select placeholder="Выберите " options={difficulty} />
         </Form.Item>
         <Divider plain className="mt-divider">
           Команда
         </Divider>
         <div className="mb-row">
-          <Text disabled>
-            Выберите команду от 2 до 6 игроков. В списке доступны боты
-          </Text>
+          <Text disabled>Выберите команду от 2 до 6 игроков. В списке доступны боты</Text>
         </div>
         <Form.Item
           label="Игроки"
@@ -114,15 +95,7 @@ export const WgameStepStart = (props: IWgameStepStart) => {
               message: 'Выберите игроков для команды от 2 до 6',
             },
           ]}>
-          <Select
-            mode="multiple"
-            maxCount={max_count}
-            value={value}
-            onChange={setValue}
-            suffixIcon={suffix}
-            placeholder="Выберите игроков или ботов"
-            options={players}
-          />
+          <Select mode="multiple" maxCount={max_count} value={value} onChange={setValue} suffixIcon={suffix} placeholder="Выберите игроков или ботов" options={players} />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">

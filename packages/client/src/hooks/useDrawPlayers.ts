@@ -1,11 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { gameSettings, playerColors } from '../constants/game'
-import {
-  ICellElement,
-  IPlayerInfo,
-  IRaundInfo,
-  defaultIPlayersPoint,
-} from '../types/game'
+import { ICellElement, IPlayerInfo, IRaundInfo, defaultIPlayersPoint } from '../types/game'
 import { getPlayersJSON } from '../components/game/testData'
 
 type UseDrawPlayers = (
@@ -48,12 +43,7 @@ type IAnimationXYNow = {
  * @param color - цвет фишки
  * @returns
  */
-const printCircl = (
-  ctx: CanvasRenderingContext2D | null,
-  centerX: number,
-  centerY: number,
-  color: string
-) => {
+const printCircl = (ctx: CanvasRenderingContext2D | null, centerX: number, centerY: number, color: string) => {
   if (!ctx) {
     return
   }
@@ -94,11 +84,7 @@ const getCoordinatesCell = (numberPlayers: number) => {
  * @param {ICellElement[]} fieldsElement - координаты ячеек игрового поля
  * @param {boolean} animationField - активна ли анимация. false = если игровое поле скрывают
  */
-export const UseDrawPlayers: UseDrawPlayers = (
-  ctx,
-  fieldsElement,
-  animationField
-) => {
+export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationField) => {
   const [players, setPlayers] = useState<IPlayerInfo[]>([]) // информация о игроках: логин и пр
   const [points, setPoints] = useState<IRaundInfo>(defaultIPlayersPoint) // баллы игроков за ход
   /** Массив с координатами и коофициентами где сейчас находится фишка, из какой точки движется, в какую точку движется */
@@ -122,12 +108,7 @@ export const UseDrawPlayers: UseDrawPlayers = (
     if (!ctx) {
       return
     }
-    ctx.clearRect(
-      0,
-      0,
-      gameSettings.CANVAS_WIDTH_PX,
-      gameSettings.CANVAS_HEIGHT_PX
-    )
+    ctx.clearRect(0, 0, gameSettings.CANVAS_WIDTH_PX, gameSettings.CANVAS_HEIGHT_PX)
   }
   /*
    * Тестовые данные Метод генерирует рандомное количество игроков и рандомно распределяет их по игровому полю
@@ -149,14 +130,8 @@ export const UseDrawPlayers: UseDrawPlayers = (
    * @param indexPlayer - номер игрока относительно распределения по кругу внутри ячейки игрового поля
    */
   function coordinateCalculation(cellNumber: number, indexPlayer: number) {
-    const x =
-      fieldsElement[cellNumber].x +
-      gameSettings.FIELD_WIDTH_PX / 2 +
-      coordsOnCell[indexPlayer].x
-    const y =
-      fieldsElement[cellNumber].y +
-      gameSettings.FIELD_HEIGHT_PX / 2 +
-      coordsOnCell[indexPlayer].y
+    const x = fieldsElement[cellNumber].x + gameSettings.FIELD_WIDTH_PX / 2 + coordsOnCell[indexPlayer].x
+    const y = fieldsElement[cellNumber].y + gameSettings.FIELD_HEIGHT_PX / 2 + coordsOnCell[indexPlayer].y
     return { x, y }
   }
 
@@ -198,12 +173,9 @@ export const UseDrawPlayers: UseDrawPlayers = (
         goToCell += moveSign // вычисляем следующую ячейку
         moving = true
         /** Координаты точки назначения - точку назначения только установили*/
-        const { x: x_finish, y: y_finish } = coordinateCalculation(
-          goToCell,
-          index
-        )
+        const { x: xFinish, y: yFinish } = coordinateCalculation(goToCell, index)
         /** коофициенты уравнения прямой y=kx+b */
-        k = (y_finish - y) / (x_finish - x)
+        k = (yFinish - y) / (xFinish - x)
         b = y - k * x
       }
     }
@@ -211,26 +183,20 @@ export const UseDrawPlayers: UseDrawPlayers = (
     if (goToCell != null) {
       if (moving == true) {
         /** Координаты точки назначения */
-        const { x: x_finish, y: y_finish } = coordinateCalculation(
-          goToCell,
-          index
-        )
-        const x_delta = Math.abs(x_finish - x)
-        const x_sign = Math.sign(x_finish - x)
-        const y_delta = Math.abs(y_finish - y)
-        if (x_delta == 0 && y_delta == 0) {
+        const { x: xFinish, y: yFinish } = coordinateCalculation(goToCell, index)
+        const xDelta = Math.abs(xFinish - x)
+        const xSign = Math.sign(xFinish - x)
+        const yDelta = Math.abs(yFinish - y)
+        if (xDelta == 0 && yDelta == 0) {
           moving = false
           /** Finish */
           if (goToCell == animationXY[index].pointFinish) {
-            activeIndex.current =
-              animationXY.length >= activeIndex.current
-                ? activeIndex.current + 1
-                : null
+            activeIndex.current = animationXY.length >= activeIndex.current ? activeIndex.current + 1 : null
           }
         } else {
           moving = true
         }
-        x = x + x_sign * offset
+        x = x + xSign * offset
         y = k * x + b
 
         updateAnimationXY(index, {
@@ -242,8 +208,7 @@ export const UseDrawPlayers: UseDrawPlayers = (
           b: b,
           pointStart: animationXY[index].pointStart,
           goToCell: goToCell,
-          pointFinish:
-            points.players[index].pointsOld + points.players[index].pointsAdd,
+          pointFinish: points.players[index].pointsOld + points.players[index].pointsAdd,
         })
       }
     }
@@ -269,8 +234,7 @@ export const UseDrawPlayers: UseDrawPlayers = (
         b: 0,
         pointStart: points.players[index].pointsOld,
         goToCell: points.players[index].pointsOld,
-        pointFinish:
-          points.players[index].pointsOld + points.players[index].pointsAdd,
+        pointFinish: points.players[index].pointsOld + points.players[index].pointsAdd,
       })
     })
     setAnimationXY(arrayXY)

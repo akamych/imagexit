@@ -9,39 +9,24 @@ export const UseDrawField = (ctx: CanvasRenderingContext2D | null) => {
   const [fieldsElement, setFieldsElement] = useState<ICellElement[]>([])
   // ====================== cell = ячейка игрового поля
   // картинка ячейки  игрового поля
-  const img_cloud = new Image() // Image constructor
-  img_cloud.src = '../../assets/images/cloud.png'
-  img_cloud.alt = 'cloud'
+  const imgCloud = new Image() // Image constructor
+  imgCloud.src = '../../assets/images/cloud.png'
+  imgCloud.alt = 'cloud'
   /*
    * Функция отрисовки клетки игрового поля
    * передаются координаты игровой клетки = x,y
    */
-  const printСellBg = (
-    ctx: CanvasRenderingContext2D | null,
-    x: number,
-    y: number
-  ) => {
+  const printСellBg = (ctx: CanvasRenderingContext2D | null, x: number, y: number) => {
     if (!ctx) {
       return
     }
-    ctx.drawImage(
-      img_cloud,
-      x - 20,
-      y,
-      gameSettings.FIELD_WIDTH_PX + 40,
-      gameSettings.FIELD_HEIGHT_PX
-    )
+    ctx.drawImage(imgCloud, x - 20, y, gameSettings.FIELD_WIDTH_PX + 40, gameSettings.FIELD_HEIGHT_PX)
   }
   /*
    * Функция отрисовки текста в центре клетки игрового поля
    * передаются координаты игровой клетки = x,y
    */
-  const printСellText = (
-    ctx: CanvasRenderingContext2D | null,
-    text: string,
-    x: number,
-    y: number
-  ) => {
+  const printСellText = (ctx: CanvasRenderingContext2D | null, text: string, x: number, y: number) => {
     if (!ctx) {
       return
     }
@@ -56,67 +41,63 @@ export const UseDrawField = (ctx: CanvasRenderingContext2D | null) => {
   /*
   Формирование массива координат ячеек
   */
-  const arrayCoordinatesCells = (
-    ctx: CanvasRenderingContext2D | null,
-    numberСells: number
-  ) => {
+  const arrayCoordinatesCells = (ctx: CanvasRenderingContext2D | null, numberСells: number) => {
     if (!ctx) {
       return
     }
 
     const arr: ICellElement[] = []
     const gameBoardOffsetTop = gameSettings.GAME_BOARD_TOP_PX
-    const gameBoardBottom_Y =
-      gameSettings.GAME_BOARD_HEIGHT_PX + gameBoardOffsetTop // высота игрового поля
+    const gameBoardBottomY = gameSettings.GAME_BOARD_HEIGHT_PX + gameBoardOffsetTop // высота игрового поля
     // начало координат игрового поля. Из левого нижнего угла.
     let x = gameSettings.GAME_BOARD_LEFT_PX // 0 + gameSettings.FIELD_WIDTH_PX / 2
-    let y = gameBoardBottom_Y
+    let y = gameBoardBottomY
 
-    let offset_design = false // смещение ячейки относительно оси для создания эффекта неравномеоности
-    const offset_x = gameSettings.FIELD_WIDTH_PX + 20
-    const offset_y = gameSettings.FIELD_HEIGHT_PX
+    let offsetDesign = false // смещение ячейки относительно оси для создания эффекта неравномеоности
+    const offsetX = gameSettings.FIELD_WIDTH_PX + 20
+    const offsetY = gameSettings.FIELD_HEIGHT_PX
     let directionMovement = -1 // направление движения. вверх= -1, вниз +1
 
     for (let i = 0; i < numberСells + 1; i++) {
       // проверка верхнего края поля
       if (directionMovement == -1) {
         // first
-        if (y + directionMovement * offset_y < gameBoardOffsetTop) {
-          x += offset_x * 1.4
+        if (y + directionMovement * offsetY < gameBoardOffsetTop) {
+          x += offsetX * 1.4
           directionMovement = -1 * directionMovement
-          offset_design = false
+          offsetDesign = false
         } else {
           // last
-          if (y + directionMovement * offset_y * 2 < gameBoardOffsetTop) {
-            x += offset_x * 0.7
-            offset_design = false
+          if (y + directionMovement * offsetY * 2 < gameBoardOffsetTop) {
+            x += offsetX * 0.7
+            offsetDesign = false
           }
-          y += directionMovement * offset_y
+          y += directionMovement * offsetY
         }
       } else {
         // проверка нижнего края поля
         // first
-        if (y + directionMovement * offset_y * 2 > gameBoardBottom_Y) {
-          x += offset_x * 1.4
+        if (y + directionMovement * offsetY * 2 > gameBoardBottomY) {
+          x += offsetX * 1.4
           directionMovement = -1 * directionMovement
-          offset_design = false
+          offsetDesign = false
         } else {
           // last
-          if (y + directionMovement * offset_y * 3 > gameBoardBottom_Y) {
-            x += offset_x * 0.7
-            offset_design = false
+          if (y + directionMovement * offsetY * 3 > gameBoardBottomY) {
+            x += offsetX * 0.7
+            offsetDesign = false
           }
 
-          y += directionMovement * offset_y
+          y += directionMovement * offsetY
         }
       }
       // --- дизайнерский отступ
-      if (offset_design) {
+      if (offsetDesign) {
         x += gameSettings.FIELD_WIDTH_PX * 0.3
       } else {
         x -= gameSettings.FIELD_WIDTH_PX * 0.3
       }
-      offset_design = !offset_design
+      offsetDesign = !offsetDesign
       // ---
       arr.push({
         x: x,

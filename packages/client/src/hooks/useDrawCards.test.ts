@@ -20,20 +20,10 @@ describe('UseDrawCards hook', () => {
       clearRect: jest.fn(),
       drawImage: jest.fn(),
     } as unknown as CanvasRenderingContext2D
-    cardsElement = [
-      { id: 1, img: new Image(), left: 0, top: 0, width: 100, height: 100 },
-    ]
+    cardsElement = [{ id: 1, img: new Image(), left: 0, top: 0, width: 100, height: 100 }]
     gameStep = 'voting'
 
-    result = renderHook(() =>
-      UseDrawCards(
-        ctx,
-        cardsElement,
-        setCardsElement,
-        setSelectedCard,
-        gameStep
-      )
-    ).result
+    result = renderHook(() => UseDrawCards(ctx, cardsElement, setCardsElement, setSelectedCard, gameStep)).result
   })
 
   it('Карточки корректно инициализируются', () => {
@@ -54,11 +44,7 @@ describe('UseDrawCards hook', () => {
   })
 
   it('После обновления данных в cardsElement происходит рендер', () => {
-    const { rerender } = renderHook(
-      ({ cards }) =>
-        UseDrawCards(ctx, cards, setCardsElement, setSelectedCard, gameStep),
-      { initialProps: { cards: cardsElement } }
-    )
+    const { rerender } = renderHook(({ cards }) => UseDrawCards(ctx, cards, setCardsElement, setSelectedCard, gameStep), { initialProps: { cards: cardsElement } })
 
     const updatedCardsElement: ICardElement[] = [
       { id: 1, img: new Image(), left: 10, top: 10, width: 100, height: 100 },

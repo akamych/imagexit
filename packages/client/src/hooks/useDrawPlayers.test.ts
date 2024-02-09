@@ -18,9 +18,7 @@ describe('UseDrawPlayers hook', () => {
     fieldsElement = [{ x: 0, y: 0 }]
     animationField = true
 
-    result = renderHook(() =>
-      UseDrawPlayers(ctx, fieldsElement, animationField)
-    ).result
+    result = renderHook(() => UseDrawPlayers(ctx, fieldsElement, animationField)).result
   })
 
   it('Игроки успешно отрисовываются', () => {

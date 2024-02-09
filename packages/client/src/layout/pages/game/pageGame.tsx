@@ -7,31 +7,13 @@ import { UseDrawCards } from '../../../hooks/useDrawCards'
 import { UseHandler } from '../../../hooks/useHandler'
 import { UseGameCore } from '../../../hooks/useGameCore'
 import { useEffect, useState } from 'react'
-import {
-  inputContainer,
-  actionContainer,
-  sliderVertical,
-  sliderVerticalContainer,
-} from '../../../assets/pageGameStyle'
+import { inputContainer, actionContainer, sliderVertical, sliderVerticalContainer } from '../../../assets/pageGameStyle'
 import { UseMusic } from '../../../hooks/useMusic'
 import { musicSettings } from '../../../constants/common'
 import { UseDrawContent } from '../../../hooks/useDrawContent'
-import {
-  getApiPlayersInfo,
-  getApiRaundInfo,
-  getPlayersJSON,
-} from '../../../components/game/testData'
-import {
-  buttonCanvas,
-  roundedRectPath,
-  writeLogin,
-  writeLoginFinish,
-} from '../../../components/game/lib'
-import {
-  gameContent,
-  gameSettings,
-  typographySettings,
-} from '../../../constants/game'
+import { getApiPlayersInfo, getApiRaundInfo, getPlayersJSON } from '../../../components/game/testData'
+import { buttonCanvas, roundedRectPath, writeLogin, writeLoginFinish } from '../../../components/game/lib'
+import { gameContent, gameSettings, typographySettings } from '../../../constants/game'
 import './game.css'
 import { FullscreenOutlined } from '@ant-design/icons'
 import { WgameStepStart } from '../../../components/game/WgameStepStart'
@@ -41,49 +23,17 @@ export const PageGame = () => {
   //const { Title } = Typography
   // состояния будут перенесены в глобальное хранилице
 
-  const {
-    isStartGame,
-    setIsStartGame,
-    setSelectedCard,
-    selectedCard,
-    visibleField,
-    setVisibleField,
-    fullScreen,
-    animationField,
-    setAnimationField,
-    gameStep,
-    setGameStep,
-    setNextGameStep,
-    setPlayersInfo,
-    playersInfo,
-    raundInfo,
-    setRaundInfo,
-    difficulty,
-    setDifficulty,
-  } = UseGameCore()
+  const { isStartGame, setIsStartGame, setSelectedCard, selectedCard, visibleField, setVisibleField, fullScreen, animationField, setAnimationField, gameStep, setGameStep, setNextGameStep, setPlayersInfo, playersInfo, raundInfo, setRaundInfo, difficulty, setDifficulty } = UseGameCore()
 
-  const { playMusic, setPlayMusic, startMusic, stopMusic, setMusicVolume } =
-    UseMusic()
+  const { playMusic, setPlayMusic, startMusic, stopMusic, setMusicVolume } = UseMusic()
 
-  const { ctx, clearCanvas, ctx2, clearCanvas2, ctx3, canvas3, clearCanvas3 } =
-    UseInitCanvas()
+  const { ctx, clearCanvas, ctx2, clearCanvas2, ctx3, canvas3, clearCanvas3 } = UseInitCanvas()
   const { setPlace, fieldsElement } = UseDrawField(ctx)
   const { cardsElement, setCardsElement } = UseInitImage()
-  const { generatePlayers } = UseDrawPlayers(
-    ctx2,
-    fieldsElement,
-    animationField
-  )
-  const { drawCards, animateCards, drawCard } = UseDrawCards(
-    ctx3,
-    cardsElement,
-    setCardsElement,
-    setSelectedCard,
-    gameStep
-  )
+  const { generatePlayers } = UseDrawPlayers(ctx2, fieldsElement, animationField)
+  const { drawCards, animateCards, drawCard } = UseDrawCards(ctx3, cardsElement, setCardsElement, setSelectedCard, gameStep)
   const { addClick, removeClick } = UseHandler(canvas3)
-  const { writeTitle, writeTask, writeText, writeSrting, displayContent } =
-    UseDrawContent(ctx)
+  const { writeTitle, writeTask, writeText, writeSrting, displayContent } = UseDrawContent(ctx)
   // ==============
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -110,13 +60,7 @@ export const PageGame = () => {
     generatePlayers()
     writeTitle('Игровое поле')
     const { playerJSON, pointsJSON } = getPlayersJSON() // тестовые данные
-    writeLogin(
-      ctx,
-      playerJSON,
-      pointsJSON,
-      20,
-      gameSettings.GAME_BOARD_TOP_PX + 80
-    )
+    writeLogin(ctx, playerJSON, pointsJSON, 20, gameSettings.GAME_BOARD_TOP_PX + 80)
   }
   // ====================== START
   const stepStart = () => {
@@ -125,51 +69,12 @@ export const PageGame = () => {
     const left = gameSettings.CONTENT_LEFT_PX
     writeTitle(gameContent[gameStep].title)
     writeTask(gameContent[gameStep].task)
-    writeSrting(
-      'Уровень сложности: ' + difficulty,
-      typographySettings.smallText.color,
-      left,
-      gameSettings.GAME_BOARD_TOP_PX + 40
-    )
-    writeSrting(
-      'Команда: (от 3 до 7)',
-      typographySettings.smallText.color,
-      left,
-      gameSettings.GAME_BOARD_TOP_PX + 70
-    )
-    writeLogin(
-      ctx,
-      playersInfo,
-      null,
-      left + 30,
-      gameSettings.GAME_BOARD_TOP_PX + 100
-    )
-    buttonModal(
-      ctx3,
-      canvas3,
-      'Выбрать',
-      gameSettings.CONTENT_WIDTH_PX,
-      gameSettings.GAME_BOARD_TOP_PX + 40,
-      170,
-      40
-    )
-    if (
-      difficulty != null &&
-      playersInfo.length > 2 &&
-      playersInfo.length <= 7
-    ) {
-      buttonCanvas(
-        ctx3,
-        canvas3,
-        'red',
-        'играть',
-        '#fff',
-        typographySettings.title.offset.left,
-        gameSettings.GAME_BOARD_TOP_PX + 320,
-        170,
-        40,
-        setNextGameStep
-      )
+    writeSrting('Уровень сложности: ' + difficulty, typographySettings.smallText.color, left, gameSettings.GAME_BOARD_TOP_PX + 40)
+    writeSrting('Команда: (от 3 до 7)', typographySettings.smallText.color, left, gameSettings.GAME_BOARD_TOP_PX + 70)
+    writeLogin(ctx, playersInfo, null, left + 30, gameSettings.GAME_BOARD_TOP_PX + 100)
+    buttonModal(ctx3, canvas3, 'Выбрать', gameSettings.CONTENT_WIDTH_PX, gameSettings.GAME_BOARD_TOP_PX + 40, 170, 40)
+    if (difficulty != null && playersInfo.length > 2 && playersInfo.length <= 7) {
+      buttonCanvas(ctx3, canvas3, 'red', 'играть', '#fff', typographySettings.title.offset.left, gameSettings.GAME_BOARD_TOP_PX + 320, 170, 40, setNextGameStep)
     }
   }
   // ---- будет сохраняться в глобальном стейте
@@ -209,17 +114,9 @@ export const PageGame = () => {
     console.log('cardsElement', cardsElement)
     // drawCards()
     writeText('Ведущего', gameSettings.CARD_TOP_PX - 60)
-    drawCard(
-      cardsElement[0].img,
-      gameSettings.CONTENT_LEFT_PX + gameSettings.CARD_LEFT_PX,
-      gameSettings.CARD_TOP_PX
-    )
+    drawCard(cardsElement[0].img, gameSettings.CONTENT_LEFT_PX + gameSettings.CARD_LEFT_PX, gameSettings.CARD_TOP_PX)
     writeText('Логин 1', 440)
-    drawCard(
-      cardsElement[1].img,
-      gameSettings.CONTENT_LEFT_PX + gameSettings.CARD_LEFT_PX,
-      500
-    )
+    drawCard(cardsElement[1].img, gameSettings.CONTENT_LEFT_PX + gameSettings.CARD_LEFT_PX, 500)
   }
   const stepResults = () => {
     setAnimationField(true)
@@ -229,13 +126,7 @@ export const PageGame = () => {
     writeTitle(gameContent[gameStep].title)
     writeTask(gameContent[gameStep].task)
     const { playerJSON, pointsJSON } = getPlayersJSON() // тестовые данные
-    writeLogin(
-      ctx,
-      playerJSON,
-      pointsJSON,
-      20,
-      gameSettings.GAME_BOARD_TOP_PX + 80
-    )
+    writeLogin(ctx, playerJSON, pointsJSON, 20, gameSettings.GAME_BOARD_TOP_PX + 80)
   }
   const stepFinish = () => {
     setAnimationField(false)
@@ -243,25 +134,8 @@ export const PageGame = () => {
     setRaundInfo(getApiRaundInfo)
     setIsStartGame(false)
     writeTitle('Финал')
-    writeLoginFinish(
-      ctx,
-      playersInfo,
-      raundInfo,
-      gameSettings.CANVAS_WIDTH_PX / 2 - 80,
-      gameSettings.GAME_BOARD_TOP_PX
-    )
-    buttonCanvas(
-      ctx3,
-      canvas3,
-      'yellow',
-      'Еще партейку, пожалуй',
-      '#000',
-      gameSettings.CANVAS_WIDTH_PX / 2 - 100,
-      gameSettings.CANVAS_HEIGHT_PX - 200,
-      200,
-      40,
-      ReturnToGame
-    )
+    writeLoginFinish(ctx, playersInfo, raundInfo, gameSettings.CANVAS_WIDTH_PX / 2 - 80, gameSettings.GAME_BOARD_TOP_PX)
+    buttonCanvas(ctx3, canvas3, 'yellow', 'Еще партейку, пожалуй', '#000', gameSettings.CANVAS_WIDTH_PX / 2 - 100, gameSettings.CANVAS_HEIGHT_PX - 200, 200, 40, ReturnToGame)
   }
   // ===================== Steps ROUTER
   const routerGame = () => {
@@ -309,15 +183,7 @@ export const PageGame = () => {
     setIsStartGame(false)
   }
 
-  function buttonMenu(
-    ctx: CanvasRenderingContext2D | null,
-    canvas: HTMLCanvasElement | null,
-    str: string,
-    imageX: number,
-    imageY: number,
-    imageWidth: number,
-    imageHeight: number
-  ) {
+  function buttonMenu(ctx: CanvasRenderingContext2D | null, canvas: HTMLCanvasElement | null, str: string, imageX: number, imageY: number, imageWidth: number, imageHeight: number) {
     if (!ctx) {
       return
     }
@@ -326,9 +192,7 @@ export const PageGame = () => {
     }
     ctx.save()
     ctx.fillStyle = 'red'
-    ctx.fill(
-      new Path2D(roundedRectPath(imageX, imageY, imageWidth, imageHeight, 30))
-    )
+    ctx.fill(new Path2D(roundedRectPath(imageX, imageY, imageWidth, imageHeight, 30)))
     ctx.font = `${typographySettings.text.fontSize}px ${typographySettings.text.fontFamily}`
     //- ---
     ctx.fillStyle = typographySettings.text.color
@@ -340,11 +204,7 @@ export const PageGame = () => {
     canvas.addEventListener(
       'click',
       (event: any) => {
-        const isClickedInsideImage =
-          event.offsetX >= imageX &&
-          event.offsetX <= imageX + imageWidth &&
-          event.offsetY >= imageY &&
-          event.offsetY <= imageY + imageHeight
+        const isClickedInsideImage = event.offsetX >= imageX && event.offsetX <= imageX + imageWidth && event.offsetY >= imageY && event.offsetY <= imageY + imageHeight
 
         if (isClickedInsideImage) {
           setVisibleField(!visibleField)
@@ -353,15 +213,7 @@ export const PageGame = () => {
       false
     )
   }
-  function buttonModal(
-    ctx: CanvasRenderingContext2D | null,
-    canvas: HTMLCanvasElement | null,
-    str: string,
-    imageX: number,
-    imageY: number,
-    imageWidth: number,
-    imageHeight: number
-  ) {
+  function buttonModal(ctx: CanvasRenderingContext2D | null, canvas: HTMLCanvasElement | null, str: string, imageX: number, imageY: number, imageWidth: number, imageHeight: number) {
     if (!ctx) {
       return
     }
@@ -370,9 +222,7 @@ export const PageGame = () => {
     }
     ctx.save()
     ctx.fillStyle = 'blue'
-    ctx.fill(
-      new Path2D(roundedRectPath(imageX, imageY, imageWidth, imageHeight, 10))
-    )
+    ctx.fill(new Path2D(roundedRectPath(imageX, imageY, imageWidth, imageHeight, 10)))
     ctx.font = `${typographySettings.text.fontSize}px ${typographySettings.text.fontFamily}`
     //- ---
     ctx.fillStyle = typographySettings.text.color
@@ -384,11 +234,7 @@ export const PageGame = () => {
     canvas.addEventListener(
       'click',
       (event: any) => {
-        const isClickedInsideImage =
-          event.offsetX >= imageX &&
-          event.offsetX <= imageX + imageWidth &&
-          event.offsetY >= imageY &&
-          event.offsetY <= imageY + imageHeight
+        const isClickedInsideImage = event.offsetX >= imageX && event.offsetX <= imageX + imageWidth && event.offsetY >= imageY && event.offsetY <= imageY + imageHeight
 
         if (isClickedInsideImage) {
           showModal()
@@ -414,15 +260,7 @@ export const PageGame = () => {
       str = 'Вернуться к игре'
     }
     if (isStartGame) {
-      buttonMenu(
-        ctx3,
-        canvas3,
-        str,
-        gameSettings.CANVAS_WIDTH_PX - 175,
-        5,
-        170,
-        40
-      )
+      buttonMenu(ctx3, canvas3, str, gameSettings.CANVAS_WIDTH_PX - 175, 5, 170, 40)
     }
   }, [gameStep, visibleField, isStartGame])
 
@@ -456,18 +294,13 @@ export const PageGame = () => {
     <>
       <div className="content">
         {/*<Title>Cтраница игры</Title>*/}
-        <Space style={inputContainer}>
-          {gameStep == 'association' && (
-            <Input placeholder="Напишите ассоциацию" />
-          )}
-        </Space>
+        <Space style={inputContainer}>{gameStep == 'association' && <Input placeholder="Напишите ассоциацию" />}</Space>
 
         <Row className="w100">
           <Col span={8} offset={12}>
             <Button type="primary" onClick={toggleFullScreen}>
               <FullscreenOutlined rev={undefined} />
-              {fullScreen ? <>Закрыть</> : <>Открыть</>} &nbsp;полноэкранный
-              режим
+              {fullScreen ? <>Закрыть</> : <>Открыть</>} &nbsp;полноэкранный режим
             </Button>
           </Col>
           <Col span={3}>
@@ -476,11 +309,7 @@ export const PageGame = () => {
             </Button>
             {playMusic && (
               <div style={sliderVertical}>
-                <Slider
-                  vertical
-                  defaultValue={musicSettings.MUSIC_INIT_VOLUME}
-                  onChange={setMusicVolume}
-                />
+                <Slider vertical defaultValue={musicSettings.MUSIC_INIT_VOLUME} onChange={setMusicVolume} />
               </div>
             )}
           </Col>
@@ -500,16 +329,8 @@ export const PageGame = () => {
               border: '1px solid rgba(255,255,255,0.4)',
               backgroundColor: 'rgba(255,255,255,0.1)',
             }}></canvas>
-          <canvas
-            id="canvas2"
-            className="layer layer2"
-            width={gameSettings.CANVAS_WIDTH_PX}
-            height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
-          <canvas
-            id="canvas3"
-            className="layer layer3"
-            width={gameSettings.CANVAS_WIDTH_PX}
-            height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
+          <canvas id="canvas2" className="layer layer2" width={gameSettings.CANVAS_WIDTH_PX} height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
+          <canvas id="canvas3" className="layer layer3" width={gameSettings.CANVAS_WIDTH_PX} height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
         </div>
         <Row className="w100">
           <Col span={8} className="text-left">
@@ -529,10 +350,7 @@ export const PageGame = () => {
             {isStartGame ? (
               <>
                 {visibleField ? (
-                  <Button
-                    type="primary"
-                    onClick={ReturnToGame}
-                    className="success">
+                  <Button type="primary" onClick={ReturnToGame} className="success">
                     Вернуться к игре
                   </Button>
                 ) : (
@@ -565,18 +383,8 @@ export const PageGame = () => {
         </Row>
         <Row className="w100 mb-footer"></Row>
       </div>
-      <Modal
-        title=" "
-        open={isModalOpen}
-        onOk={сloseModal}
-        onCancel={сloseModal}
-        footer={null}>
-        {gameStep == 'start' && (
-          <WgameStepStart
-            сloseModal={сloseModal}
-            startSettingsSave={startSettingsSave}
-          />
-        )}
+      <Modal title=" " open={isModalOpen} onOk={сloseModal} onCancel={сloseModal} footer={null}>
+        {gameStep == 'start' && <WgameStepStart сloseModal={сloseModal} startSettingsSave={startSettingsSave} />}
       </Modal>
     </>
   )
