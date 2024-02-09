@@ -29,7 +29,7 @@ export const WLeaderboardTable = (props: ILeaderboardTable) => {
   return (
     <>
       <Row>
-        <Col span={10} offset={7}>
+        <Col span={12}>
           <Table
             rowKey={record => record.id}
             dataSource={props.users}
