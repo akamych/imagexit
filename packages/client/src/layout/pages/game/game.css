@@ -15,7 +15,7 @@
 
 .layers {
   position: relative;
-  margin-top: 50px;
+  margin-top: 0px;
 
   & .layer {
     position: absolute;
@@ -46,4 +46,11 @@
 }
 .mb-footer {
   margin-bottom: 40px;
+}
+
+.mb-row {
+  margin-bottom: 20px;
+}
+.mt-divider {
+  margin-top: 50px !important;
 }

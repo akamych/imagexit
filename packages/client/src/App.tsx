@@ -20,14 +20,14 @@ function App() {
   }, [])
   return (
     <ErrorBoundary>
-    <BrowserRouter>
-      <Provider store={store}>
-        <div className="App">
-          Вот тут будет жить ваше приложение :)
-          <Pages />
-        </div>
-      </Provider>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Provider store={store}>
+          <div className="App">
+            Вот тут будет жить ваше приложение :)
+            <Pages />
+          </div>
+        </Provider>
+      </BrowserRouter>
     </ErrorBoundary>
   )
 }

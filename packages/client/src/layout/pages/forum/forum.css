@@ -51,7 +51,8 @@
     color: rgba(0, 0, 0, 0.45);
     vertical-align: middle;
 
-    & .content {
+    & .box-content {
+      background-color: #fff;
       padding-bottom: 25px;
       border-bottom: 1px dashed #e7eaec;
       text-overflow: ellipsis;

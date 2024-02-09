@@ -1,16 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Alert, Avatar, Button, Flex, List, Modal, Typography } from 'antd'
-import { IItemTopic, IProps } from './forum.types'
+import { IItemTopic } from './forum.types'
 import { WForumTopicForm } from './WForumTopicForm'
 import { apiGetTopicList } from '../../api/forum.api'
 import { alertStyle } from '../../assets/antdStyle'
-import {
-  MessageOutlined,
-  EyeOutlined,
-  ClockCircleOutlined,
-  CalendarOutlined,
-} from '@ant-design/icons'
+import { MessageOutlined, EyeOutlined, ClockCircleOutlined, CalendarOutlined } from '@ant-design/icons'
 
 // ------- TopicP review
 const BoxTopicPreview = (props: IItemTopic) => {
@@ -20,7 +15,7 @@ const BoxTopicPreview = (props: IItemTopic) => {
       <Link to={props.item.url}>
         <Title level={5}>{props.item.title}</Title>
       </Link>
-      <div className="content">{props.item.content}</div>
+      <div className="box-content">{props.item.content}</div>
       <div>
         <Flex className="info-create">
           <div>
@@ -29,10 +24,7 @@ const BoxTopicPreview = (props: IItemTopic) => {
           </div>
           <div>
             <Avatar src={props.item.created.avatar} size={25} />
-            <span
-              className={props.item.created.self ? 'login active' : 'login'}>
-              {props.item.created.login}
-            </span>
+            <span className={props.item.created.self ? 'login active' : 'login'}>{props.item.created.login}</span>
           </div>
         </Flex>
       </div>
@@ -51,9 +43,7 @@ const BoxLastComments = (props: IItemTopic) => {
         </div>
         <div>
           <div className="text">последний</div>
-          <div className={props.item.updated.self ? 'login active' : 'login'}>
-            {props.item.updated.login}
-          </div>
+          <div className={props.item.updated.self ? 'login active' : 'login'}>{props.item.updated.login}</div>
           <div className="text">
             <ClockCircleOutlined rev={undefined} /> {props.item.updated.date}
           </div>
@@ -83,8 +73,7 @@ const BoxTopicInfoIcon = (props: IItemTopic) => {
 export const WForumListTopics = () => {
   const ModalFooter = useRef([])
   // ------- data
-  const { loading, apiResList, apiDataList, apiStatus, apiMessage } =
-    apiGetTopicList() // API
+  const { loading, apiResList, apiDataList, apiStatus, apiMessage } = apiGetTopicList() // API
 
   const getList = useCallback(async () => {
     try {
@@ -130,9 +119,7 @@ export const WForumListTopics = () => {
         dataSource={apiDataList}
         footer={ButtonAdd}
         renderItem={item => (
-          <List.Item
-            key={item.title}
-            actions={[<BoxLastComments item={item} />]}>
+          <List.Item key={item.title} actions={[<BoxLastComments item={item} />]}>
             <BoxTopicInfoIcon item={item} />
             <BoxTopicPreview item={item} />
           </List.Item>
@@ -143,19 +130,11 @@ export const WForumListTopics = () => {
   // --------
   return (
     <>
-      {apiStatus == 'error' && (
-        <Alert message={apiMessage} type="error" style={alertStyle} />
-      )}
-      {loading && (
-        <Alert message="Загрузка ... " type="info" style={alertStyle} />
-      )}
+      {apiStatus == 'error' && <Alert message={apiMessage} type="error" style={alertStyle} />}
+      {loading && <Alert message="Загрузка ... " type="info" style={alertStyle} />}
       {ButtonAdd}
       {BoxList}
-      <Modal
-        title="Добавление топика"
-        open={isModalOpen}
-        onCancel={handleCancel}
-        footer={ModalFooter.current}>
+      <Modal title="Добавление топика" open={isModalOpen} onCancel={handleCancel} footer={ModalFooter.current}>
         <WForumTopicForm />
       </Modal>
     </>

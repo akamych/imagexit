@@ -14,11 +14,9 @@ export const UseInitImage = () => {
     const promises: any[] = []
     Array.from({ length: 6 }).forEach((_, index) => {
       promises.push(
-        toDataURL(`../../assets/images/cards/${index + 1}.jpeg`).then(
-          dataUrl => {
-            cards.push(dataUrl as CanvasImageSource)
-          }
-        )
+        toDataURL(`../../assets/images/cards/${index + 1}.jpeg`).then(dataUrl => {
+          cards.push(dataUrl as CanvasImageSource)
+        })
       )
     })
 

@@ -23,25 +23,19 @@ export const UseInitCanvas = () => {
 
   useEffect(() => {
     // ------- основной - фон
-    const canvasInit: HTMLCanvasElement = document.getElementById(
-      'canvas'
-    ) as HTMLCanvasElement
+    const canvasInit: HTMLCanvasElement = document.getElementById('canvas') as HTMLCanvasElement
     setCanvas(canvasInit)
     const ctx = canvasInit.getContext('2d')
     setCtx(ctx)
 
     // ------- второй слой - анимация
-    const canvas2Init: HTMLCanvasElement = document.getElementById(
-      'canvas2'
-    ) as HTMLCanvasElement
+    const canvas2Init: HTMLCanvasElement = document.getElementById('canvas2') as HTMLCanvasElement
     setCanvas2(canvas2Init)
     const ctx2 = canvas2Init.getContext('2d')
     setCtx2(ctx2)
 
     // ------- третий слой - кликабильные элементы
-    const canvas3Init: HTMLCanvasElement = document.getElementById(
-      'canvas3'
-    ) as HTMLCanvasElement
+    const canvas3Init: HTMLCanvasElement = document.getElementById('canvas3') as HTMLCanvasElement
     setCanvas3(canvas3Init)
     const ctx3 = canvas3Init.getContext('2d')
     setCtx3(ctx3)
@@ -52,12 +46,7 @@ export const UseInitCanvas = () => {
     if (!ctx) {
       return
     }
-    ctx.clearRect(
-      0,
-      0,
-      gameSettings.CANVAS_WIDTH_PX,
-      gameSettings.CANVAS_HEIGHT_PX
-    )
+    ctx.clearRect(0, 0, gameSettings.CANVAS_WIDTH_PX, gameSettings.CANVAS_HEIGHT_PX)
   }
 
   /** Очистка слоя анимации canvas */
@@ -65,12 +54,7 @@ export const UseInitCanvas = () => {
     if (!ctx2) {
       return
     }
-    ctx2.clearRect(
-      0,
-      0,
-      gameSettings.CANVAS_WIDTH_PX,
-      gameSettings.CANVAS_HEIGHT_PX
-    )
+    ctx2.clearRect(0, 0, gameSettings.CANVAS_WIDTH_PX, gameSettings.CANVAS_HEIGHT_PX)
   }
 
   /** Очистка слоя canvas с кликабельными объеками  */
@@ -78,12 +62,7 @@ export const UseInitCanvas = () => {
     if (!ctx3) {
       return
     }
-    ctx3.clearRect(
-      0,
-      0,
-      gameSettings.CANVAS_WIDTH_PX,
-      gameSettings.CANVAS_HEIGHT_PX
-    )
+    ctx3.clearRect(0, 0, gameSettings.CANVAS_WIDTH_PX, gameSettings.CANVAS_HEIGHT_PX)
   }
 
   return {
