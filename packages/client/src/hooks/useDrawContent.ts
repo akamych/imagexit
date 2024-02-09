@@ -4,7 +4,6 @@ type IUseDrawContent = (ctx: CanvasRenderingContext2D | null) => {
   writeTitle: (text: string) => void
   writeTask: (text: string) => void
   writeText: (text: string, offsetTop: number) => void
-  writeSrting: (text: string, color: string, x: number, y: number) => void
   bgContent: () => void
   displayContent: (step: string) => void
 }
@@ -104,21 +103,9 @@ export const UseDrawContent: IUseDrawContent = ctx => {
 
     wrapText(ctx, text, gameSettings.CONTENT_LEFT_PX + typographySettings.textString.offset.left, gameSettings.CONTENT_TOP_PX + offsetTop, typographySettings.textString.width, typographySettings.textString.fontSize * 1.5)
   }
-  const writeSrting = (text: string, color: string, x: number, y: number) => {
-    if (!ctx) {
-      return
-    }
-    ctx.font = `${typographySettings.textString.fontSize}px ${typographySettings.textString.fontFamily}`
-    ctx.fillStyle = typographySettings.textString.color
-    ctx.textBaseline = 'top'
-    ctx.textAlign = 'start'
-
-    wrapText(ctx, text, x, y, typographySettings.textString.width, typographySettings.textString.fontSize * 1.5)
-  }
-
+  /** Отрисовка заголовка, задания и текста для хода.*/
   const displayContent = (step: string) => {
     writeRaundNumber(3)
-    // bgContent()
     writeTitle(gameContent[step].title)
     writeTask(gameContent[step].task)
   }
@@ -129,6 +116,5 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     writeTask,
     writeText,
     displayContent,
-    writeSrting,
   }
 }

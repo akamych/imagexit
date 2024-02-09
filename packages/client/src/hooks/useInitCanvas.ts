@@ -12,10 +12,12 @@ export const UseInitCanvas = () => {
   /** Основной слой контента */
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null)
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
+
   /** Слой анимации */
   const [ctx2, setCtx2] = useState<CanvasRenderingContext2D | null>(null)
   const [canvas2, setCanvas2] = useState<HTMLCanvasElement | null>(null)
-  /** Слой объектов с собыями */
+
+  /** Слой для размещения кликабельных объектов */
   const [ctx3, setCtx3] = useState<CanvasRenderingContext2D | null>(null)
   const [canvas3, setCanvas3] = useState<HTMLCanvasElement | null>(null)
 
@@ -25,17 +27,20 @@ export const UseInitCanvas = () => {
     setCanvas(canvasInit)
     const ctx = canvasInit.getContext('2d')
     setCtx(ctx)
+
     // ------- второй слой - анимация
     const canvas2Init: HTMLCanvasElement = document.getElementById('canvas2') as HTMLCanvasElement
     setCanvas2(canvas2Init)
     const ctx2 = canvas2Init.getContext('2d')
     setCtx2(ctx2)
+
     // ------- третий слой - кликабильные элементы
     const canvas3Init: HTMLCanvasElement = document.getElementById('canvas3') as HTMLCanvasElement
     setCanvas3(canvas3Init)
     const ctx3 = canvas3Init.getContext('2d')
     setCtx3(ctx3)
   }, [])
+
   /** Очистка основного слоя canvas */
   const clearCanvas = () => {
     if (!ctx) {
@@ -43,6 +48,7 @@ export const UseInitCanvas = () => {
     }
     ctx.clearRect(0, 0, gameSettings.CANVAS_WIDTH_PX, gameSettings.CANVAS_HEIGHT_PX)
   }
+
   /** Очистка слоя анимации canvas */
   const clearCanvas2 = () => {
     if (!ctx2) {
@@ -50,13 +56,15 @@ export const UseInitCanvas = () => {
     }
     ctx2.clearRect(0, 0, gameSettings.CANVAS_WIDTH_PX, gameSettings.CANVAS_HEIGHT_PX)
   }
-  /** Очистка слоя объектов с событиями canvas */
+
+  /** Очистка слоя canvas с кликабельными объеками  */
   const clearCanvas3 = () => {
     if (!ctx3) {
       return
     }
     ctx3.clearRect(0, 0, gameSettings.CANVAS_WIDTH_PX, gameSettings.CANVAS_HEIGHT_PX)
   }
+
   return {
     ctx,
     canvas,

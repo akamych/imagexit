@@ -26,7 +26,6 @@ export interface IPlayerElement {
   left: number
   scope: number
 }
-
 export interface IPlayerInfo {
   userId: string
   login: string
@@ -40,6 +39,7 @@ export interface IRaundPlayerInfo {
   pointsOld: number
   pointsAdd: number
 }
+
 export interface IRaundInfo {
   id: number
   masterUserId: string
@@ -47,6 +47,7 @@ export interface IRaundInfo {
   mastercardId: number
   players: IRaundPlayerInfo[]
 }
+
 export const defaultRaundInfo: IRaundInfo = {
   id: 0,
   masterUserId: '',
@@ -61,4 +62,13 @@ export const defaultIPlayersPoint: IRaundInfo = {
   masterAssociation: '',
   mastercardId: 0,
   players: <IRaundPlayerInfo[]>[],
+}
+
+export type IcheckLimits = {
+  directionMovement: number
+  x: number
+  y: number
+  offsetX: number
+  offsetY: number
+  offsetDesign: boolean
 }

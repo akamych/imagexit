@@ -43,12 +43,11 @@ type IAnimationXYNow = {
  * @param color - цвет фишки
  * @returns
  */
-const printCircl = (ctx: CanvasRenderingContext2D | null, centerX: number, centerY: number, color: string) => {
+const drawСircle = (ctx: CanvasRenderingContext2D | null, centerX: number, centerY: number, color: string) => {
   if (!ctx) {
     return
   }
   const radius = 10
-
   ctx.beginPath()
   ctx.arc(centerX, centerY, radius, 0, 30, false)
   ctx.fillStyle = color
@@ -87,8 +86,10 @@ const getCoordinatesCell = (numberPlayers: number) => {
 export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationField) => {
   const [players, setPlayers] = useState<IPlayerInfo[]>([]) // информация о игроках: логин и пр
   const [points, setPoints] = useState<IRaundInfo>(defaultIPlayersPoint) // баллы игроков за ход
+
   /** Массив с координатами и коофициентами где сейчас находится фишка, из какой точки движется, в какую точку движется */
   const [animationXY, setAnimationXY] = useState<IAnimationXYNow[]>([])
+
   const updateAnimationXY = (index: number, newItem: IAnimationXYNow) => {
     setAnimationXY(prevItems => {
       const newItems: IAnimationXYNow[] = [...prevItems] // Создаем копию массива
@@ -96,9 +97,10 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
       return newItems // Возвращаем новый массив
     })
   }
+
   /** Индекс активной фишки. Ее передвигаем */
-  const activeIndex = useRef<number | null>(null) //
-  // ------
+  const activeIndex = useRef<number | null>(null)
+
   /** Координаты игрока в одной ячейки. Вычисляет только если изменились кол-во игроков */
   const coordsOnCell = useMemo(() => {
     return getCoordinatesCell(players.length)
@@ -110,6 +112,7 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
     }
     ctx.clearRect(0, 0, gameSettings.CANVAS_WIDTH_PX, gameSettings.CANVAS_HEIGHT_PX)
   }
+
   /*
    * Тестовые данные Метод генерирует рандомное количество игроков и рандомно распределяет их по игровому полю
    * */
@@ -117,9 +120,9 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
     if (!ctx) {
       return
     }
-    //clearCanvas()
+    clearCanvas()
     setAnimationXY([])
-    const { playerJSON, pointsJSON } = getPlayersJSON()
+    const { playerJSON, pointsJSON } = getPlayersJSON(7)
     setPlayers(playerJSON)
     setPoints(pointsJSON)
     return true
@@ -139,7 +142,6 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
    * Функция анимации фишек на поле
    * @description Если анимация разрешена, то фишки передвигаются по очереди
    */
-
   function showAnimationOnTheBoard() {
     /** Шаг передвижения фишки */
     const offset = 1
@@ -154,69 +156,77 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
     }
 
     /**  moving - переменная. Значения: false - достиг точки  , true - движется к точке  */
-    let moving = animationXY[index].moving // статус: достиг точки= false,
+    let moving = animationXY[index].moving
+
     /** Номер поля куда движется фишка */
     let goToCell = animationXY[index].goToCell
 
     /** В каком направлении движение +1/-1 */
-    const moveSign = Math.sign(points.players[index].pointsAdd) // в какую сторону движемся
+    const moveSign = Math.sign(points.players[index].pointsAdd)
+
     /** координаты где сейчас расположена фишка */
     let x = animationXY[index].x
     let y = animationXY[index].y
+
     /** коэфффициент линейной функции */
     let k = animationXY[index].k
     let b = animationXY[index].b
+
     /** Если фишка находится в ячейке на своем месте и не движется*/
     if (moving == false) {
       /** Если промежуточная ячейка и не равна финальной */
       if (goToCell && goToCell != animationXY[index].pointFinish) {
         goToCell += moveSign // вычисляем следующую ячейку
         moving = true
+
         /** Координаты точки назначения - точку назначения только установили*/
         const { x: xFinish, y: yFinish } = coordinateCalculation(goToCell, index)
+
         /** коофициенты уравнения прямой y=kx+b */
         k = (yFinish - y) / (xFinish - x)
         b = y - k * x
       }
     }
 
-    if (goToCell != null) {
-      if (moving == true) {
-        /** Координаты точки назначения */
-        const { x: xFinish, y: yFinish } = coordinateCalculation(goToCell, index)
-        const xDelta = Math.abs(xFinish - x)
-        const xSign = Math.sign(xFinish - x)
-        const yDelta = Math.abs(yFinish - y)
-        if (xDelta == 0 && yDelta == 0) {
-          moving = false
-          /** Finish */
-          if (goToCell == animationXY[index].pointFinish) {
-            activeIndex.current = animationXY.length >= activeIndex.current ? activeIndex.current + 1 : null
-          }
-        } else {
-          moving = true
-        }
-        x = x + xSign * offset
-        y = k * x + b
+    if (goToCell != null && moving == true) {
+      /** Координаты точки назначения */
+      const { x: xFinish, y: yFinish } = coordinateCalculation(goToCell, index)
 
-        updateAnimationXY(index, {
-          x: x,
-          y: y,
-          color: animationXY[index].color,
-          moving: moving,
-          k: k,
-          b: b,
-          pointStart: animationXY[index].pointStart,
-          goToCell: goToCell,
-          pointFinish: points.players[index].pointsOld + points.players[index].pointsAdd,
-        })
+      const xDelta = Math.abs(xFinish - x)
+      const xSign = Math.sign(xFinish - x)
+      const yDelta = Math.abs(yFinish - y)
+
+      if (xDelta == 0 && yDelta == 0) {
+        moving = false
+
+        // ---- Finish
+        if (goToCell == animationXY[index].pointFinish) {
+          activeIndex.current = animationXY.length >= activeIndex.current ? activeIndex.current + 1 : null
+        }
+      } else {
+        moving = true
       }
+      x = x + xSign * offset
+      y = k * x + b
+
+      updateAnimationXY(index, {
+        x: x,
+        y: y,
+        color: animationXY[index].color,
+        moving: moving,
+        k: k,
+        b: b,
+        pointStart: animationXY[index].pointStart,
+        goToCell: goToCell,
+        pointFinish: points.players[index].pointsOld + points.players[index].pointsAdd,
+      })
     }
   }
 
   /** Отрисовка стартовой позиции игроков */
   useEffect(() => {
     let animationFlag = false
+
     /** массив начальных положений фишек */
     const arrayXY: IAnimationXYNow[] = []
     points.players.forEach((item, index) => {
@@ -224,7 +234,6 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
         animationFlag = true
       }
       const { x, y } = coordinateCalculation(item.pointsOld, index)
-
       arrayXY.push({
         x: x,
         y: y,
@@ -258,7 +267,7 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
     if (animationXY.length > 0) {
       clearCanvas()
       animationXY.forEach(item => {
-        printCircl(ctx, item.x, item.y, item.color)
+        drawСircle(ctx, item.x, item.y, item.color)
       })
       setTimeout(() => {
         showAnimationOnTheBoard()

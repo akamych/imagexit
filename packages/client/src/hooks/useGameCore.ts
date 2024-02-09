@@ -15,7 +15,7 @@ export const UseGameCore = () => {
   const [playersInfo, setPlayersInfo] = useState<IPlayerInfo[]>([{ userId: 'self', login: 'self', color: playerColors[6] }]) // информация о игроках
   const [gameStep, setGameStep] = useState<string>('') // шаг в игре, статус
   const [difficulty, setDifficulty] = useState('normal') // уровень сложности в игре  light,normal/hard
-  const [raundInfo, setRaundInfo] = useState<IRaundInfo>(defaultRaundInfo) // информация о раунде в игре getApiRaundInfo()
+  const [raundInfo, setRaundInfo] = useState<IRaundInfo>(defaultRaundInfo(7)) // информация о раунде в игре getApiRaundInfo()
 
   const [selectedCard, setSelectedCard] = useState<ICardElement | null>(null)
 

@@ -10,14 +10,13 @@ export const dataRaundInfoTest: IRaundInfo = {
 }
 
 /*
- * Метод генерирует рандомное количество игроков и рандомно распределяет их по игровому полю
+ * Метод генерирует тестовые данные для указанного количества игроков
  * */
-export const getPlayersJSON = () => {
-  const number = 7
+export const getPlayersJSON = (numberPlayers: number) => {
   const playerJSON = <IPlayerInfo[]>[]
   const points = <IRaundPlayerInfo[]>[]
 
-  for (let i = 0; i < number; i++) {
+  for (let i = 0; i < numberPlayers; i++) {
     playerJSON.push({
       userId: 'W3' + i,
       login: 'login ' + i + 1,
@@ -27,7 +26,7 @@ export const getPlayersJSON = () => {
       userId: 'W3' + i,
       selectedCard: i,
       master: i == 2 ? true : false,
-      pointsOld: 15 + i,
+      pointsOld: 15,
       pointsAdd: i == 2 ? -3 : i + 1,
     }) //  pointsAdd: i == 2 ? -3 : i + 1,
   }
@@ -40,11 +39,11 @@ export const getPlayersJSON = () => {
   }
   return { playerJSON, pointsJSON }
 }
-export const getApiPlayersInfo = () => {
-  const { playerJSON } = getPlayersJSON()
+export const getApiPlayersInfo = (numberPlayers: number) => {
+  const { playerJSON } = getPlayersJSON(numberPlayers)
   return playerJSON
 }
-export const getApiRaundInfo = () => {
-  const { pointsJSON } = getPlayersJSON()
+export const getApiRaundInfo = (numberPlayers: number) => {
+  const { pointsJSON } = getPlayersJSON(numberPlayers)
   return pointsJSON
 }

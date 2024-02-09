@@ -19,6 +19,7 @@ export const UseInitImage = () => {
         })
       )
     })
+
     const arr: ICardElement[] = []
     Promise.all(promises).then(() => {
       cards.forEach((card, index) => {
@@ -32,6 +33,7 @@ export const UseInitImage = () => {
         })
       })
     })
+
     setCardsElement(arr)
   }, [])
 
