@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Alert, Avatar, Button, Divider, List, Modal } from 'antd'
 import { LikeOutlined, UserOutlined } from '@ant-design/icons'
 import { WForumCommentForm } from './WForumCommentForm'
@@ -32,8 +32,7 @@ export const WForumListComments = () => {
   }, [])
 
   // ------- data
-  const { loading, apiResList, apiDataList, apiStatus, apiMessage } =
-    apiGetCommentList() // API
+  const { loading, apiResList, apiDataList, apiStatus, apiMessage } = apiGetCommentList() // API
   const getList = useCallback(
     async (id: number) => {
       try {
@@ -90,18 +89,10 @@ export const WForumListComments = () => {
       <Divider className="divider" orientation="left">
         Комментарии
       </Divider>
-      {apiStatus == 'error' && (
-        <Alert message={apiMessage} type="error" style={alertStyle} />
-      )}
-      {loading && (
-        <Alert message="Загрузка ... " type="info" style={alertStyle} />
-      )}
+      {apiStatus == 'error' && <Alert message={apiMessage} type="error" style={alertStyle} />}
+      {loading && <Alert message="Загрузка ... " type="info" style={alertStyle} />}
       {BoxList}
-      <Modal
-        title="Добавление комментария"
-        open={isModalOpen}
-        onCancel={handleCancel}
-        footer={ModalFooter.current}>
+      <Modal title="Добавление комментария" open={isModalOpen} onCancel={handleCancel} footer={ModalFooter.current}>
         <WForumCommentForm />
       </Modal>
     </>

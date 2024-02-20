@@ -1,14 +1,7 @@
+import React from 'react'
 import { AppDispatch } from '../../../store/Store'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  validateLoginCharacters,
-  validateNotOnlyNumbers,
-  validateContainsCapitalLetter,
-  validateContainsNumber,
-  validateOnlyNumbers,
-  validateNameCharacters,
-  validateFirstLetterIsCapital,
-} from '../../../utils/InputUtil'
+import { validateLoginCharacters, validateNotOnlyNumbers, validateContainsCapitalLetter, validateContainsNumber, validateOnlyNumbers, validateNameCharacters, validateFirstLetterIsCapital } from '../../../utils/InputUtil'
 import './pageSignUp.css'
 import { Typography, Button, Form, Input, Select } from 'antd'
 import { selectError } from '../../../store/reducers/AuthReducer'

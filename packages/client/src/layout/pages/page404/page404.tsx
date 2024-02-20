@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Typography } from 'antd'
 import { Link } from 'react-router-dom'
 import styles from './styles.module.css'
@@ -9,10 +11,7 @@ export const PageNotFound = () => {
       <div className={styles.content}>
         <Title>Ошибка 404: Некорректный запрос</Title>
         <Title>¯\_(ツ)_/¯</Title>
-        <p style={{ color: 'black' }}>
-          Извините, произошла ошибка. Пожалуйста, проверьте ваш запрос и
-          повторите попытку.
-        </p>
+        <p style={{ color: 'black' }}>Извините, произошла ошибка. Пожалуйста, проверьте ваш запрос и повторите попытку.</p>
         <Link to="/">Вернуться на главную страницу</Link>
       </div>
     </>

@@ -1,5 +1,5 @@
 import { Alert, Button, Typography } from 'antd'
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { IProps } from './forum.types'
 import { IPropsDefault } from '../../constants/data.forum'
@@ -15,8 +15,7 @@ export const WForumTopicContent = () => {
   const [status, setStatus] = useState('') // ok|error|
   const [message, setMessage] = useState('')
   // ------- data
-  const { loading, apiResTopic, apiDataTopic, apiStatus, apiMessage } =
-    apiGetTopicContent() // API
+  const { loading, apiResTopic, apiDataTopic, apiStatus, apiMessage } = apiGetTopicContent() // API
   const getContent = useCallback(
     async (id: number) => {
       try {
@@ -60,17 +59,11 @@ export const WForumTopicContent = () => {
   return (
     <>
       {loading && <Alert message="Загрузка" type="info" style={alertStyle} />}
-      {status == 'error' && (
-        <Alert message={message} type="error" style={alertStyle} />
-      )}
+      {status == 'error' && <Alert message={message} type="error" style={alertStyle} />}
       {dataTopic.created.self && (
         <>
           <Title editable={{ onChange: saveTitle }}>{dataTopic.title}</Title>
-          <Paragraph
-            editable={{ onChange: saveContent }}
-            ellipsis={
-              ellipsis ? { rows: 2, expandable: true, symbol: ' ' } : false
-            }>
+          <Paragraph editable={{ onChange: saveContent }} ellipsis={ellipsis ? { rows: 2, expandable: true, symbol: ' ' } : false}>
             {dataTopic.content}
           </Paragraph>
         </>
@@ -78,12 +71,7 @@ export const WForumTopicContent = () => {
       {!dataTopic.created.self && (
         <>
           <Title>{dataTopic.title}</Title>
-          <Paragraph
-            ellipsis={
-              ellipsis ? { rows: 2, expandable: true, symbol: ' ' } : false
-            }>
-            {dataTopic.content}
-          </Paragraph>
+          <Paragraph ellipsis={ellipsis ? { rows: 2, expandable: true, symbol: ' ' } : false}>{dataTopic.content}</Paragraph>
         </>
       )}
       <div className="button-more">

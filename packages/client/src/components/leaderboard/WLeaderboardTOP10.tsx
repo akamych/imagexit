@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { dataTestLeaderboardUsersTop10 } from '../../constants/data.leaderboard'
 import { WLeaderboardTable } from './WLeaderboardTable'
 

@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Breadcrumb, Layout, Typography } from 'antd'
 import { WForumListTopics } from '../../../components/forum/WForumListTopics'
 import './forum.css'

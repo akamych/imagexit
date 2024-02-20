@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Breadcrumb, Layout } from 'antd'
 import { Link, useParams } from 'react-router-dom'
 import { WForumListComments } from '../../../components/forum/WForumListComments'

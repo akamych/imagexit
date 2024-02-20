@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Avatar, Col, Row, Table } from 'antd'
 import { ILeaderboardTable } from '../../types/leaderboard.types'
 

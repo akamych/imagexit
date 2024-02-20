@@ -1,3 +1,4 @@
+import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { PageMain } from '../layout/pages/main/pageMain'
 import { PageNotFound } from '../layout/pages/page404/page404'

@@ -1,5 +1,5 @@
 import { Alert, Button, Form, Input } from 'antd'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { alertStyle } from '../../assets/antdStyle'
 
 export const WForumCommentForm = () => {
@@ -24,16 +24,8 @@ export const WForumCommentForm = () => {
         message: '',
       }}
       scrollToFirstError>
-      {statusForm == 'success' && (
-        <Alert
-          message="Комментарий успешно добавлен"
-          type="success"
-          style={alertStyle}
-        />
-      )}
-      {statusForm == 'error' && (
-        <Alert message="Ошибка" type="error" style={alertStyle} />
-      )}
+      {statusForm == 'success' && <Alert message="Комментарий успешно добавлен" type="success" style={alertStyle} />}
+      {statusForm == 'error' && <Alert message="Ошибка" type="error" style={alertStyle} />}
       <Form.Item
         name="message"
         rules={[

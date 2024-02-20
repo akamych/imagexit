@@ -1,3 +1,5 @@
+import React from 'react'
+
 import './leaderboard.css'
 import { Layout, Tabs, Typography } from 'antd'
 import type { TabsProps } from 'antd'
