@@ -5,8 +5,11 @@ import App from 'client/src/App'
 import { StaticRouter } from 'react-router-dom/server'
 import { Provider } from 'react-redux'
 import store from '../../client/src/store/Store'
+import { authAction } from 'client/src/store/actions/AuthActions'
 
 export default (req: Request, res: Response) => {
+  store.dispatch(authAction())
+
   const jsx = (
     <Provider store={store}>
       <StaticRouter location={req.url}>
