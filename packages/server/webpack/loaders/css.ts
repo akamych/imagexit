@@ -1,7 +1,4 @@
-import path from 'path'
-
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const { IS_DEV } = require('../env')
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 
 export default {
   client: {
