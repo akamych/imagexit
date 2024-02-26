@@ -25,7 +25,6 @@ async function startServer() {
   const srcPath = path.dirname(require.resolve('client'))
   const ssrClientPath = require.resolve('client/ssr-dist/ssr.cjs')
 
-  app.use(express.static(distPath))
   if (isDev()) {
     vite = await createViteServer({
       server: { middlewareMode: true },
@@ -50,7 +49,9 @@ async function startServer() {
   app.get('/api', (_, res) => {
     res.json('👋 Howdy from the server :)')
   })
-
+  if (!isDev()) {
+    app.use('/assets', express.static(path.resolve(distPath, 'assets')))
+  }
   app.use('*', cookieParser(), async (req, res, next) => {
     const url = req.originalUrl
 
