@@ -80,17 +80,6 @@ async function startServer() {
 
       const { render } = mod
       const [initialState, appHtml] = await render(url, new YandexAPIRepository(req.headers['cookie']))
-      // Encoding for fast state parsing
-      /*const initStateSerialized = jsesc(JSON.stringify(initialState), {
-        json: true,
-        isScriptContext: true,
-      })*/
-
-      // Encoding from Redux docs
-      /*const initStateSerialized = JSON.stringify(initialState).replace(
-        /</g,
-        '\\u003c'
-      )*/
 
       const initStateSerialized = JSON.stringify(initialState)
 
