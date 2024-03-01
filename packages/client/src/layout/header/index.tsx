@@ -14,15 +14,7 @@ export function LHeader() {
   return (
     <>
       <Header style={{ display: 'flex', alignItems: 'center' }}>
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          onClick={onClick}
-          selectedKeys={[current]}
-          defaultSelectedKeys={['2']}
-          items={itemsMenu}
-          style={{ flex: 1, minWidth: 0 }}
-        />
+        <Menu theme="dark" mode="horizontal" onClick={onClick} selectedKeys={[current]} defaultSelectedKeys={['2']} items={itemsMenu} style={{ flex: 1, minWidth: 0 }} />
       </Header>
     </>
   )

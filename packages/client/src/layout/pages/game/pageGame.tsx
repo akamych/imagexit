@@ -314,6 +314,7 @@ export const PageGame = () => {
             )}
           </Col>
         </Row>
+        
         <div
           className="layers"
           style={{
@@ -329,6 +330,7 @@ export const PageGame = () => {
               border: '1px solid rgba(255,255,255,0.4)',
               backgroundColor: 'rgba(255,255,255,0.1)',
             }}></canvas>
+
           <canvas id="canvas2" className="layer layer2" width={gameSettings.CANVAS_WIDTH_PX} height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
           <canvas id="canvas3" className="layer layer3" width={gameSettings.CANVAS_WIDTH_PX} height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
         </div>

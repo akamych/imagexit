@@ -21,6 +21,7 @@ describe('UseDrawCards hook', () => {
       drawImage: jest.fn(),
     } as unknown as CanvasRenderingContext2D
     cardsElement = [{ id: 1, img: new Image(), left: 0, top: 0, width: 100, height: 100 }]
+
     gameStep = 'voting'
 
     result = renderHook(() => UseDrawCards(ctx, cardsElement, setCardsElement, setSelectedCard, gameStep)).result
