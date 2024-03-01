@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary'
 import { Provider } from 'react-redux'
 import store from './store/Store'
+import { oAuthRequest } from './api/oauth.api'
 
 function App() {
   useEffect(() => {
@@ -17,7 +18,9 @@ function App() {
     }
 
     fetchServerData()
+    oAuthRequest()
   }, [])
+
   return (
     <ErrorBoundary>
       <BrowserRouter>
