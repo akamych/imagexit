@@ -13,11 +13,16 @@ export const UseHandler: UseHandler = elem => {
       if (!elem) {
         return
       }
-      const elemLeft = elem.offsetLeft + elem.clientLeft
-      const elemTop = elem.offsetTop + elem.clientTop
+      const elemRect = elem.getBoundingClientRect()
 
-      const x = event.pageX - elemLeft
-      const y = event.pageY - elemTop
+      //const elemLeft = elem.offsetLeft + elem.clientLeft
+      //const elemTop = elem.offsetTop + elem.clientTop
+
+      //const x = event.pageX - elemLeft - elemRect.left
+      //const y = event.pageY - elemTop - elemRect.top
+      const x = event.clientX - elemRect.left
+      const y = event.clientY - elemRect.top
+
       ref.current && ref.current(x, y)
       removeClick()
     },

@@ -24,6 +24,7 @@ export const gameSettings = {
 }
 
 export const playerColors = ['red', 'rgba(0,0,0,1)', 'green', 'rgba(255,255,255,1)', 'yellow', 'rgba(255,169,0,1)', 'blue']
+
 type IgameContent = {
   [key: string]: {
     title: string

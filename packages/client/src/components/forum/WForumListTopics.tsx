@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Alert, Avatar, Button, Flex, List, Modal, Typography } from 'antd'
-import { IItemTopic, IProps } from './forum.types'
+import { IItemTopic } from './forum.types'
 import { WForumTopicForm } from './WForumTopicForm'
 import { apiGetTopicList } from '../../api/forum.api'
 import { alertStyle } from '../../assets/antdStyle'
@@ -15,7 +15,7 @@ const BoxTopicPreview = (props: IItemTopic) => {
       <Link to={props.item.url}>
         <Title level={5}>{props.item.title}</Title>
       </Link>
-      <div className="content">{props.item.content}</div>
+      <div className="box-content">{props.item.content}</div>
       <div>
         <Flex className="info-create">
           <div>

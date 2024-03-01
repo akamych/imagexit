@@ -23,10 +23,10 @@ export const PageLeaderboard = () => {
 
   return (
     <>
-      <Content className="leaderboard">
+      <div className="leaderboard">
         <Title>Рейтинг</Title>
         <Tabs defaultActiveKey="1" centered type="card" items={items} />
-      </Content>
+      </div>
     </>
   )
 }

@@ -1,15 +1,16 @@
 import { playerColors } from '../../constants/game'
 import { IPlayerInfo, IRaundInfo, IRaundPlayerInfo } from '../../types/game'
 
-export const dataRaundInfoTest = {
-  number: 1,
-  masterUserId: 3,
+export const dataRaundInfoTest: IRaundInfo = {
+  id: 1,
+  masterUserId: '',
   masterAssociation: 'Приятная суета',
   mastercardId: 5,
+  players: [],
 }
 
 /*
- * Метод генерирует рандомное количество игроков и рандомно распределяет их по игровому полю
+ * Метод генерирует тестовые данные для указанного количества игроков
  * */
 export const getPlayersJSON = (numberPlayers: number) => {
   const playerJSON = <IPlayerInfo[]>[]

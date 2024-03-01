@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { ICardElement, IPlayerInfo, IRaundInfo } from '../types/game'
-import { stepsInTheGame } from '../constants/game'
+import { ICardElement, IPlayerInfo, IRaundInfo, defaultRaundInfo } from '../types/game'
+import { playerColors, stepsInTheGame } from '../constants/game'
 import { getApiRaundInfo } from '../components/game/testData'
 
 /*
@@ -12,18 +12,26 @@ export const UseGameCore = () => {
   const [fullScreen, setFullScreen] = useState(false)
   const [visibleField, setVisibleField] = useState(false)
   const [animationField, setAnimationField] = useState(false)
-  const [playersInfo, setPlayersInfo] = useState<IPlayerInfo[]>([]) // информация о игроках
-  const [gameStep, setGameStep] = useState('start') // шаг в игре, статус
-  const [raundInfo, setRaundInfo] = useState<IRaundInfo>(getApiRaundInfo(7)) // информация о раунде в игре
+  const [playersInfo, setPlayersInfo] = useState<IPlayerInfo[]>([{ userId: 'self', login: 'self', color: playerColors[6] }]) // информация о игроках
+  const [gameStep, setGameStep] = useState<string>('') // шаг в игре, статус
+  const [difficulty, setDifficulty] = useState('normal') // уровень сложности в игре  light,normal/hard
+  const [raundInfo, setRaundInfo] = useState<IRaundInfo>(getApiRaundInfo(7)) // информация о раунде в игре getApiRaundInfo()
+
   const [selectedCard, setSelectedCard] = useState<ICardElement | null>(null)
 
   // ----------
   const setNextGameStep = () => {
+    console.log('gameStep', gameStep)
     if (gameStep == 'results') {
       setGameStep(stepsInTheGame[1])
     } else {
-      const stepNow = stepsInTheGame.indexOf(gameStep)
-      setGameStep(stepsInTheGame[stepNow + 1])
+      if (gameStep != '') {
+        const stepNow = stepsInTheGame.indexOf(gameStep)
+        console.log('gameStep stepNow', stepNow)
+        setGameStep(stepsInTheGame[stepNow + 1])
+      } else {
+        setGameStep(stepsInTheGame[0])
+      }
     }
   }
 
@@ -55,5 +63,7 @@ export const UseGameCore = () => {
     playersInfo,
     raundInfo,
     setRaundInfo,
+    difficulty,
+    setDifficulty,
   }
 }

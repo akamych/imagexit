@@ -14,7 +14,7 @@
     "@ant-design/icons": "^5.2.6",
     "@reduxjs/toolkit": "^2.1.0",
     "@types/antd": "^1.0.0",
-    "antd": "^5.12.8",
+    "antd": "^5.14.0",
     "dotenv": "^16.0.2",
     "eslint-config-prettier": "^8.5.0",
     "prettier": "^2.7.1",
