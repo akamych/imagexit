@@ -8,7 +8,7 @@ interface IWStepVoting {
 }
 
 export const WStepVoting = (props: IWStepVoting) => {
-  const { writeTitle, bgContent, writeTask } = UseDrawContent(props.ctx)
+  const { writeTitle, bgContent: bg_content, writeTask } = UseDrawContent(props.ctx)
   const { clearCanvas } = UseInitCanvas()
 
   const initStep = () => {
