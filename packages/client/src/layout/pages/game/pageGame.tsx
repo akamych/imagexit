@@ -6,22 +6,13 @@ import { UseInitImage } from '../../../hooks/useInitImage'
 import { UseDrawCards } from '../../../hooks/useDrawCards'
 import { UseGameCore } from '../../../hooks/useGameCore'
 import { useEffect } from 'react'
-import {
-  inputContainer,
-  actionContainer,
-  sliderVertical,
-  sliderVerticalContainer,
-} from '../../../assets/pageGameStyle'
+import { inputContainer, actionContainer, sliderVertical, sliderVerticalContainer } from '../../../assets/pageGameStyle'
 import { UseMusic } from '../../../hooks/useMusic'
 import { musicSettings } from '../../../constants/common'
 import { UseDrawContent } from '../../../hooks/useDrawContent'
 import { getApiPlayersInfo } from '../../../components/game/testData'
 import { roundedRectPath, writeLogin } from '../../../components/game/lib'
-import {
-  gameContent,
-  gameSettings,
-  typographySettings,
-} from '../../../constants/game'
+import { gameContent, gameSettings, typographySettings } from '../../../constants/game'
 import './game.css'
 import { FullscreenOutlined } from '@ant-design/icons'
 
@@ -46,27 +37,15 @@ export const PageGame = () => {
     raundInfo,
   } = UseGameCore()
 
-  const { playMusic, setPlayMusic, startMusic, stopMusic, setMusicVolume } =
-    UseMusic()
+  const { playMusic, setPlayMusic, startMusic, stopMusic, setMusicVolume } = UseMusic()
 
-  const { ctx, clearCanvas, ctx2, clearCanvas2, ctx3, canvas3 } =
-    UseInitCanvas()
+  const { ctx, clearCanvas, ctx2, clearCanvas2, ctx3, canvas3 } = UseInitCanvas()
   const { setPlace, fieldsElement } = UseDrawField(ctx)
   const { cardsElement, setCardsElement } = UseInitImage()
-  const { generatePlayers } = UseDrawPlayers(
-    ctx2,
-    fieldsElement,
-    animationField
-  )
-  const { drawCard } = UseDrawCards(
-    ctx2,
-    cardsElement,
-    setCardsElement,
-    setSelectedCard
-  )
+  const { generatePlayers } = UseDrawPlayers(ctx2, fieldsElement, animationField)
+  const { drawCard } = UseDrawCards(ctx2, cardsElement, setCardsElement, setSelectedCard)
   // Хук отрисовки контента
-  const { writeTitle, writeTask, writeText, displayContent } =
-    UseDrawContent(ctx)
+  const { writeTitle, writeTask, writeText, displayContent } = UseDrawContent(ctx)
 
   // ---
   const ClearScreen = () => {
@@ -82,13 +61,7 @@ export const PageGame = () => {
     setPlace()
     generatePlayers()
     writeTitle('Игровое поле')
-    writeLogin(
-      ctx,
-      playersInfo,
-      raundInfo,
-      20,
-      gameSettings.GAME_BOARD_TOP_PX + 80
-    )
+    writeLogin(ctx, playersInfo, raundInfo, 20, gameSettings.GAME_BOARD_TOP_PX + 80)
   }
 
   // ----- Шаг: Новая игра
@@ -121,17 +94,9 @@ export const PageGame = () => {
   const stepScoring = () => {
     displayContent(gameStep)
     writeText('Ведущего', gameSettings.CARD_TOP_PX - 60)
-    drawCard(
-      cardsElement[0].img,
-      gameSettings.CONTENT_LEFT_PX + gameSettings.CARD_LEFT_PX,
-      gameSettings.CARD_TOP_PX
-    )
+    drawCard(cardsElement[0].img, gameSettings.CONTENT_LEFT_PX + gameSettings.CARD_LEFT_PX, gameSettings.CARD_TOP_PX)
     writeText('Логин 1', 440)
-    drawCard(
-      cardsElement[1].img,
-      gameSettings.CONTENT_LEFT_PX + gameSettings.CARD_LEFT_PX,
-      500
-    )
+    drawCard(cardsElement[1].img, gameSettings.CONTENT_LEFT_PX + gameSettings.CARD_LEFT_PX, 500)
   }
 
   // ----- Шаг: Результаты раунда
@@ -142,13 +107,7 @@ export const PageGame = () => {
     displayContent(gameStep)
     writeTitle(gameContent[gameStep].title)
     writeTask(gameContent[gameStep].task)
-    writeLogin(
-      ctx,
-      playersInfo,
-      raundInfo,
-      20,
-      gameSettings.GAME_BOARD_TOP_PX + 80
-    )
+    writeLogin(ctx, playersInfo, raundInfo, 20, gameSettings.GAME_BOARD_TOP_PX + 80)
   }
 
   // ----- Шаг: Окончание игры
@@ -197,15 +156,7 @@ export const PageGame = () => {
     setVisibleField(false)
   }
 
-  function buttonMenu(
-    ctx: CanvasRenderingContext2D | null,
-    canvas: HTMLCanvasElement | null,
-    str: string,
-    imageX: number,
-    imageY: number,
-    imageWidth: number,
-    imageHeight: number
-  ) {
+  function buttonMenu(ctx: CanvasRenderingContext2D | null, canvas: HTMLCanvasElement | null, str: string, imageX: number, imageY: number, imageWidth: number, imageHeight: number) {
     if (!ctx) {
       return
     }
@@ -214,9 +165,7 @@ export const PageGame = () => {
     }
     ctx.save()
     ctx.fillStyle = 'red'
-    ctx.fill(
-      new Path2D(roundedRectPath(imageX, imageY, imageWidth, imageHeight, 30))
-    )
+    ctx.fill(new Path2D(roundedRectPath(imageX, imageY, imageWidth, imageHeight, 30)))
     ctx.font = `${typographySettings.text.fontSize}px ${typographySettings.text.fontFamily}`
     //- ---
     ctx.fillStyle = typographySettings.text.color
@@ -228,11 +177,7 @@ export const PageGame = () => {
     canvas.addEventListener(
       'click',
       (event: MouseEvent) => {
-        const isClickedInsideImage =
-          event.offsetX >= imageX &&
-          event.offsetX <= imageX + imageWidth &&
-          event.offsetY >= imageY &&
-          event.offsetY <= imageY + imageHeight
+        const isClickedInsideImage = event.offsetX >= imageX && event.offsetX <= imageX + imageWidth && event.offsetY >= imageY && event.offsetY <= imageY + imageHeight
 
         if (isClickedInsideImage) {
           setVisibleField(!visibleField)
@@ -253,15 +198,7 @@ export const PageGame = () => {
     if (visibleField) {
       str = 'Вернуться к игре'
     }
-    buttonMenu(
-      ctx3,
-      canvas3,
-      str,
-      gameSettings.CANVAS_WIDTH_PX - 175,
-      5,
-      170,
-      40
-    )
+    buttonMenu(ctx3, canvas3, str, gameSettings.CANVAS_WIDTH_PX - 175, 5, 170, 40)
   }, [gameStep, visibleField, isStartGame])
 
   useEffect(() => {
@@ -289,9 +226,7 @@ export const PageGame = () => {
     <>
       <div className="content">
         {/*<Title>Cтраница игры</Title>*/}
-        <Space style={inputContainer}>
-          {selectedCard && <Input placeholder="Напишите ассоциацию" />}
-        </Space>
+        <Space style={inputContainer}>{selectedCard && <Input placeholder="Напишите ассоциацию" />}</Space>
         <div
           className="layers"
           style={{
@@ -307,16 +242,8 @@ export const PageGame = () => {
               border: '1px solid black',
             }}></canvas>
 
-          <canvas
-            id="canvas2"
-            className="layer layer2"
-            width={gameSettings.CANVAS_WIDTH_PX}
-            height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
-          <canvas
-            id="canvas3"
-            className="layer layer3"
-            width={gameSettings.CANVAS_WIDTH_PX}
-            height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
+          <canvas id="canvas2" className="layer layer2" width={gameSettings.CANVAS_WIDTH_PX} height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
+          <canvas id="canvas3" className="layer layer3" width={gameSettings.CANVAS_WIDTH_PX} height={gameSettings.CANVAS_HEIGHT_PX}></canvas>
         </div>
         <Row className="w100">
           <Col span={8} offset={8}>
@@ -328,9 +255,7 @@ export const PageGame = () => {
                   </Button>
                 ) : (
                   <>
-                    <Button onClick={setNextGameStep}>
-                      Следующий шаг (для режима разработки)
-                    </Button>
+                    <Button onClick={setNextGameStep}>Следующий шаг (для режима разработки)</Button>
                     <Button
                       onClick={() => {
                         setGameStep('results')
@@ -385,16 +310,10 @@ export const PageGame = () => {
             {fullScreen ? <>Закрыть</> : <>Открыть</>} &nbsp;полноэкранный режим
           </Button>
           <div style={sliderVerticalContainer}>
-            <Button onClick={togglePlayMusic}>
-              {playMusic ? <>Выключить</> : <>Включить</>} &nbsp; музыку
-            </Button>
+            <Button onClick={togglePlayMusic}>{playMusic ? <>Выключить</> : <>Включить</>} &nbsp; музыку</Button>
             {playMusic && (
               <div style={sliderVertical}>
-                <Slider
-                  vertical
-                  defaultValue={musicSettings.MUSIC_INIT_VOLUME}
-                  onChange={setMusicVolume}
-                />
+                <Slider vertical defaultValue={musicSettings.MUSIC_INIT_VOLUME} onChange={setMusicVolume} />
               </div>
             )}
           </div>

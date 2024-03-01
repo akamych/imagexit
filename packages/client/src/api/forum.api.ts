@@ -1,13 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { IComment, IProps } from '../components/forum/forum.types'
-import {
-  IPropsDefault,
-  apiBaseUrl,
-  dataTestForumCommentList,
-  dataTestForumTopicId,
-  dataTestForumTopicList,
-} from '../constants/data.forum'
+import { IPropsDefault, apiBaseUrl, dataTestForumCommentList, dataTestForumTopicId, dataTestForumTopicList } from '../constants/data.forum'
 
 export const useHttp = () => {
   const [loading, setLoading] = useState(false)
@@ -20,54 +14,46 @@ export const useHttp = () => {
    * @param {Record<string, any>} body - Тело запроса (по умолчанию пустой объект).
    * @param {Record<string, string>} headersOn - Дополнительные заголовки запроса (по умолчанию пустой объект).
    */
-  const request = useCallback(
-    async (
-      url: string,
-      method = 'GET',
-      body: Record<string, any> = {},
-      headersOn: Record<string, string> = {}
-    ) => {
-      // ---- body
-      let bodySend = null
-      if (method != 'GET') {
-        bodySend = JSON.stringify(body)
+  const request = useCallback(async (url: string, method = 'GET', body: Record<string, any> = {}, headersOn: Record<string, string> = {}) => {
+    // ---- body
+    let bodySend = null
+    if (method != 'GET') {
+      bodySend = JSON.stringify(body)
+    }
+
+    // --- headers
+    headersOn['Content-Type'] = 'application/json;charset=utf-8'
+    const options: RequestInit = {
+      method: method,
+      headers: headersOn,
+      body: bodySend,
+    }
+
+    try {
+      setLoading(true) // loading start
+      const response = await fetch(url, options)
+      setLoading(false) // loading finish
+      // ---
+      if (response.status === 401) {
+        navigate('/login') // редирект
       }
 
-      // --- headers
-      headersOn['Content-Type'] = 'application/json;charset=utf-8'
-      const options: RequestInit = {
-        method: method,
-        headers: headersOn,
-        body: bodySend,
+      if (response.ok) {
+        const json = await response.json()
+        return json
       }
 
-      try {
-        setLoading(true) // loading start
-        const response = await fetch(url, options)
-        setLoading(false) // loading finish
-        // ---
-        if (response.status === 401) {
-          navigate('/login') // редирект
-        }
-
-        if (response.ok) {
-          const json = await response.json()
-          return json
-        }
-
-        throw {
-          name: response.status,
-          message: response.status + ' ' + response.statusText,
-        }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (e: any) {
-        setLoading(false) // loading finish
-        console.error(e)
-        throw e
+      throw {
+        name: response.status,
+        message: response.status + ' ' + response.statusText,
       }
-    },
-    []
-  )
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      setLoading(false) // loading finish
+      console.error(e)
+      throw e
+    }
+  }, [])
   return { loading, request }
 }
 

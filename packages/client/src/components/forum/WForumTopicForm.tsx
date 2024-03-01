@@ -25,16 +25,8 @@ export const WForumTopicForm = () => {
         message: '',
       }}
       scrollToFirstError>
-      {statusForm == 'success' && (
-        <Alert
-          message="Топик успешно добавлен"
-          type="success"
-          style={alertStyle}
-        />
-      )}
-      {statusForm == 'error' && (
-        <Alert message="Ошибка" type="error" style={alertStyle} />
-      )}
+      {statusForm == 'success' && <Alert message="Топик успешно добавлен" type="success" style={alertStyle} />}
+      {statusForm == 'error' && <Alert message="Ошибка" type="error" style={alertStyle} />}
       <Form.Item
         name="title"
         rules={[

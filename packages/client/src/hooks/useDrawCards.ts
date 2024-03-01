@@ -22,22 +22,12 @@ const ANIMATION_DURATION_MS = 20
  *
  *
  * */
-export const UseDrawCards: UseDrawCards = (
-  ctx,
-  cardsElement,
-  setCardsElement,
-  setSelectedCard
-) => {
+export const UseDrawCards: UseDrawCards = (ctx, cardsElement, setCardsElement, setSelectedCard) => {
   const clearCanvas = () => {
     if (!ctx) {
       return
     }
-    ctx.clearRect(
-      0,
-      0,
-      gameSettings.CANVAS_WIDTH_PX,
-      gameSettings.CANVAS_HEIGHT_PX
-    )
+    ctx.clearRect(0, 0, gameSettings.CANVAS_WIDTH_PX, gameSettings.CANVAS_HEIGHT_PX)
   }
 
   /*
@@ -47,13 +37,7 @@ export const UseDrawCards: UseDrawCards = (
     if (!ctx) {
       return
     }
-    ctx.drawImage(
-      img,
-      dx,
-      dy,
-      gameSettings.CARD_WIDTH_PX,
-      gameSettings.CARD_HEIGHT_PX
-    )
+    ctx.drawImage(img, dx, dy, gameSettings.CARD_WIDTH_PX, gameSettings.CARD_HEIGHT_PX)
   }
 
   /*
@@ -88,12 +72,7 @@ export const UseDrawCards: UseDrawCards = (
    * */
   const animateCards = (x: number, y: number) => {
     cardsElement.forEach(function (element) {
-      if (
-        y > element.top &&
-        y < element.top + element.height &&
-        x > element.left &&
-        x < element.left + element.width
-      ) {
+      if (y > element.top && y < element.top + element.height && x > element.left && x < element.left + element.width) {
         setSelectedCard(element)
         let animationX = element.left
         let animationY = element.top
@@ -107,10 +86,7 @@ export const UseDrawCards: UseDrawCards = (
           })
 
           setCardsElement(arr)
-          if (
-            animationX >
-            gameSettings.CANVAS_WIDTH_PX - gameSettings.CARD_WIDTH_PX
-          ) {
+          if (animationX > gameSettings.CANVAS_WIDTH_PX - gameSettings.CARD_WIDTH_PX) {
             clearInterval(intervalX)
           } else {
             animationX += CARD_MARGIN_PX
@@ -127,10 +103,7 @@ export const UseDrawCards: UseDrawCards = (
           })
           setCardsElement(arr)
 
-          if (
-            animationY ===
-            gameSettings.CANVAS_HEIGHT_PX - gameSettings.CARD_HEIGHT_PX
-          ) {
+          if (animationY === gameSettings.CANVAS_HEIGHT_PX - gameSettings.CARD_HEIGHT_PX) {
             clearInterval(intervalY)
           } else {
             animationY += CARD_MARGIN_PX

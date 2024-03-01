@@ -24,16 +24,8 @@ export const WForumCommentForm = () => {
         message: '',
       }}
       scrollToFirstError>
-      {statusForm == 'success' && (
-        <Alert
-          message="Комментарий успешно добавлен"
-          type="success"
-          style={alertStyle}
-        />
-      )}
-      {statusForm == 'error' && (
-        <Alert message="Ошибка" type="error" style={alertStyle} />
-      )}
+      {statusForm == 'success' && <Alert message="Комментарий успешно добавлен" type="success" style={alertStyle} />}
+      {statusForm == 'error' && <Alert message="Ошибка" type="error" style={alertStyle} />}
       <Form.Item
         name="message"
         rules={[

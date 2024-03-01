@@ -1,8 +1,4 @@
-import {
-  gameContent,
-  gameSettings,
-  typographySettings,
-} from '../constants/game'
+import { gameContent, gameSettings, typographySettings } from '../constants/game'
 
 type IUseDrawContent = (ctx: CanvasRenderingContext2D | null) => {
   writeTitle: (text: string) => void
@@ -28,14 +24,7 @@ export const UseDrawContent: IUseDrawContent = ctx => {
    * @param lineHeight - высота строки
    * @returns
    */
-  function wrapText(
-    ctx: CanvasRenderingContext2D | null,
-    text: string,
-    marginLeft: number,
-    marginTop: number,
-    maxWidth: number,
-    lineHeight: number
-  ) {
+  function wrapText(ctx: CanvasRenderingContext2D | null, text: string, marginLeft: number, marginTop: number, maxWidth: number, lineHeight: number) {
     if (!ctx) {
       return
     }
@@ -61,12 +50,7 @@ export const UseDrawContent: IUseDrawContent = ctx => {
       return
     }
     ctx.fillStyle = 'rgba(255,255,255,0.3)'
-    ctx.fillRect(
-      gameSettings.CONTENT_LEFT_PX,
-      gameSettings.CONTENT_TOP_PX,
-      gameSettings.CONTENT_WIDTH_PX,
-      gameSettings.CONTENT_HEIGHT_PX
-    )
+    ctx.fillRect(gameSettings.CONTENT_LEFT_PX, gameSettings.CONTENT_TOP_PX, gameSettings.CONTENT_WIDTH_PX, gameSettings.CONTENT_HEIGHT_PX)
   }
 
   /**
@@ -82,11 +66,7 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     ctx.fillStyle = typographySettings.title.color
     ctx.textBaseline = 'top'
     ctx.textAlign = 'start'
-    ctx.fillText(
-      'Раунд ' + String(roundNumber),
-      typographySettings.raund.offset.left,
-      typographySettings.raund.offset.top
-    )
+    ctx.fillText('Раунд ' + String(roundNumber), typographySettings.raund.offset.left, typographySettings.raund.offset.top)
   }
   /** Отрисовка Заголовка. Координаты и настройки прописаны в константах */
   const writeTitle = (text: string) => {
@@ -97,11 +77,7 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     ctx.fillStyle = typographySettings.title.color
     ctx.textBaseline = 'top'
     ctx.textAlign = 'center'
-    ctx.fillText(
-      text,
-      gameSettings.CONTENT_LEFT_PX + typographySettings.title.offset.left,
-      gameSettings.CONTENT_TOP_PX + typographySettings.title.offset.top
-    )
+    ctx.fillText(text, gameSettings.CONTENT_LEFT_PX + typographySettings.title.offset.left, gameSettings.CONTENT_TOP_PX + typographySettings.title.offset.top)
   }
   /** Отрисовка Задания. Координаты и настройки прописаны в константах */
   const writeTask = (text: string) => {

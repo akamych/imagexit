@@ -18,8 +18,7 @@ export const PageProfile: React.FC = () => {
   const avatarSrc = useSelector((state: RootState) => selectAvatarSrc(state))
 
   const handlePasswordChange = (values: unknown) => {
-    console.log('Received values:', values)
-    message.success('Password changed successfully!')
+    message.success('Пароль успешно изменен')
     setIsPasswordModalOpen(false)
   }
 
@@ -45,7 +44,7 @@ export const PageProfile: React.FC = () => {
       <div className={styles.btnGroup}>
         {/* Link to Change Password */}
         <Button type="link" onClick={showPasswordModal}>
-          Change Password
+          Сменить пароль
         </Button>
 
         {/* Exit Button */}
@@ -61,7 +60,7 @@ export const PageProfile: React.FC = () => {
       </div>
 
       {/* Change Password Modal */}
-      <Modal title="Change Password" open={isPasswordModalOpen} onCancel={handlePasswordCancel} footer={null}>
+      <Modal title="Смена пароля" open={isPasswordModalOpen} onCancel={handlePasswordCancel} footer={null}>
         {/* Password Change Form */}
         <Form onFinish={handlePasswordChange}>
           {/* Current Password */}
@@ -70,38 +69,38 @@ export const PageProfile: React.FC = () => {
             rules={[
               {
                 required: true,
-                message: 'Please enter your current password!',
+                message: 'Введите текущий пароль',
               },
             ]}>
-            <Input.Password placeholder="Current Password" />
+            <Input.Password placeholder="Текущий пароль" />
           </Form.Item>
 
           {/* New Password */}
-          <Form.Item name="newPassword" rules={[{ required: true, message: 'Please enter a new password!' }]}>
-            <Input.Password placeholder="New Password" />
+          <Form.Item name="newPassword" rules={[{ required: true, message: 'Введите новый пароль' }]}>
+            <Input.Password placeholder="Новый пароль" />
           </Form.Item>
 
           {/* Repeat Password */}
           <Form.Item
             name="repeatPassword"
             rules={[
-              { required: true, message: 'Please repeat your new password!' },
+              { required: true, message: 'Повторите новый пароль' },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue('newPassword') === value) {
                     return Promise.resolve()
                   }
-                  return Promise.reject('The two passwords do not match!')
+                  return Promise.reject('Пароли не совпадают')
                 },
               }),
             ]}>
-            <Input.Password placeholder="Repeat Password" />
+            <Input.Password placeholder="Повторите пароль" />
           </Form.Item>
 
           {/* Save Button */}
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Save
+              Сохранить
             </Button>
           </Form.Item>
         </Form>

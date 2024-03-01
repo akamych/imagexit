@@ -23,15 +23,7 @@ export const gameSettings = {
   CANVAS_HEIGHT_PX: 800,
 }
 
-export const playerColors = [
-  'red',
-  'rgba(0,0,0,1)',
-  'green',
-  'rgba(255,255,255,1)',
-  'yellow',
-  'rgba(255,169,0,1)',
-  'blue',
-]
+export const playerColors = ['red', 'rgba(0,0,0,1)', 'green', 'rgba(255,255,255,1)', 'yellow', 'rgba(255,169,0,1)', 'blue']
 type IgameContent = {
   [key: string]: {
     title: string
@@ -41,15 +33,7 @@ type IgameContent = {
   }
 }
 
-export const stepsInTheGame = [
-  'start',
-  'association',
-  'cards',
-  'voting',
-  'scoring',
-  'results',
-  'finish',
-]
+export const stepsInTheGame = ['start', 'association', 'cards', 'voting', 'scoring', 'results', 'finish']
 
 export const gameContent: IgameContent = {
   start: {
