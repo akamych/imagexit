@@ -1,6 +1,6 @@
 import { Typography, Button, Checkbox, Form, Input } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import './pageLogin.css'
 import { validateLoginCharacters, validateNotOnlyNumbers, validateContainsCapitalLetter, validateContainsNumber } from '../../../utils/InputUtil'
@@ -8,15 +8,34 @@ import { selectError } from '../../../store/reducers/AuthReducer'
 import { AppDispatch } from '../../../store/Store'
 import { loginAction } from '../../../store/actions/AuthActions'
 import { LoginDto } from '../../../types/store'
+import { useEffect, useState } from 'react'
+import { API_CALLBACK_URL, API_OAUTH_YANDEX } from '../../../constants/oauth'
+import { queryGetString } from '../../../api/oauth.api'
 
 export const PageLogin = () => {
   const { Title } = Typography
+  const [yandexOAuthLink, setYandexOAuthLink] = useState<string>('')
   const dispatch: AppDispatch = useDispatch<AppDispatch>()
   const authError = useSelector(selectError)
   const onFinish = (values: LoginDto) => {
     const { login, password } = values
     dispatch(loginAction({ login, password }))
   }
+
+  useEffect(() => {
+    const serviceId = localStorage.getItem('serviceId')
+    if (!serviceId) {
+      return
+    }
+
+    const params: Record<string, string> = {
+      client_id: serviceId,
+      redirect_uri: API_CALLBACK_URL,
+      response_type: 'code',
+    }
+
+    setYandexOAuthLink(`${API_OAUTH_YANDEX}?${queryGetString(params)}`)
+  })
 
   return (
     <>
@@ -86,6 +105,14 @@ export const PageLogin = () => {
           <NavLink to="/sign-up" rel="noopener noreferrer">
             создать аккаунт
           </NavLink>
+        </Form.Item>
+
+        <Form.Item>
+          <Link to={yandexOAuthLink} rel="noopener noreferrer">
+            <Button type="primary" htmlType="button" className="login-form-button">
+              Войти с Яндекс
+            </Button>
+          </Link>
         </Form.Item>
 
         {authError && <p>{authError}</p>}
