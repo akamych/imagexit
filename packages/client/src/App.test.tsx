@@ -5,9 +5,7 @@ import { create } from 'match-media-mock'
 import 'react-redux'
 
 // @ts-ignore
-global.fetch = jest.fn(() =>
-  Promise.resolve({ json: () => Promise.resolve('hey') })
-)
+global.fetch = jest.fn(() => Promise.resolve({ json: () => Promise.resolve('hey') }))
 
 describe('App component', () => {
   beforeEach(() => {

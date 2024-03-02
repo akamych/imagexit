@@ -19,54 +19,36 @@ const authSlice = createSlice({
   initialState: initialAuthState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(
-      authAction.fulfilled,
-      (state: AuthState, action: PayloadAction<UserDetails>) => {
-        state.user = action.payload
-        state.error = null
+    builder.addCase(authAction.fulfilled, (state: AuthState, action: PayloadAction<UserDetails>) => {
+      state.user = action.payload
+      state.error = null
+    })
+    builder.addCase(authAction.rejected, (state: AuthState, action: PayloadAction<string | undefined>) => {
+      if (action.payload) {
+        state.user = null
+        state.error = action.payload || 'Аутентификация неудачная'
       }
-    )
-    builder.addCase(
-      authAction.rejected,
-      (state: AuthState, action: PayloadAction<string | undefined>) => {
-        if (action.payload) {
-          state.user = null
-          state.error = action.payload || 'Аутентификация неудачная'
-        }
+    })
+    builder.addCase(loginAction.fulfilled, (state: AuthState, action: PayloadAction<UserDetails>) => {
+      state.user = action.payload
+      state.error = null
+    })
+    builder.addCase(loginAction.rejected, (state: AuthState, action: PayloadAction<string | undefined>) => {
+      if (action.payload) {
+        state.user = null
+        state.error = action.payload || 'Авторизация неудачная'
       }
-    )
-    builder.addCase(
-      loginAction.fulfilled,
-      (state: AuthState, action: PayloadAction<UserDetails>) => {
-        state.user = action.payload
-        state.error = null
+    })
+    builder.addCase(signupAction.fulfilled, (state: AuthState, action: PayloadAction<UserDetails>) => {
+      state.user = action.payload
+      state.error = null
+    })
+    builder.addCase(signupAction.rejected, (state: AuthState, action: PayloadAction<string | undefined>) => {
+      if (action.payload) {
+        state.user = null
+        state.error = action.payload || 'Регистрация неудачная'
       }
-    )
-    builder.addCase(
-      loginAction.rejected,
-      (state: AuthState, action: PayloadAction<string | undefined>) => {
-        if (action.payload) {
-          state.user = null
-          state.error = action.payload || 'Авторизация неудачная'
-        }
-      }
-    )
-    builder.addCase(
-      signupAction.fulfilled,
-      (state: AuthState, action: PayloadAction<UserDetails>) => {
-        state.user = action.payload
-        state.error = null
-      }
-    )
-    builder.addCase(
-      signupAction.rejected,
-      (state: AuthState, action: PayloadAction<string | undefined>) => {
-        if (action.payload) {
-          state.user = null
-          state.error = action.payload || 'Регистрация неудачная'
-        }
-      }
-    )
+    })
   },
 })
 

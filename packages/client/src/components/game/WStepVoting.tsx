@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { UseDrawContent } from '../../hooks/useDrawContent'
 import { UseInitCanvas } from '../../hooks/useInitCanvas'
-import { UseGameCore } from '../../hooks/useGameCore'
 
 interface IWStepVoting {
   ctx: CanvasRenderingContext2D | null
@@ -14,7 +13,7 @@ export const WStepVoting = (props: IWStepVoting) => {
 
   const initStep = () => {
     clearCanvas()
-    bg_content()
+    bgContent()
     writeTitle('Шаг 4. Голосование')
     writeTask('Команда, ваши карты, ведущий')
   }
