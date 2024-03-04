@@ -18,6 +18,10 @@ import './game.css'
 import { FullscreenOutlined } from '@ant-design/icons'
 import { WgameStepStart } from '../../../components/game/WgameStepStart'
 import { IPlayerInfo, defaultRaundInfo } from '../../../types/game'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../store/Store'
+import { selectUser } from '../../../store/reducers/AuthReducer'
+import { postDataToLeaderboard, fetchLeaderboardData } from '../../../api/leaderboard.api'
 
 export const PageGame = () => {
   //const { Title } = Typography
@@ -36,6 +40,13 @@ export const PageGame = () => {
   const { writeTitle, writeTask, writeText, writeSrting, displayContent } = UseDrawContent(ctx)
   // ==============
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  //флаг для тестирования окончания игры
+  const [finished, setFinished] = useState(false)
+  const [currentScore, setCurrentScore] = useState(0)
+  //Достаем данные юзера из redux
+  const user = useSelector((state: RootState) => selectUser(state))
+  const login = user?.login
 
   const showModal = () => {
     setIsModalOpen(true)
@@ -76,6 +87,8 @@ export const PageGame = () => {
     if (difficulty != null && playersInfo.length > 2 && playersInfo.length <= 7) {
       buttonCanvas(ctx3, canvas3, 'red', 'играть', '#fff', typographySettings.title.offset.left, gameSettings.GAME_BOARD_TOP_PX + 320, 170, 40, setNextGameStep)
     }
+
+    setFinished(false)
   }
   // ---- будет сохраняться в глобальном стейте
   const startSettingsSave = (team: IPlayerInfo[], difficultyInput: string) => {
@@ -94,6 +107,7 @@ export const PageGame = () => {
     // setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
     setIsStartGame(true)
     displayContent(gameStep)
+    setFinished(false)
   }
   const stepCards = () => {
     displayContent(gameStep)
@@ -136,6 +150,8 @@ export const PageGame = () => {
     writeTitle('Финал')
     writeLoginFinish(ctx, playersInfo, raundInfo, gameSettings.CANVAS_WIDTH_PX / 2 - 80, gameSettings.GAME_BOARD_TOP_PX)
     buttonCanvas(ctx3, canvas3, 'yellow', 'Еще партейку, пожалуй', '#000', gameSettings.CANVAS_WIDTH_PX / 2 - 100, gameSettings.CANVAS_HEIGHT_PX - 200, 200, 40, ReturnToGame)
+
+    if (!finished) setScore()
   }
   // ===================== Steps ROUTER
   const routerGame = () => {
@@ -170,6 +186,49 @@ export const PageGame = () => {
       }
     } else {
       gameBoad()
+    }
+  }
+
+  //Leaderboard
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const setScore = async () => {
+    setFinished(true)
+    console.log('Set score')
+
+    try {
+      // Загружаем данные лидерборда
+      const data = await fetchLeaderboardData()
+
+      // Ищем игрока по логину и получаем количество ранее набранных очков
+      const currentUser = data.find(user => user.login === login)
+      const currentScore = currentUser?.points || 0
+
+      console.log(currentUser, currentScore)
+
+      // Очки за последнюю игру
+      const lastScore = Math.floor(Math.random() * 56)
+
+      // Добавляем очки за последнюю игру к общему счету
+      const totalScore = currentScore + lastScore
+
+      // Данные для записи в список лидеров
+      const scoreData = {
+        data: {
+          id: user?.id,
+          login: login,
+          avatar: user?.avatar || '',
+          theBeatlesLastScore: lastScore,
+          theBeatlesTotalScore: totalScore, // Сортируем по этому полю
+        },
+        ratingFieldName: 'theBeatlesTotalScore', // Сортируем по этому полю
+        teamName: 'thebeatles',
+      }
+
+      // Post data to leaderboard
+      await postDataToLeaderboard(scoreData)
+    } catch (error) {
+      console.error('Не удалось записать очки после игры:', error)
     }
   }
 
@@ -314,7 +373,7 @@ export const PageGame = () => {
             )}
           </Col>
         </Row>
-        
+
         <div
           className="layers"
           style={{

@@ -1,10 +1,24 @@
-import { dataTestLeaderboardUsersTop10 } from '../../constants/data.leaderboard'
+import { useEffect, useState } from 'react'
 import { WLeaderboardTable } from './WLeaderboardTable'
+import { ILeaderboardUser } from '../../types/leaderboard.types'
+import { fetchLeaderboardData } from '../../api/leaderboard.api'
 
 export const WLeaderboardTOP10 = () => {
+  const [leaderboardData, setLeaderboardData] = useState<ILeaderboardUser[]>([])
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      const data = await fetchLeaderboardData()
+      console.log(data)
+      setLeaderboardData(data)
+    }
+
+    fetchLeaderboard()
+  }, [])
+
   return (
     <>
-      <WLeaderboardTable users={dataTestLeaderboardUsersTop10} selectId={7} />
+      <WLeaderboardTable users={leaderboardData} selectId={1} />
     </>
   )
 }

@@ -14,11 +14,11 @@ export const PageLeaderboard = () => {
       label: 'TOP 10',
       children: <WLeaderboardTOP10 />,
     },
-    {
-      key: '2',
-      label: 'Я в рейтинге',
-      children: <WLeaderboardSelf />,
-    },
+    // {
+    //   key: '2',
+    //   label: 'Я в рейтинге',
+    //   children: <WLeaderboardSelf />,
+    // },
   ]
 
   return (
