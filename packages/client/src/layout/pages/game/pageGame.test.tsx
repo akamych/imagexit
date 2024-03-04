@@ -6,6 +6,10 @@ import { PageGame } from './pageGame'
 import { setupJestCanvasMock } from 'jest-canvas-mock'
 import 'web-audio-mock'
 
+jest.mock('react-redux', () => ({
+  useSelector: jest.fn(),
+}))
+
 describe('PageGame component', () => {
   beforeEach(() => {
     window.matchMedia = create()

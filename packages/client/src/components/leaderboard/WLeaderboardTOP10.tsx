@@ -9,7 +9,6 @@ export const WLeaderboardTOP10 = () => {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       const data = await fetchLeaderboardData()
-      console.log(data)
       setLeaderboardData(data)
     }
 
