@@ -4,6 +4,11 @@ import { BrowserRouter } from 'react-router-dom' // Импортируйте Bro
 import { create } from 'match-media-mock'
 import { PageProfile } from './pageProfile'
 
+jest.mock('react-redux', () => ({
+  useSelector: jest.fn(),
+  useDispatch: jest.fn(),
+}))
+
 describe('PageProfile component', () => {
   beforeEach(() => {
     window.matchMedia = create()

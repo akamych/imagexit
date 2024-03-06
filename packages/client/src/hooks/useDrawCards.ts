@@ -23,6 +23,7 @@ const ANIMATION_DURATION_MS = 20
  *
  *
  * */
+
 export const UseDrawCards: UseDrawCards = (ctx, cardsElement, setCardsElement, setSelectedCard, gameStep) => {
   const [cards, setCards] = useState<ICardElement[]>(cardsElement)
   const clearCanvas = () => {
@@ -88,6 +89,7 @@ export const UseDrawCards: UseDrawCards = (ctx, cardsElement, setCardsElement, s
           })
 
           setCards(arr)
+
           if (animationX > gameSettings.CANVAS_WIDTH_PX - gameSettings.CARD_WIDTH_PX) {
             clearInterval(intervalX)
           } else {
