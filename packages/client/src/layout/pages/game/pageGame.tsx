@@ -13,15 +13,12 @@ import { musicSettings } from '../../../constants/common'
 import { UseDrawContent } from '../../../hooks/useDrawContent'
 import { getApiPlayersInfo, getApiRaundInfo, getPlayersJSON } from '../../../components/game/testData'
 import { buttonCanvas, roundedRectPath, writeLogin, writeLoginFinish } from '../../../components/game/lib'
-import { gameContent, gameSettings, typographySettings } from '../../../constants/game'
+import { gameContent, gameSettings, typographySettings, MAX_ROUND_SCORE } from '../../../constants/game'
 import './game.css'
 import { FullscreenOutlined } from '@ant-design/icons'
 import { WgameStepStart } from '../../../components/game/WgameStepStart'
 import { IPlayerInfo, defaultRaundInfo } from '../../../types/game'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../store/Store'
-import { selectUser } from '../../../store/reducers/AuthReducer'
-import { postDataToLeaderboard, fetchLeaderboardData } from '../../../api/leaderboard.api'
+import { useSetScore } from '../../../hooks/useSetScore'
 
 export const PageGame = () => {
   //const { Title } = Typography
@@ -41,12 +38,8 @@ export const PageGame = () => {
   // ==============
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  //флаг для тестирования окончания игры
   const [finished, setFinished] = useState(false)
-  const [currentScore, setCurrentScore] = useState(0)
-  //Достаем данные юзера из redux
-  const user = useSelector((state: RootState) => selectUser(state))
-  const login = user?.login
+  const updateScore = useSetScore()
 
   const showModal = () => {
     setIsModalOpen(true)
@@ -151,7 +144,8 @@ export const PageGame = () => {
     writeLoginFinish(ctx, playersInfo, raundInfo, gameSettings.CANVAS_WIDTH_PX / 2 - 80, gameSettings.GAME_BOARD_TOP_PX)
     buttonCanvas(ctx3, canvas3, 'yellow', 'Еще партейку, пожалуй', '#000', gameSettings.CANVAS_WIDTH_PX / 2 - 100, gameSettings.CANVAS_HEIGHT_PX - 200, 200, 40, ReturnToGame)
 
-    if (!finished) setScore()
+    // Generate last score
+    updateScore(Math.floor(Math.random() * (MAX_ROUND_SCORE + 1)))
   }
   // ===================== Steps ROUTER
   const routerGame = () => {
@@ -179,56 +173,16 @@ export const PageGame = () => {
           stepResults()
           break
         case 'finish':
-          stepFinish()
+          if (!finished) {
+            setFinished(true)
+            stepFinish()
+          }
           break
         default:
           setGameStep('start')
       }
     } else {
       gameBoad()
-    }
-  }
-
-  //Leaderboard
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////
-  const setScore = async () => {
-    setFinished(true)
-    console.log('Set score')
-
-    try {
-      // Загружаем данные лидерборда
-      const data = await fetchLeaderboardData()
-
-      // Ищем игрока по логину и получаем количество ранее набранных очков
-      const currentUser = data.find(user => user.login === login)
-      const currentScore = currentUser?.points || 0
-
-      console.log(currentUser, currentScore)
-
-      // Очки за последнюю игру
-      const lastScore = Math.floor(Math.random() * 56)
-
-      // Добавляем очки за последнюю игру к общему счету
-      const totalScore = currentScore + lastScore
-
-      // Данные для записи в список лидеров
-      const scoreData = {
-        data: {
-          id: user?.id,
-          login: login,
-          avatar: user?.avatar || '',
-          theBeatlesLastScore: lastScore,
-          theBeatlesTotalScore: totalScore, // Сортируем по этому полю
-        },
-        ratingFieldName: 'theBeatlesTotalScore', // Сортируем по этому полю
-        teamName: 'thebeatles',
-      }
-
-      // Post data to leaderboard
-      await postDataToLeaderboard(scoreData)
-    } catch (error) {
-      console.error('Не удалось записать очки после игры:', error)
     }
   }
 

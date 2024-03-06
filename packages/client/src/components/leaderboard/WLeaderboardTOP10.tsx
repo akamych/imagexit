@@ -1,19 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchLeaderboardDataAsync } from '../../store/actions/LeaderboardActions'
+import { RootState } from '../../store/Store'
 import { WLeaderboardTable } from './WLeaderboardTable'
-import { ILeaderboardUser } from '../../types/leaderboard.types'
-import { fetchLeaderboardData } from '../../api/leaderboard.api'
+import { AppDispatch } from '../../store/Store'
 
 export const WLeaderboardTOP10 = () => {
-  const [leaderboardData, setLeaderboardData] = useState<ILeaderboardUser[]>([])
+  const dispatch: AppDispatch = useDispatch()
+  const leaderboardData = useSelector((state: RootState) => state.leaderboard.leaderboardData)
 
   useEffect(() => {
-    const fetchLeaderboard = async () => {
-      const data = await fetchLeaderboardData()
-      setLeaderboardData(data)
-    }
-
-    fetchLeaderboard()
-  }, [])
+    dispatch(fetchLeaderboardDataAsync())
+  }, [dispatch])
 
   return (
     <>

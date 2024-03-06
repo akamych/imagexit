@@ -8,6 +8,7 @@ import 'web-audio-mock'
 
 jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
+  useDispatch: jest.fn(),
 }))
 
 describe('PageGame component', () => {
