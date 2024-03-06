@@ -22,6 +22,9 @@ export default defineConfig({
       },
     },
   ],
+  define: {
+    __SERVER_PORT__: process.env.SERVER_PORT || 3001,
+  },
   build: {
     chunkSizeWarningLimit: 100,
     outDir: 'ssr-dist',
