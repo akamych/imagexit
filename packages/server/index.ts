@@ -10,6 +10,7 @@ import * as path from 'path'
 import cookieParser from 'cookie-parser'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import { YandexAPIRepository } from './repository/YandexAPIRepository'
+import { SSRModule } from './types'
 
 const isDev = () => process.env.NODE_ENV === 'development'
 
@@ -24,6 +25,9 @@ async function startServer() {
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
   const srcPath = path.dirname(require.resolve('client'))
   const ssrClientPath = require.resolve('client/ssr-dist/ssr.cjs')
+
+  let template: string
+  template = fs.readFileSync(path.resolve(isDev() ? srcPath : distPath, 'index.html'), 'utf-8')
 
   if (isDev()) {
     vite = await createViteServer({
@@ -52,22 +56,13 @@ async function startServer() {
   if (!isDev()) {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
   }
+
   app.use('*', cookieParser(), async (req, res, next) => {
     const url = req.originalUrl
 
     try {
-      let template: string
-
-      if (!isDev()) {
-        template = fs.readFileSync(path.resolve(distPath, 'index.html'), 'utf-8')
-      } else {
-        template = fs.readFileSync(path.resolve(srcPath, 'index.html'), 'utf-8')
-
+      if (isDev()) {
         template = await vite!.transformIndexHtml(url, template)
-      }
-
-      interface SSRModule {
-        render: (uri: string, repository: any) => Promise<[Record<string, any>, string]>
       }
 
       let mod: SSRModule
