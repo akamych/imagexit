@@ -3,7 +3,6 @@ import App from './App'
 import { act, render } from '@testing-library/react'
 import { create } from 'match-media-mock'
 import 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
 
 // @ts-ignore
 global.fetch = jest.fn(() => Promise.resolve({ json: () => Promise.resolve('hey') }))
@@ -15,11 +14,7 @@ describe('App component', () => {
 
   it('Компонент рендерится', async () => {
     await act(async () => {
-      const { container } = render(
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      )
+      const { container } = render(<App />)
       expect(container).toBeInTheDocument()
     })
   })

@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
 import 'normalize.css'
-import { BrowserRouter } from 'react-router-dom'
 
 function startServiceWorker() {
   if (import.meta.env.PROD && 'serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
@@ -25,8 +24,6 @@ startServiceWorker()
 ReactDOM.hydrateRoot(
   document.getElementById('root') as HTMLElement,
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <App />
   </React.StrictMode>
 )
