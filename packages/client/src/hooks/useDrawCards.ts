@@ -108,7 +108,6 @@ export const UseDrawCards: UseDrawCards = (ctx, cardsElement, setCardsElement, s
           setCards(arr)
 
           if (animationY > gameSettings.CANVAS_HEIGHT_PX - gameSettings.CARD_HEIGHT_PX) {
-
             clearInterval(intervalY)
           } else {
             animationY += CARD_MARGIN_PX

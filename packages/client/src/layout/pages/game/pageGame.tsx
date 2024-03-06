@@ -23,7 +23,26 @@ export const PageGame = () => {
   //const { Title } = Typography
   // состояния будут перенесены в глобальное хранилице
 
-  const { isStartGame, setIsStartGame, setSelectedCard, selectedCard, visibleField, setVisibleField, fullScreen, animationField, setAnimationField, gameStep, setGameStep, setNextGameStep, setPlayersInfo, playersInfo, raundInfo, setRaundInfo, difficulty, setDifficulty } = UseGameCore()
+  const {
+    isStartGame,
+    setIsStartGame,
+    setSelectedCard,
+    selectedCard,
+    visibleField,
+    setVisibleField,
+    fullScreen,
+    animationField,
+    setAnimationField,
+    gameStep,
+    setGameStep,
+    setNextGameStep,
+    setPlayersInfo,
+    playersInfo,
+    raundInfo,
+    setRaundInfo,
+    difficulty,
+    setDifficulty,
+  } = UseGameCore()
 
   const { playMusic, setPlayMusic, startMusic, stopMusic, setMusicVolume } = UseMusic()
 
@@ -314,7 +333,7 @@ export const PageGame = () => {
             )}
           </Col>
         </Row>
-        
+
         <div
           className="layers"
           style={{

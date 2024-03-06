@@ -9,9 +9,27 @@ import { oAuthRequest } from './api/oauth.api'
 
 function App() {
   useEffect(() => {
+    oAuthRequest()
+  }, [])
+
+  return (
+    <ErrorBoundary>
+      <BrowserRouter>
+        <Provider store={store}>
+          <div className="App">
+            <div className="hidden">Вот тут будет жить ваше приложение :)</div>
+            <Pages />
+          </div>
+        </Provider>
+      </BrowserRouter>
+    </ErrorBoundary>
+  )
+}
+
+export function AppServer() {
+  useEffect(() => {
     const fetchServerData = async () => {
-      // после подключения сервера раскомментировать const url = `http://localhost:${__SERVER_PORT__}`
-      const url = `http://localhost`
+      const url = `http://localhost:${__SERVER_PORT__}/api`
       const response = await fetch(url)
       const data = await response.json()
       console.log(data)
@@ -23,14 +41,12 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <BrowserRouter>
-        <Provider store={store}>
-          <div className="App">
-            Вот тут будет жить ваше приложение :)
-            <Pages />
-          </div>
-        </Provider>
-      </BrowserRouter>
+      <Provider store={store}>
+        <div className="App">
+          <div className="hidden">Вот тут будет жить ваше приложение :)</div>
+          <Pages />
+        </div>
+      </Provider>
     </ErrorBoundary>
   )
 }
