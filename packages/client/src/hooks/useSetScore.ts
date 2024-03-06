@@ -10,7 +10,7 @@ export const useSetScore = () => {
   const login = user?.login
   const dispatch: AppDispatch = useDispatch<AppDispatch>()
   const state = useSelector((state: RootState) => state.leaderboard)
-  console.log('Обновление лидерборда')
+
   const updateScore = async (lastScore: number) => {
     try {
       dispatch(fetchLeaderboardDataAsync())

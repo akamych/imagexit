@@ -1,5 +1,5 @@
 import { ILeaderboardUser, ILeaderboardResponse, ILeaderboardPostData } from '../types/leaderboard.types'
-import { GET_LEADERBOARD_URL, POST_LEADERBOARD_URL, RESOURCES } from '../constants/swagger.api'
+import { GET_LEADERBOARD_URL, POST_LEADERBOARD_URL } from '../constants/swagger.api'
 import { SCORE_LABEL } from '../constants/common'
 
 export async function fetchLeaderboardData(): Promise<ILeaderboardUser[]> {
@@ -27,7 +27,7 @@ export async function fetchLeaderboardData(): Promise<ILeaderboardUser[]> {
     const leaderboardUsers: ILeaderboardUser[] = data.map((item: ILeaderboardResponse, index: number) => ({
       id: item.data.id || 0,
       login: item.data.login || '',
-      avatar: RESOURCES + item.data.avatar || '',
+      avatar: item.data.avatar || '',
       points: item.data[SCORE_LABEL] || 0,
       position: index + 1,
     }))
