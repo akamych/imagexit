@@ -1,9 +1,7 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
 import { useEffect } from 'react'
 import './App.css'
 import { Pages } from './layout/Layout'
-import { BrowserRouter } from 'react-router-dom'
+
 import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary'
 import { Provider } from 'react-redux'
 import store from './store/Store'
@@ -26,7 +24,7 @@ function App() {
     <ErrorBoundary>
       <Provider store={store}>
         <div className="App">
-          Вот тут будет жить ваше приложение :)
+          <div className="hidden">Вот тут будет жить ваше приложение :)</div>
           <Pages />
         </div>
       </Provider>

@@ -16,8 +16,8 @@
 ####Сборка клиента:
 В разделе packages/client/ запустить:
 
-1. yarn build
-2. yarn build:ssr
+1. yarn build:ssr
+2. yarn build
 
 ####Запуск сервера:
 В разделе packages/server/ запустить в нужном режиме:
