@@ -4,5 +4,5 @@
   "arrowParens": "avoid",
   "bracketSameLine": true,
   "width": 50,
-  "printWidth": 300
+  "printWidth": 200
 }

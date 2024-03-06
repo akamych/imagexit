@@ -2,6 +2,7 @@
 
 1. [vercel](https://imagexit-web-client.vercel.app/)
 2. [Видео отчет реализации задач из 5-6 спринтов ](https://disk.yandex.ru/i/v0mF8U_8rNEa8w)
+
 ### Как запускать?
 
 1. Убедитесь что у вас установлен `node` и `docker`
@@ -9,6 +10,20 @@
 3. Выполните команду `yarn dev`
 4. Выполните команду `yarn dev --scope=client` чтобы запустить только клиент
 5. Выполните команду `yarn dev --scope=server` чтобы запустить только server
+
+### Как запускать при SSR
+
+####Сборка клиента:
+В разделе packages/client/ запустить:
+
+1. yarn build:ssr
+2. yarn build
+
+####Запуск сервера:
+В разделе packages/server/ запустить в нужном режиме:
+
+- режим development: yarn dev
+- режим production: yarn prod
 
 ### Как добавить зависимости?
 
