@@ -116,3 +116,5 @@ export const typographySettings = {
     width: 400,
   },
 }
+
+export const MAX_ROUND_SCORE = 55

@@ -13,11 +13,12 @@ import { musicSettings } from '../../../constants/common'
 import { UseDrawContent } from '../../../hooks/useDrawContent'
 import { getApiPlayersInfo, getApiRaundInfo, getPlayersJSON } from '../../../components/game/testData'
 import { buttonCanvas, roundedRectPath, writeLogin, writeLoginFinish } from '../../../components/game/lib'
-import { gameContent, gameSettings, typographySettings } from '../../../constants/game'
+import { gameContent, gameSettings, typographySettings, MAX_ROUND_SCORE } from '../../../constants/game'
 import './game.css'
 import { FullscreenOutlined } from '@ant-design/icons'
 import { WgameStepStart } from '../../../components/game/WgameStepStart'
 import { IPlayerInfo, defaultRaundInfo } from '../../../types/game'
+import { useSetScore } from '../../../hooks/useSetScore'
 
 export const PageGame = () => {
   //const { Title } = Typography
@@ -55,6 +56,9 @@ export const PageGame = () => {
   const { writeTitle, writeTask, writeText, writeSrting, displayContent } = UseDrawContent(ctx)
   // ==============
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const [finished, setFinished] = useState(false)
+  const updateScore = useSetScore()
 
   const showModal = () => {
     setIsModalOpen(true)
@@ -95,6 +99,8 @@ export const PageGame = () => {
     if (difficulty != null && playersInfo.length > 2 && playersInfo.length <= 7) {
       buttonCanvas(ctx3, canvas3, 'red', 'играть', '#fff', typographySettings.title.offset.left, gameSettings.GAME_BOARD_TOP_PX + 320, 170, 40, setNextGameStep)
     }
+
+    setFinished(false)
   }
   // ---- будет сохраняться в глобальном стейте
   const startSettingsSave = (team: IPlayerInfo[], difficultyInput: string) => {
@@ -113,6 +119,7 @@ export const PageGame = () => {
     // setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
     setIsStartGame(true)
     displayContent(gameStep)
+    setFinished(false)
   }
   const stepCards = () => {
     displayContent(gameStep)
@@ -155,6 +162,9 @@ export const PageGame = () => {
     writeTitle('Финал')
     writeLoginFinish(ctx, playersInfo, raundInfo, gameSettings.CANVAS_WIDTH_PX / 2 - 80, gameSettings.GAME_BOARD_TOP_PX)
     buttonCanvas(ctx3, canvas3, 'yellow', 'Еще партейку, пожалуй', '#000', gameSettings.CANVAS_WIDTH_PX / 2 - 100, gameSettings.CANVAS_HEIGHT_PX - 200, 200, 40, ReturnToGame)
+
+    // Generate last score
+    updateScore(Math.floor(Math.random() * (MAX_ROUND_SCORE + 1)))
   }
   // ===================== Steps ROUTER
   const routerGame = () => {
@@ -182,7 +192,10 @@ export const PageGame = () => {
           stepResults()
           break
         case 'finish':
-          stepFinish()
+          if (!finished) {
+            setFinished(true)
+            stepFinish()
+          }
           break
         default:
           setGameStep('start')

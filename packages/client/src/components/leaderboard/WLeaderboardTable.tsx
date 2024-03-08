@@ -1,5 +1,6 @@
 import { Avatar, Col, Row, Table } from 'antd'
 import { ILeaderboardTable } from '../../types/leaderboard.types'
+import { RESOURCES } from '../../constants/swagger.api'
 
 export const WLeaderboardTable = (props: ILeaderboardTable) => {
   const columns = [
@@ -12,7 +13,7 @@ export const WLeaderboardTable = (props: ILeaderboardTable) => {
       title: 'avatar',
       dataIndex: 'avatar',
       key: 'avatar',
-      render: (avatar: string) => <Avatar size={40} src={`${avatar}`} />,
+      render: (avatar: string) => <Avatar size={40} src={RESOURCES + `${avatar}`} />,
     },
     {
       title: 'login',
