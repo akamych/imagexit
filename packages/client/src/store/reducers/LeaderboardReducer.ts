@@ -35,7 +35,6 @@ const leaderboardSlice = createSlice({
       })
       .addCase(postDataToLeaderboardAsync.fulfilled, (state, action) => {
         state.error = null
-        console.log('Posted succcessfully', action.payload)
       })
       .addCase(postDataToLeaderboardAsync.rejected, (state, action) => {
         state.error = action.error.message || 'Не удалось отправить данные на сервер'
