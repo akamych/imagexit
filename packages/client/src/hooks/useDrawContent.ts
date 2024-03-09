@@ -90,7 +90,14 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     ctx.textBaseline = 'top'
     ctx.textAlign = 'start'
 
-    wrapText(ctx, text, gameSettings.CONTENT_LEFT_PX + typographySettings.task.offset.left, gameSettings.CONTENT_TOP_PX + typographySettings.task.offset.top, typographySettings.task.width, typographySettings.task.fontSize * 1.5)
+    wrapText(
+      ctx,
+      text,
+      gameSettings.CONTENT_LEFT_PX + typographySettings.task.offset.left,
+      gameSettings.CONTENT_TOP_PX + typographySettings.task.offset.top,
+      typographySettings.task.width,
+      typographySettings.task.fontSize * 1.5
+    )
   }
   /** Отрисовка текста. Координаты и настройки прописаны в константах */
   const writeText = (text: string, offsetTop: number) => {
@@ -102,7 +109,14 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     ctx.textBaseline = 'top'
     ctx.textAlign = 'start'
 
-    wrapText(ctx, text, gameSettings.CONTENT_LEFT_PX + typographySettings.textString.offset.left, gameSettings.CONTENT_TOP_PX + offsetTop, typographySettings.textString.width, typographySettings.textString.fontSize * 1.5)
+    wrapText(
+      ctx,
+      text,
+      gameSettings.CONTENT_LEFT_PX + typographySettings.textString.offset.left,
+      gameSettings.CONTENT_TOP_PX + offsetTop,
+      typographySettings.textString.width,
+      typographySettings.textString.fontSize * 1.5
+    )
   }
   const writeSrting = (text: string, color: string, x: number, y: number) => {
     if (!ctx) {
