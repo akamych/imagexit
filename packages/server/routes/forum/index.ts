@@ -4,6 +4,7 @@ import { getComments, getCommentById, createComment, updateComment, deleteCommen
 import { getReplies, getReplyById, createReply, updateReply, deleteReply } from './replies'
 
 const router = express.Router()
+
 /** Forum Topics */
 router.get('/topics', getTopics)
 router.get('/topics/:id', getTopicById)

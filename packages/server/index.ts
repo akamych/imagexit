@@ -1,15 +1,18 @@
 import dotenv from 'dotenv'
 import cors from 'cors'
-dotenv.config()
-import express from 'express'
-import { createClientAndConnect } from './db'
-import { createServer as createViteServer } from 'vite'
-import type { ViteDevServer } from 'vite'
 import * as fs from 'fs'
 import * as path from 'path'
+
+dotenv.config({ path: path.join(__dirname, '../..', '.env') })
+
+import express from 'express'
+// import { createClientAndConnect } from './db'
+import { createServer as createViteServer } from 'vite'
+import type { ViteDevServer } from 'vite'
+
 import cookieParser from 'cookie-parser'
 import { createProxyMiddleware } from 'http-proxy-middleware'
-import { YandexAPIRepository } from './repository/YandexAPIRepository'
+import { YandexAPIRepository, getUserId } from './repository/YandexAPIRepository'
 import { SSRModule } from './types'
 
 import ForumRouter from './routes/forum'
@@ -71,6 +74,8 @@ async function startServer() {
 
   app.use('*', cookieParser(), async (req, res, next) => {
     const url = req.originalUrl
+    const userId = await getUserId(req.headers['cookie'])
+    console.log('userId', userId)
 
     try {
       if (isDev()) {
