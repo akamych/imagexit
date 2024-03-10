@@ -102,7 +102,18 @@ export function roundedRectPath(x: number, y: number, w: number, h: number, r: n
       l 0 ${-h + 2 * r} q 0 ${-r} ${r} ${-r}`
 }
 
-export const buttonCanvas = (ctx: CanvasRenderingContext2D | null, canvas: HTMLCanvasElement | null, colorbg: string, str: string, color: string, imageX: number, imageY: number, imageWidth: number, imageHeight: number, fn: () => void) => {
+export const buttonCanvas = (
+  ctx: CanvasRenderingContext2D | null,
+  canvas: HTMLCanvasElement | null,
+  colorbg: string,
+  str: string,
+  color: string,
+  imageX: number,
+  imageY: number,
+  imageWidth: number,
+  imageHeight: number,
+  fn: () => void
+) => {
   if (!ctx) {
     return
   }
