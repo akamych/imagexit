@@ -12,6 +12,10 @@ import { createProxyMiddleware } from 'http-proxy-middleware'
 import { YandexAPIRepository } from './repository/YandexAPIRepository'
 import { SSRModule } from './types'
 
+import ForumRouter from './routes/forum'
+
+import sequelize from './sequelize'
+
 const isDev = () => process.env.NODE_ENV === 'development'
 
 async function startServer() {
@@ -19,7 +23,12 @@ async function startServer() {
   app.use(cors())
   const port = Number(process.env.SERVER_PORT) || 3001
 
-  // createClientAndConnect()
+  //createClientAndConnect()
+
+  sequelize
+    .sync()
+    .then(() => console.log('ForumTopic table created successfully!'))
+    .catch(error => console.error('Unable to create table : ', error))
 
   let vite: ViteDevServer | undefined
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
@@ -38,7 +47,7 @@ async function startServer() {
 
     app.use(vite.middlewares)
   }
-
+  app.use(express.json())
   app.use(
     '/api/v2',
     createProxyMiddleware({
@@ -50,9 +59,12 @@ async function startServer() {
     })
   )
 
+  app.use('/api/forum', ForumRouter)
+
   app.get('/api', (_, res) => {
     res.json('👋 Howdy from the server :)')
   })
+
   if (!isDev()) {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
   }
