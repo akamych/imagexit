@@ -57,6 +57,12 @@ app.post('/api/theme/:userId', setTheme)
     })
   )
 
+  // Получение текущей темы пользователя
+  app.get('/api/theme/:userId', getTheme)
+
+  // Обновление темы пользователя
+  app.post('/api/theme/:userId', setTheme)
+
   app.get('/api', (_, res) => {
     res.json('👋 Howdy from the server :)')
   })
