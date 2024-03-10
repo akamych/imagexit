@@ -2,9 +2,15 @@ import { Button } from 'antd'
 import { useParams } from 'react-router-dom'
 import emojisData from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
-import { useEffect, useMemo, useState } from 'react'
-import { emojiElement, emojiElementClicks, emojiHolder, emojiPicker } from '../../assets/emojiStyle'
+import { useEffect, useMemo, useState, useCallback } from 'react'
+import { emojiHolder, emojiPicker } from '../../assets/emojiStyle'
 import { apiAddEmoji, apiGetEmoji } from '../../api/forum.api'
+import { WForumTopicEmoji } from './WForumTopicEmoji'
+
+const getEmojisFromStorage = (storageName: string) => {
+  const item = localStorage.getItem(storageName)
+  return item ? JSON.parse(item) : {}
+}
 
 export const WForumTopicEmojis = () => {
   const { id } = useParams()
@@ -13,19 +19,17 @@ export const WForumTopicEmojis = () => {
 
   // временное решение (пока без бека) - начало
 
-  const getStorageName = useMemo<string>(() => `emojiTopic${id}`, [id])
+  const storageName = useMemo<string>(() => `emojiTopic${id}`, [id])
 
-  const getEmojisFromStorage = () => {
-    const item = localStorage.getItem(getStorageName)
-    return item ? JSON.parse(item) : {}
-  }
-
-  const setEmojiInStorage = (emoji: string) => {
-    const current: Record<string, number> = getEmojisFromStorage()
-    current[emoji] = current[emoji] ? current[emoji] + 1 : 1
-    localStorage.setItem(getStorageName, JSON.stringify(current))
-    setEmojiList(current)
-  }
+  const setEmojiInStorage = useCallback(
+    (emoji: string) => {
+      const current: Record<string, number> = getEmojisFromStorage(storageName)
+      current[emoji] = (current[emoji] ?? 0) + 1
+      localStorage.setItem(storageName, JSON.stringify(current))
+      setEmojiList(current)
+    },
+    [getEmojisFromStorage, storageName]
+  )
 
   // временное решение (пока без бека) - конец
 
@@ -38,45 +42,42 @@ export const WForumTopicEmojis = () => {
       // if (res) {
       //   setEmojiList(res);
       // }
-      const current: Record<string, number> = getEmojisFromStorage()
+      const current: Record<string, number> = getEmojisFromStorage(storageName)
       setEmojiList(current)
     }
     getEmojis()
   }, [id])
 
-  const renderEmoji = (code: string, likes: number): React.ReactNode => {
-    // для составных эмоджи из нескольких символов
-    const codes: string[] = code.indexOf('-') > -1 ? code.split('-') : [code]
-    return (
-      <div key={`emoji${code}`} className="emoji" onClick={() => handleEmojiClick(code)} style={emojiElement}>
-        <span>{codes.map(code => String.fromCodePoint(Number(`0x${code}`)))}</span>
-        <span style={emojiElementClicks}>{likes}</span>
-      </div>
-    )
-  }
+  const handleEmojiClick = useCallback(
+    async (emoji: string) => {
+      if (!id || !emoji) {
+        return
+      }
+      setShowPicker(false)
 
-  const handleEmojiClick = async (emoji: string) => {
-    if (!id || !emoji) {
-      return
-    }
-    setShowPicker(false)
+      // const res = await apiAddEmoji({ id, emoji })
+      // if (res) {
+      //   setEmojiList(res);
+      // }
+      setEmojiInStorage(emoji)
+    },
+    [setShowPicker, setEmojiInStorage]
+  )
 
-    // const res = await apiAddEmoji({ id, emoji })
-    // if (res) {
-    //   setEmojiList(res);
-    // }
-    setEmojiInStorage(emoji)
-  }
-
-  const handleEmojiPickerClick = (emojiData: Record<string, string>) => {
-    const { unified } = emojiData
-    handleEmojiClick(unified)
-  }
+  const handleEmojiPickerClick = useCallback(
+    (emojiData: Record<string, string>) => {
+      const { unified } = emojiData
+      handleEmojiClick(unified)
+    },
+    [handleEmojiClick]
+  )
 
   return (
     <>
       <div className="emojis" style={emojiHolder}>
-        {Object.entries(emojiList).map(([code, clicks]) => renderEmoji(code, clicks))}
+        {Object.entries(emojiList).map(([code, clicks]) => (
+          <WForumTopicEmoji key={`emoji${code}`} code={code} clicks={clicks} handleEmojiClick={handleEmojiClick} />
+        ))}
         <div className="button">
           <Button type="dashed" onClick={() => setShowPicker(!showPicker)}>
             Добавить реакцию

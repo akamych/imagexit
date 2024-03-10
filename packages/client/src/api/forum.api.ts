@@ -204,12 +204,12 @@ export const apiGetEmoji = (id: string): Promise<Record<string, number> | void> 
       console.error(error)
     })
 
-type addEmojiPropType = {
+type AddEmojiPropType = {
   id: string
   emoji: string
 }
 
-export const apiAddEmoji = (props: addEmojiPropType): Promise<Record<string, number> | void> =>
+export const apiAddEmoji = (props: AddEmojiPropType): Promise<Record<string, number> | void> =>
   fetch(ADD_EMOJI_API_URL, {
     method: 'POST',
     headers: {
