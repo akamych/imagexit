@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { IComment, IProps } from '../components/forum/forum.types'
 import { IPropsDefault, apiBaseUrl, dataTestForumCommentList, dataTestForumTopicId, dataTestForumTopicList } from '../constants/data.forum'
 
+const GET_EMOJI_API_URL = '/'
+const ADD_EMOJI_API_URL = '/'
+
 export const useHttp = () => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -182,3 +185,44 @@ export const apiGetCommentListold = () => {
   return { loading, response, error, success }
 }
 */
+
+export const apiGetEmoji = (id: string): Promise<Record<string, number> | void> =>
+  fetch(GET_EMOJI_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ id }),
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      return response.json() as Promise<Record<string, number>>
+    })
+    .catch(error => {
+      console.error(error)
+    })
+
+type addEmojiPropType = {
+  id: string
+  emoji: string
+}
+
+export const apiAddEmoji = (props: addEmojiPropType): Promise<Record<string, number> | void> =>
+  fetch(ADD_EMOJI_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(props),
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      return response.json() as Promise<Record<string, number>>
+    })
+    .catch(error => {
+      console.error(error)
+    })
