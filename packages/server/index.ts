@@ -1,9 +1,9 @@
+import 'reflect-metadata'
 import dotenv from 'dotenv'
 import cors from 'cors'
-import { getTheme, setTheme } from './api/themes'
 dotenv.config()
 import express from 'express'
-import { createClientAndConnect } from './db'
+// import { createClientAndConnect } from './db'
 import { createServer as createViteServer } from 'vite'
 import type { ViteDevServer } from 'vite'
 import * as fs from 'fs'
@@ -12,6 +12,8 @@ import cookieParser from 'cookie-parser'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import { YandexAPIRepository } from './repository/YandexAPIRepository'
 import { SSRModule } from './types'
+import sequelize from './sequelize'
+import themeRouter from './routes/theme'
 
 const isDev = () => process.env.NODE_ENV === 'development'
 
@@ -20,13 +22,10 @@ async function startServer() {
   app.use(cors())
   const port = 3001
 
-// Получение текущей темы пользователя
-app.get('/api/theme/:userId', getTheme)
-
-// Обновление темы пользователя
-app.post('/api/theme/:userId', setTheme)
-
-  createClientAndConnect()
+  sequelize
+    .sync()
+    .then(() => console.log('Database connected successfully!'))
+    .catch(error => console.error('Unable to connect to the database: ', error))
 
   let vite: ViteDevServer | undefined
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
@@ -57,11 +56,7 @@ app.post('/api/theme/:userId', setTheme)
     })
   )
 
-  // Получение текущей темы пользователя
-  app.get('/api/theme/:userId', getTheme)
-
-  // Обновление темы пользователя
-  app.post('/api/theme/:userId', setTheme)
+  app.use('/api/theme', themeRouter)
 
   app.get('/api', (_, res) => {
     res.json('👋 Howdy from the server :)')

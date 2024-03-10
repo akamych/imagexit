@@ -3,13 +3,14 @@ import { Model, Table, Column, DataType, AutoIncrement, PrimaryKey, AllowNull, U
 @Table({
   timestamps: false,
   paranoid: true,
-  tableName: 'site_theme',
+  tableName: 'game_theme',
 })
-export class GameTheme extends Model<GameTheme> {
+export class AllThemes extends Model<AllThemes> {
   @AutoIncrement
   @PrimaryKey
   @Column(DataType.INTEGER)
-  override id!: number
+  declare id: number
+
   @AllowNull(false)
   @Unique
   @Column(DataType.STRING)
