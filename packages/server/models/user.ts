@@ -6,14 +6,34 @@ import { Model, Table, Column, AutoIncrement, PrimaryKey, AllowNull, DataType } 
   tableName: 'users',
 })
 export class User extends Model<User> {
-  @AutoIncrement
   @PrimaryKey
+  @AutoIncrement
   @Column(DataType.INTEGER)
-  override id!: number
+  declare id: number
 
   @AllowNull(false)
   @Column(DataType.STRING)
-  username!: string
+  firstName!: string
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  secondName!: string
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  displayName!: string
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  phone!: string
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  login!: string
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  avatar!: string
 
   @AllowNull(false)
   @Column(DataType.STRING)
@@ -33,9 +53,9 @@ export class User extends Model<User> {
     }
   }
 
-  static async getByUsername(username: string): Promise<User | null> {
+  static async getByUsername(login: string): Promise<User | null> {
     try {
-      const user = await User.findOne({ where: { username } })
+      const user = await User.findOne({ where: { login } })
       return user || null
     } catch (error) {
       console.error('Error finding user by username:', error)
@@ -43,9 +63,9 @@ export class User extends Model<User> {
     }
   }
 
-  static async createNew(username: string, email: string, password: string): Promise<User | null> {
+  static async createNew(login: string, email: string, password: string): Promise<User | null> {
     try {
-      const newUser = await User.create({ username, email, password } as User)
+      const newUser = await User.create({ login, email, password } as User)
       return newUser
     } catch (error) {
       console.error('Error creating new user:', error)
