@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import cors from 'cors'
-import getCurrentTheme from './controllers/api/get-current-theme'
+import { getTheme, setTheme } from './api/themes'
 dotenv.config()
 
 import express from 'express'
@@ -10,7 +10,11 @@ const app = express()
 app.use(cors())
 const port = Number(process.env.SERVER_PORT) || 3001
 
-app.get('/api/get-current-theme/:userId', getCurrentTheme)
+// Получение текущей темы пользователя
+app.get('/api/theme/:userId', getTheme)
+
+// Обновление темы пользователя
+app.post('/api/theme/:userId', setTheme)
 
 createClientAndConnect()
 
