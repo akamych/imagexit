@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 dotenv.config()
 import express from 'express'
-// import { createClientAndConnect } from './db'
+import { createClientAndConnect } from './db'
 import { createServer as createViteServer } from 'vite'
 import type { ViteDevServer } from 'vite'
 import * as fs from 'fs'
@@ -17,9 +17,9 @@ const isDev = () => process.env.NODE_ENV === 'development'
 async function startServer() {
   const app = express()
   app.use(cors())
-  const port = Number(process.env.SERVER_PORT) || 3001
+  const port = 3001
 
-  // createClientAndConnect()
+  createClientAndConnect()
 
   let vite: ViteDevServer | undefined
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
