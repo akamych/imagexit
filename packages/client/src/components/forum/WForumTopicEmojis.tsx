@@ -48,7 +48,7 @@ export const WForumTopicEmojis = () => {
     // для составных эмоджи из нескольких символов
     const codes: string[] = code.indexOf('-') > -1 ? code.split('-') : [code]
     return (
-      <div className="emoji" onClick={() => handleEmojiClick(code)} style={emojiElement}>
+      <div key={`emoji${code}`} className="emoji" onClick={() => handleEmojiClick(code)} style={emojiElement}>
         <span>{codes.map(code => String.fromCodePoint(Number(`0x${code}`)))}</span>
         <span style={emojiElementClicks}>{likes}</span>
       </div>
