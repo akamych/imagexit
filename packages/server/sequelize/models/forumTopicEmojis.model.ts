@@ -7,7 +7,7 @@ class ForumTopicEmojis extends Model {
   @Column(DataType.INTEGER)
   declare id: number
 
-  @Column(DataType.STRING)
+  @Column(DataType.INTEGER)
   topicId!: number
 
   @Column(DataType.TEXT)

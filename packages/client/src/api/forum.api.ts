@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { IComment, IProps } from '../components/forum/forum.types'
 import { IPropsDefault, apiBaseUrl, dataTestForumCommentList, dataTestForumTopicId, dataTestForumTopicList } from '../constants/data.forum'
 
-const GET_EMOJI_API_URL = `${apiBaseUrl}/emojis/`
-const ADD_EMOJI_API_URL = `${apiBaseUrl}/emojis`
+const baseForumApi = `${apiBaseUrl}/api/forum/`
+const ADD_EMOJI_API_URL = `${baseForumApi}emojis`
+const GET_EMOJI_API_URL = `${ADD_EMOJI_API_URL}/`
 
 export const useHttp = () => {
   const [loading, setLoading] = useState(false)
@@ -192,7 +193,6 @@ export const apiGetEmoji = (id: number): Promise<Record<string, number> | void> 
       if (!response.ok) {
         throw new Error('Network response was not ok')
       }
-      console.log(response.json())
       return response.json() as Promise<Record<string, number>>
     })
     .catch(error => {
