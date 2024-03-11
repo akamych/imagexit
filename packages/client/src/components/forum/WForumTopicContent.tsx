@@ -5,6 +5,8 @@ import { IProps } from './forum.types'
 import { IPropsDefault } from '../../constants/data.forum'
 import { apiGetTopicContent } from '../../api/forum.api'
 import { alertStyle } from '../../assets/antdStyle'
+import { WForumTopicEmojis } from './WForumTopicEmojis'
+import { emojiMoreGrid, moreButton } from '../../assets/emojiStyle'
 
 export const WForumTopicContent = () => {
   const { Paragraph, Title } = Typography
@@ -74,10 +76,13 @@ export const WForumTopicContent = () => {
           <Paragraph ellipsis={ellipsis ? { rows: 2, expandable: true, symbol: ' ' } : false}>{dataTopic.content}</Paragraph>
         </>
       )}
-      <div className="button-more">
-        <Button type="dashed" onClick={() => setEllipsis(!ellipsis)}>
-          {ellipsis ? 'еще' : 'свернуть'}
-        </Button>
+      <div className="forum-emojis" style={emojiMoreGrid}>
+        <WForumTopicEmojis />
+        <div className="button-more" style={moreButton}>
+          <Button type="dashed" onClick={() => setEllipsis(!ellipsis)}>
+            {ellipsis ? 'еще' : 'свернуть'}
+          </Button>
+        </div>
       </div>
     </>
   )
