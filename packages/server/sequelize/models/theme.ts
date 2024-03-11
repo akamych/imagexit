@@ -10,7 +10,7 @@ export class UserTheme extends Model<UserTheme> {
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.INTEGER)
-  override id!: number
+  declare id: number
 
   @Column(DataType.STRING)
   theme!: string
