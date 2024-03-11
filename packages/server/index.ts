@@ -3,7 +3,6 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 dotenv.config()
 import express from 'express'
-// import { createClientAndConnect } from './db'
 import { createServer as createViteServer } from 'vite'
 import type { ViteDevServer } from 'vite'
 import * as fs from 'fs'
