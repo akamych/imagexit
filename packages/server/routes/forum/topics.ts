@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import ForumTopic from '../../sequelize/models/forumTopic.model'
-import { getUserId } from '../../repository/YandexAPIRepository'
 
 export const getTopics = async (req: Request, res: Response) => {
   try {
@@ -49,8 +48,8 @@ export const createTopic = async (req: Request, res: Response) => {
 
   try {
     // Проверяем что пользователь создает топик от своего имени
-    const userId = await getUserId(req.headers.cookie)
-    if (req.body.userId !== userId) {
+
+    if (req.body.userId !== res.locals.userId) {
       return res.status(403).json({ message: 'Forbidden' })
     }
     const newTopic = ForumTopic.build({
@@ -89,8 +88,7 @@ export const updateTopic = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Reply not found' })
     }
     // Проверяем что пользователь редактирует свой топик
-    const userId = await getUserId(req.headers.cookie)
-    if (reply.userId !== userId) {
+    if (reply.userId !== res.locals.userId) {
       return res.status(403).json({ message: 'Forbidden' })
     }
     // Проверяем, что обновляемые данные соответствуют модели ForumTopic
@@ -113,8 +111,7 @@ export const deleteTopic = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Reply not found' })
     }
     // Проверяем что пользователь удаляет свой топик
-    const userId = await getUserId(req.headers.cookie)
-    if (reply.userId !== userId) {
+    if (reply.userId !== res.locals.userId) {
       return res.status(403).json({ message: 'Forbidden' })
     }
     await reply.destroy()

@@ -12,7 +12,7 @@ import type { ViteDevServer } from 'vite'
 
 import cookieParser from 'cookie-parser'
 import { createProxyMiddleware } from 'http-proxy-middleware'
-import { YandexAPIRepository, getUserId } from './repository/YandexAPIRepository'
+import { YandexAPIRepository } from './repository/YandexAPIRepository'
 import { SSRModule } from './types'
 
 import ForumRouter from './routes/forum'
@@ -74,8 +74,6 @@ async function startServer() {
 
   app.use('*', cookieParser(), async (req, res, next) => {
     const url = req.originalUrl
-    const userId = await getUserId(req.headers['cookie'])
-    console.log('userId', userId)
 
     try {
       if (isDev()) {

@@ -16,7 +16,7 @@ export class YandexAPIRepository {
         cookie: this._cookieHeader,
       },
     })
-    console.log('data', data)
+
     return {
       ...data,
       xss: "</script><script>alert('pwned')</script><!--",
@@ -33,7 +33,7 @@ export async function getUserId(cookieHeader: string | undefined) {
     const user = await repository.getCurrent()
 
     const userId = user.id
-    console.log(`ID пользователя: ${userId}`)
+
     return userId
   } catch (error) {
     console.error(error)

@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import ForumComments from '../../sequelize/models/forumComments.model'
-import { getUserId } from '../../repository/YandexAPIRepository'
 
 export const getComments = async (req: Request, res: Response) => {
   try {
@@ -49,8 +48,7 @@ export const createComment = async (req: Request, res: Response) => {
 
   try {
     // Проверяем что пользователь содает комментарий от своего имени
-    const userId = await getUserId(req.headers.cookie)
-    if (req.body.userId !== userId) {
+    if (req.body.userId !== res.locals.userId) {
       return res.status(403).json({ message: 'Forbidden' })
     }
     const newComment = ForumComments.build({
@@ -89,14 +87,13 @@ export const updateComment = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Reply not found' })
     }
     // Проверяем что пользователь редактирует свой комментарий
-    const userId = await getUserId(req.headers.cookie)
-    if (reply.userId !== userId) {
+
+    if (reply.userId !== res.locals.userId) {
       return res.status(403).json({ message: 'Forbidden' })
     }
     // Проверяем, что обновляемые данные соответствуют модели ForumComments
     reply.set(req.body)
     await reply.validate() // валидируем обновленные данные
-
     await reply.save() // сохраняем обновленные данные
     return res.json(reply)
   } catch (error: any) {
@@ -112,8 +109,7 @@ export const deleteComment = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Reply not found' })
     }
     // Проверяем что пользователь удаляет свой комментарий
-    const userId = await getUserId(req.headers.cookie)
-    if (reply.userId !== userId) {
+    if (reply.userId !== res.locals.userId) {
       return res.status(403).json({ message: 'Forbidden' })
     }
     await reply.destroy()
