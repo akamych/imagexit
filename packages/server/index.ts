@@ -1,7 +1,6 @@
 import 'reflect-metadata'
 import dotenv from 'dotenv'
 import cors from 'cors'
-dotenv.config()
 import express from 'express'
 import { createServer as createViteServer } from 'vite'
 import type { ViteDevServer } from 'vite'
@@ -15,6 +14,7 @@ import sequelize from './sequelize'
 import themeRouter from './routes/theme'
 
 const isDev = () => process.env.NODE_ENV === 'development'
+dotenv.config()
 
 async function startServer() {
   const app = express()

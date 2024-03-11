@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { UserTheme } from '../../sequelize/models/theme' // Путь к модели темы пользователя
+import { UserTheme } from '../../sequelize/models/user-theme'
 
 // Получение текущей темы пользователя
 export async function getTheme(req: Request, res: Response): Promise<void> {
