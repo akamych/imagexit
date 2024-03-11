@@ -3,6 +3,7 @@ import { getTopics, getTopicById, createTopic, updateTopic, deleteTopic } from '
 import { getComments, getCommentById, createComment, updateComment, deleteComment } from './comments'
 import { getReplies, getReplyById, createReply, updateReply, deleteReply } from './replies'
 import onlyAuth from '../../utils/auth'
+import { addTopicEmoji, getEmojisByTopicId } from './emoji'
 
 const router = express.Router()
 
@@ -24,5 +25,8 @@ router.get('/replies/:id', getReplyById)
 router.post('/replies', onlyAuth, createReply)
 router.put('/replies/:id', onlyAuth, updateReply)
 router.delete('/replies/:id', onlyAuth, deleteReply)
+/** Forum Topic Emojis */
+router.post('/emojis', addTopicEmoji)
+router.get('/emojis/:id', getEmojisByTopicId)
 
 export default router
