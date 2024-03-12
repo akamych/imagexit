@@ -5,7 +5,7 @@ import { Model, Table, Column, DataType, AutoIncrement, PrimaryKey, AllowNull, U
   paranoid: true,
   tableName: 'game_theme',
 })
-export class Themes extends Model<Themes> {
+export default class Themes extends Model<Themes> {
   @AutoIncrement
   @PrimaryKey
   @Column(DataType.INTEGER)
