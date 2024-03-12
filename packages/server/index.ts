@@ -1,17 +1,26 @@
 import 'reflect-metadata'
 import dotenv from 'dotenv'
 import cors from 'cors'
-import express from 'express'
-import { createServer as createViteServer } from 'vite'
-import type { ViteDevServer } from 'vite'
 import * as fs from 'fs'
 import * as path from 'path'
+
+dotenv.config({ path: path.join(__dirname, '../..', '.env') })
+
+import express from 'express'
+// import { createClientAndConnect } from './db'
+import { createServer as createViteServer } from 'vite'
+import type { ViteDevServer } from 'vite'
+
 import cookieParser from 'cookie-parser'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import { YandexAPIRepository } from './repository/YandexAPIRepository'
 import { SSRModule } from './types'
 import sequelize from './sequelize'
 import themeRouter from './routes/theme'
+
+import ForumRouter from './routes/forum'
+
+import sequelize from './sequelize'
 
 const isDev = () => process.env.NODE_ENV === 'development'
 dotenv.config()
@@ -43,7 +52,7 @@ async function startServer() {
 
     app.use(vite.middlewares)
   }
-
+  app.use(express.json())
   app.use(
     '/api/v2',
     createProxyMiddleware({
@@ -57,9 +66,12 @@ async function startServer() {
 
   app.use('/api/theme', themeRouter)
 
+  app.use('/api/forum', ForumRouter)
+
   app.get('/api', (_, res) => {
     res.json('👋 Howdy from the server :)')
   })
+
   if (!isDev()) {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
   }
