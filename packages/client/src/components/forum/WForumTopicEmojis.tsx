@@ -2,48 +2,25 @@ import { Button } from 'antd'
 import { useParams } from 'react-router-dom'
 import emojisData from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
-import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { emojiHolder, emojiPicker } from '../../assets/emojiStyle'
 import { apiAddEmoji, apiGetEmoji } from '../../api/forum.api'
 import { WForumTopicEmoji } from './WForumTopicEmoji'
-
-const getEmojisFromStorage = (storageName: string) => {
-  const item = localStorage.getItem(storageName)
-  return item ? JSON.parse(item) : {}
-}
 
 export const WForumTopicEmojis = () => {
   const { id } = useParams()
   const [showPicker, setShowPicker] = useState(false)
   const [emojiList, setEmojiList] = useState<Record<string, number>>({})
 
-  // временное решение (пока без бека) - начало
-
-  const storageName = useMemo<string>(() => `emojiTopic${id}`, [id])
-
-  const setEmojiInStorage = useCallback(
-    (emoji: string) => {
-      const current: Record<string, number> = getEmojisFromStorage(storageName)
-      current[emoji] = (current[emoji] ?? 0) + 1
-      localStorage.setItem(storageName, JSON.stringify(current))
-      setEmojiList(current)
-    },
-    [getEmojisFromStorage, storageName]
-  )
-
-  // временное решение (пока без бека) - конец
-
   useEffect(() => {
     const getEmojis = async () => {
-      if (!id) {
+      if (!id || id === null) {
         return
       }
-      // const res = await apiGetEmoji(id)
-      // if (res) {
-      //   setEmojiList(res);
-      // }
-      const current: Record<string, number> = getEmojisFromStorage(storageName)
-      setEmojiList(current)
+      const res = await apiGetEmoji(Number(id))
+      if (res) {
+        setEmojiList(res)
+      }
     }
     getEmojis()
   }, [id])
@@ -55,13 +32,12 @@ export const WForumTopicEmojis = () => {
       }
       setShowPicker(false)
 
-      // const res = await apiAddEmoji({ id, emoji })
-      // if (res) {
-      //   setEmojiList(res);
-      // }
-      setEmojiInStorage(emoji)
+      const res = await apiAddEmoji({ id, emoji })
+      if (res) {
+        setEmojiList(res)
+      }
     },
-    [setShowPicker, setEmojiInStorage]
+    [setShowPicker, apiAddEmoji]
   )
 
   const handleEmojiPickerClick = useCallback(

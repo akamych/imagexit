@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { IComment, IProps } from '../components/forum/forum.types'
 import { IPropsDefault, apiBaseUrl, dataTestForumCommentList, dataTestForumTopicId, dataTestForumTopicList } from '../constants/data.forum'
 
-const GET_EMOJI_API_URL = '/'
-const ADD_EMOJI_API_URL = '/'
+const baseForumApi = `${apiBaseUrl}/api/forum/`
+const ADD_EMOJI_API_URL = `${baseForumApi}emojis`
+const GET_EMOJI_API_URL = `${ADD_EMOJI_API_URL}/`
 
 export const useHttp = () => {
   const [loading, setLoading] = useState(false)
@@ -186,14 +187,8 @@ export const apiGetCommentListold = () => {
 }
 */
 
-export const apiGetEmoji = (id: string): Promise<Record<string, number> | void> =>
-  fetch(GET_EMOJI_API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ id }),
-  })
+export const apiGetEmoji = (id: number): Promise<Record<string, number> | void> =>
+  fetch(`${GET_EMOJI_API_URL}${id}`)
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok')
@@ -210,7 +205,7 @@ type AddEmojiPropType = {
 }
 
 export const apiAddEmoji = (props: AddEmojiPropType): Promise<Record<string, number> | void> =>
-  fetch(ADD_EMOJI_API_URL, {
+  fetch(`${ADD_EMOJI_API_URL}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
