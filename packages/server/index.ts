@@ -17,10 +17,7 @@ import { YandexAPIRepository } from './repository/YandexAPIRepository'
 import { SSRModule } from './types'
 import sequelize from './sequelize'
 import themeRouter from './routes/theme'
-
 import ForumRouter from './routes/forum'
-
-import sequelize from './sequelize'
 
 const isDev = () => process.env.NODE_ENV === 'development'
 dotenv.config()
