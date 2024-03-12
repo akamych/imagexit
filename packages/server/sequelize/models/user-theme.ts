@@ -1,12 +1,12 @@
 import { Model, Table, Column, AutoIncrement, PrimaryKey, ForeignKey, DataType } from 'sequelize-typescript'
-import { User } from './user'
+import User from './user'
 
 @Table({
   timestamps: false,
   paranoid: true,
   tableName: 'user_theme',
 })
-export class UserTheme extends Model<UserTheme> {
+export default class UserTheme extends Model<UserTheme> {
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.INTEGER)
