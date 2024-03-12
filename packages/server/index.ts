@@ -24,7 +24,7 @@ async function startServer() {
   sequelize
     .sync()
     .then(() => console.log('Database connected successfully!'))
-    .catch(error => console.error('Unable to connect to the database: ', error))
+    .catch((error: Error) => console.error('Unable to connect to the database: ', error))
 
   let vite: ViteDevServer | undefined
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
