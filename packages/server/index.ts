@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import * as fs from 'fs'
@@ -14,24 +15,25 @@ import cookieParser from 'cookie-parser'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import { YandexAPIRepository } from './repository/YandexAPIRepository'
 import { SSRModule } from './types'
+import sequelize from './sequelize'
+import themeRouter from './routes/theme'
 
 import ForumRouter from './routes/forum'
 
 import sequelize from './sequelize'
 
 const isDev = () => process.env.NODE_ENV === 'development'
+dotenv.config()
 
 async function startServer() {
   const app = express()
   app.use(cors())
   const port = 3001
 
-  //createClientAndConnect()
-
   sequelize
     .sync()
-    .then(() => console.log('ForumTopic table created successfully!'))
-    .catch(error => console.error('Unable to create table : ', error))
+    .then(() => console.log('Database connected successfully!'))
+    .catch((error: Error) => console.error('Unable to connect to the database: ', error))
 
   let vite: ViteDevServer | undefined
   const distPath = path.dirname(require.resolve('client/dist/index.html'))
@@ -61,6 +63,8 @@ async function startServer() {
       target: 'https://ya-praktikum.tech',
     })
   )
+
+  app.use('/api/theme', themeRouter)
 
   app.use('/api/forum', ForumRouter)
 
