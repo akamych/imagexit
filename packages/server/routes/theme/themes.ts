@@ -3,7 +3,7 @@ import UserTheme from '../../sequelize/models/user-theme'
 
 // Получение текущей темы пользователя
 export async function getTheme(req: Request, res: Response): Promise<void> {
-  const userId = parseInt(req.params.userId) // Получаем идентификатор пользователя из запроса
+  const userId = req.params.id // Получаем идентификатор пользователя из запроса
   try {
     const userTheme = await UserTheme.findOne({ where: { ownerId: userId } }) // Находим тему пользователя по идентификатору
     if (!userTheme) {
@@ -19,7 +19,7 @@ export async function getTheme(req: Request, res: Response): Promise<void> {
 
 // Установка новой темы пользователя
 export async function setTheme(req: Request, res: Response): Promise<void> {
-  const userId = req.params.userId // Получаем идентификатор пользователя из запроса
+  const userId = req.params.id // Получаем идентификатор пользователя из запроса
   const theme: string = req.body.theme // Получаем новую тему из тела запроса
 
   try {
@@ -43,7 +43,7 @@ export async function setTheme(req: Request, res: Response): Promise<void> {
 
 // Обновление темы пользователя
 export async function updateTheme(req: Request, res: Response): Promise<void> {
-  const userId = req.params.userId
+  const userId = req.params.id
   const newTheme: string = req.body.theme
 
   try {
