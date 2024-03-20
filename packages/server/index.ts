@@ -33,12 +33,17 @@ async function startServer() {
     .catch((error: Error) => console.error('Unable to connect to the database: ', error))
 
   let vite: ViteDevServer | undefined
-  const distPath = path.dirname(require.resolve('client/dist/index.html'))
   const srcPath = path.dirname(require.resolve('client'))
-  const ssrClientPath = require.resolve('client/ssr-dist/ssr.cjs')
 
   let template: string
-  template = fs.readFileSync(path.resolve(isDev() ? srcPath : distPath, 'index.html'), 'utf-8')
+  let distPath = ''
+
+  if (isDev()) {
+    template = fs.readFileSync(path.resolve(srcPath, 'index.html'), 'utf-8')
+  } else {
+    distPath = path.dirname(require.resolve('client/dist/index.html'))
+    template = fs.readFileSync(path.resolve(distPath), 'utf-8')
+  }
 
   if (isDev()) {
     vite = await createViteServer({
@@ -86,6 +91,7 @@ async function startServer() {
       if (isDev()) {
         mod = (await vite!.ssrLoadModule(path.resolve(srcPath, 'ssr.tsx'))) as SSRModule
       } else {
+        const ssrClientPath = require.resolve('client/ssr-dist/ssr.cjs')
         mod = await import(ssrClientPath)
       }
 
