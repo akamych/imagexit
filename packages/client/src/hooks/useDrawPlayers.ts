@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { gameSettings, playerColors } from '../constants/game'
-import { ICellElement, IPlayerInfo, IRaundInfo, defaultIPlayersPoint } from '../types/game'
+import { ICellElement, IPlayerInfo, IRaundInfo, defaultIPlayersPoint, IRaundPlayerInfo } from '../types/game'
 import { getPlayersJSON } from '../components/game/testData'
+import { writeLogin } from '../components/game/lib'
 
 type UseDrawPlayers = (
   ctx: CanvasRenderingContext2D | null,
   fieldsElement: ICellElement[],
   animationField: boolean
 ) => {
-  generatePlayers: () => void
+  generatePlayers: (players: IPlayerInfo[], mastercardIndex: number | undefined, masterUserId: string) => void
 }
 
 /**
@@ -43,7 +44,7 @@ type IAnimationXYNow = {
  * @param color - цвет фишки
  * @returns
  */
-const drawСircle = (ctx: CanvasRenderingContext2D | null, centerX: number, centerY: number, color: string) => {
+const drawCircle = (ctx: CanvasRenderingContext2D | null, centerX: number, centerY: number, color: string) => {
   if (!ctx) {
     return
   }
@@ -116,14 +117,31 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
   /*
    * Тестовые данные Метод генерирует рандомное количество игроков и рандомно распределяет их по игровому полю
    * */
-  const generatePlayers = () => {
+  const generatePlayers = (players: IPlayerInfo[], mastercardIndex: number | undefined, masterUserId: string) => {
     if (!ctx) {
       return
     }
     clearCanvas()
     setAnimationXY([])
-    const { playerJSON, pointsJSON } = getPlayersJSON(7)
-    setPlayers(playerJSON)
+    setPlayers(players)
+
+    const pointsJSON: IRaundInfo = {
+      id: 1,
+      masterUserId: masterUserId,
+      masterAssociation: 'Приятная суета',
+      mastercardId: mastercardIndex,
+      players: players.map(i => {
+        return {
+          color: i.color,
+          userId: i.userId,
+          selectedCard: i.selectedImageIndex,
+          master: false,
+          pointsOld: i.score > 0 ? i.score - i.scoreAdd : 0,
+          pointsAdd: i.scoreAdd,
+        } as IRaundPlayerInfo
+      }),
+    }
+
     setPoints(pointsJSON)
     return true
   }
@@ -161,9 +179,6 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
     /** Номер поля куда движется фишка */
     let goToCell = animationXY[index].goToCell
 
-    /** В каком направлении движение +1/-1 */
-    const moveSign = Math.sign(points.players[index].pointsAdd)
-
     /** координаты где сейчас расположена фишка */
     let x = animationXY[index].x
     let y = animationXY[index].y
@@ -173,10 +188,10 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
     let b = animationXY[index].b
 
     /** Если фишка находится в ячейке на своем месте и не движется*/
-    if (moving == false) {
+    if (!moving) {
       /** Если промежуточная ячейка и не равна финальной */
-      if (goToCell && goToCell != animationXY[index].pointFinish) {
-        goToCell += moveSign // вычисляем следующую ячейку
+      if (typeof goToCell === 'number' && goToCell !== animationXY[index].pointFinish) {
+        goToCell += 1 // вычисляем следующую ячейку
         moving = true
 
         /** Координаты точки назначения - точку назначения только установили*/
@@ -187,8 +202,7 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
         b = y - k * x
       }
     }
-
-    if (goToCell != null && moving == true) {
+    if (goToCell != null && moving) {
       /** Координаты точки назначения */
       const { x: xFinish, y: yFinish } = coordinateCalculation(goToCell, index)
 
@@ -200,7 +214,7 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
         moving = false
 
         // ---- Finish
-        if (goToCell == animationXY[index].pointFinish) {
+        if (goToCell === animationXY[index].pointFinish) {
           activeIndex.current = animationXY.length >= activeIndex.current ? activeIndex.current + 1 : null
         }
       } else {
@@ -237,13 +251,13 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
       arrayXY.push({
         x: x,
         y: y,
-        color: playerColors[index],
+        color: item.color,
         moving: false,
         k: 0,
         b: 0,
-        pointStart: points.players[index].pointsOld,
-        goToCell: points.players[index].pointsOld,
-        pointFinish: points.players[index].pointsOld + points.players[index].pointsAdd,
+        pointStart: item.pointsOld,
+        goToCell: item.pointsOld,
+        pointFinish: item.pointsOld + item.pointsAdd,
       })
     })
     setAnimationXY(arrayXY)
@@ -267,7 +281,7 @@ export const UseDrawPlayers: UseDrawPlayers = (ctx, fieldsElement, animationFiel
     if (animationXY.length > 0) {
       clearCanvas()
       animationXY.forEach(item => {
-        drawСircle(ctx, item.x, item.y, item.color)
+        drawCircle(ctx, item.x, item.y, item.color)
       })
       setTimeout(() => {
         showAnimationOnTheBoard()

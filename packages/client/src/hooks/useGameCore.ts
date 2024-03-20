@@ -12,28 +12,15 @@ export const UseGameCore = () => {
   const [fullScreen, setFullScreen] = useState(false)
   const [visibleField, setVisibleField] = useState(false)
   const [animationField, setAnimationField] = useState(false)
-  const [playersInfo, setPlayersInfo] = useState<IPlayerInfo[]>([{ userId: 'self', login: 'self', color: playerColors[6] }]) // информация о игроках
+  const [playersInfo, setPlayersInfo] = useState<IPlayerInfo[]>([{ userId: 'self', login: 'self', color: playerColors[6], score: 0, selectedImageIndex: 0, scoreAdd: 0 }]) // информация о игроках
   const [gameStep, setGameStep] = useState<string>('') // шаг в игре, статус
   const [difficulty, setDifficulty] = useState('normal') // уровень сложности в игре  light,normal/hard
-  const [raundInfo, setRaundInfo] = useState<IRaundInfo>(getApiRaundInfo(7)) // информация о раунде в игре getApiRaundInfo()
+  const [raundInfo, setRaundInfo] = useState<IRaundInfo>(getApiRaundInfo(1)) // информация о раунде в игре getApiRaundInfo()
 
   const [selectedCard, setSelectedCard] = useState<ICardElement | null>(null)
+  const [association, setAssociation] = useState('')
 
-  // ----------
-  const setNextGameStep = () => {
-    console.log('gameStep', gameStep)
-    if (gameStep == 'results') {
-      setGameStep(stepsInTheGame[1])
-    } else {
-      if (gameStep != '') {
-        const stepNow = stepsInTheGame.indexOf(gameStep)
-        console.log('gameStep stepNow', stepNow)
-        setGameStep(stepsInTheGame[stepNow + 1])
-      } else {
-        setGameStep(stepsInTheGame[0])
-      }
-    }
-  }
+  const [isLeading, setIsLeading] = useState(true)
 
   useEffect(() => {
     document.addEventListener('fullscreenchange', () => {
@@ -58,12 +45,16 @@ export const UseGameCore = () => {
     setFullScreen,
     gameStep,
     setGameStep,
-    setNextGameStep,
+    // setNextGameStep,
     setPlayersInfo,
     playersInfo,
     raundInfo,
     setRaundInfo,
     difficulty,
     setDifficulty,
+    association,
+    setAssociation,
+    isLeading,
+    setIsLeading,
   }
 }

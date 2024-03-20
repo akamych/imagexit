@@ -3,6 +3,7 @@ import { Alert, Button, Checkbox, Divider, Form, Input, Select, Typography } fro
 import { DownOutlined } from '@ant-design/icons'
 import { playerColors } from '../../constants/game'
 import { IPlayerInfo } from '../../types/game'
+import { randomInteger } from '../../helpers/number'
 
 type IWgameStepStart = {
   сloseModal: () => void
@@ -38,10 +39,10 @@ export const WgameStepStart = (props: IWgameStepStart) => {
     props.сloseModal()
     console.log('Send form: ', values)
     const teamInput: IPlayerInfo[] = []
+    teamInput.push({ userId: 'self', login: 'self', color: playerColors[6], score: 0, selectedImageIndex: randomInteger(0, 5), scoreAdd: 0 })
     values.players.forEach((item: string, index: any) => {
-      teamInput.push({ userId: item, login: item, color: playerColors[index] })
+      teamInput.push({ userId: item, login: item, color: playerColors[index], score: 0, selectedImageIndex: randomInteger(0, 5), scoreAdd: 0 })
     })
-    teamInput.push({ userId: 'self', login: 'self', color: playerColors[6] })
     props.startSettingsSave(teamInput, values.difficulty)
   }
   /*

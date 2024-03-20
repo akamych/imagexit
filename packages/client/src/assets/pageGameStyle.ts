@@ -4,6 +4,15 @@ export const inputContainer: React.CSSProperties = {
   margin: '20px 0',
   display: 'flex',
   justifyContent: 'center',
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  bottom: 50,
+  zIndex: 10,
+}
+
+export const input: React.CSSProperties = {
+  width: 350,
 }
 
 export const actionContainer: React.CSSProperties = {
