@@ -3,10 +3,10 @@ import { gameContent, gameSettings, typographySettings } from '../constants/game
 type IUseDrawContent = (ctx: CanvasRenderingContext2D | null) => {
   writeTitle: (text: string) => void
   writeTask: (text: string) => void
-  writeText: (text: string, offsetTop: number) => void
+  writeText: (text: string, offsetTop: number, offsetLeft?: number) => void
   bgContent: () => void
   writeSrting: (text: string, color: string, x: number, y: number) => void
-  displayContent: (step: string) => void
+  displayContent: (step: string, isLeading: boolean, round: number) => void
 }
 
 /**
@@ -99,8 +99,26 @@ export const UseDrawContent: IUseDrawContent = ctx => {
       typographySettings.task.fontSize * 1.5
     )
   }
+
+  const writeInfo = (text: string) => {
+    if (!ctx) {
+      return
+    }
+    ctx.font = `${typographySettings.task.fontSize}px ${typographySettings.task.fontFamily}`
+    ctx.fillStyle = typographySettings.task.color
+    ctx.textBaseline = 'top'
+
+    wrapText(
+      ctx,
+      text,
+      gameSettings.CONTENT_LEFT_PX + typographySettings.task.offset.left,
+      gameSettings.CONTENT_TOP_PX + typographySettings.task.offset.top * 3,
+      typographySettings.task.width,
+      typographySettings.task.fontSize * 1.5
+    )
+  }
   /** Отрисовка текста. Координаты и настройки прописаны в константах */
-  const writeText = (text: string, offsetTop: number) => {
+  const writeText = (text: string, offsetTop: number, offsetLeft = 0) => {
     if (!ctx) {
       return
     }
@@ -112,7 +130,7 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     wrapText(
       ctx,
       text,
-      gameSettings.CONTENT_LEFT_PX + typographySettings.textString.offset.left,
+      gameSettings.CONTENT_LEFT_PX + typographySettings.textString.offset.left + offsetLeft,
       gameSettings.CONTENT_TOP_PX + offsetTop,
       typographySettings.textString.width,
       typographySettings.textString.fontSize * 1.5
@@ -130,10 +148,16 @@ export const UseDrawContent: IUseDrawContent = ctx => {
     wrapText(ctx, text, x, y, typographySettings.textString.width, typographySettings.textString.fontSize * 1.5)
   }
   /** Отрисовка заголовка, задания и текста для хода.*/
-  const displayContent = (step: string) => {
-    writeRaundNumber(3)
+  const displayContent = (step: string, isLeading: boolean, round: number) => {
+    writeRaundNumber(round)
     writeTitle(gameContent[step].title)
     writeTask(gameContent[step].task)
+
+    if (isLeading) {
+      writeInfo(gameContent[step].messageMaster ?? '')
+    } else {
+      writeInfo(gameContent[step].messagePlayer ?? '')
+    }
   }
 
   return {

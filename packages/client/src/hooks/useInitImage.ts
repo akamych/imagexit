@@ -32,9 +32,8 @@ export const UseInitImage = () => {
           id: index,
         })
       })
+      setCardsElement(arr)
     })
-
-    setCardsElement(arr)
   }, [])
 
   return {

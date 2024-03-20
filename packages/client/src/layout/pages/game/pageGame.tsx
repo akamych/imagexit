@@ -7,23 +7,21 @@ import { UseDrawCards } from '../../../hooks/useDrawCards'
 import { UseHandler } from '../../../hooks/useHandler'
 import { UseGameCore } from '../../../hooks/useGameCore'
 import { useEffect, useState } from 'react'
-import { inputContainer, actionContainer, sliderVertical, sliderVerticalContainer } from '../../../assets/pageGameStyle'
+import { inputContainer, actionContainer, sliderVertical, sliderVerticalContainer, input } from '../../../assets/pageGameStyle'
 import { UseMusic } from '../../../hooks/useMusic'
 import { musicSettings } from '../../../constants/common'
 import { UseDrawContent } from '../../../hooks/useDrawContent'
-import { getApiPlayersInfo, getApiRaundInfo, getPlayersJSON } from '../../../components/game/testData'
+import { associations, getApiPlayersInfo, getApiRaundInfo, getPlayersJSON } from '../../../components/game/testData'
 import { buttonCanvas, roundedRectPath, writeLogin, writeLoginFinish } from '../../../components/game/lib'
-import { gameContent, gameSettings, typographySettings, MAX_ROUND_SCORE } from '../../../constants/game'
+import { gameContent, gameSettings, typographySettings, MAX_ROUND_SCORE, stepsInTheGame } from '../../../constants/game'
 import './game.css'
 import { FullscreenOutlined } from '@ant-design/icons'
 import { WgameStepStart } from '../../../components/game/WgameStepStart'
-import { IPlayerInfo, defaultRaundInfo } from '../../../types/game'
+import { IPlayerInfo, defaultRaundInfo, IRaundInfo, IRaundPlayerInfo } from '../../../types/game'
 import { useSetScore } from '../../../hooks/useSetScore'
+import { randomInteger } from '../../../helpers/number'
 
 export const PageGame = () => {
-  //const { Title } = Typography
-  // состояния будут перенесены в глобальное хранилице
-
   const {
     isStartGame,
     setIsStartGame,
@@ -36,13 +34,14 @@ export const PageGame = () => {
     setAnimationField,
     gameStep,
     setGameStep,
-    setNextGameStep,
     setPlayersInfo,
     playersInfo,
     raundInfo,
     setRaundInfo,
     difficulty,
     setDifficulty,
+    association,
+    setAssociation,
   } = UseGameCore()
 
   const { playMusic, setPlayMusic, startMusic, stopMusic, setMusicVolume } = UseMusic()
@@ -80,95 +79,208 @@ export const PageGame = () => {
     setVisibleField(true)
     setAnimationField(true)
     setPlace()
-    generatePlayers()
+    const selectedCardIndex = cardsElement.findIndex(card => card.id === raundInfo.mastercardId)
+
+    generatePlayers(playersInfo, selectedCardIndex, playersInfo[0].userId)
     writeTitle('Игровое поле')
     const { playerJSON, pointsJSON } = getPlayersJSON(7) // тестовые данные
-    writeLogin(ctx, playerJSON, pointsJSON, 20, gameSettings.GAME_BOARD_TOP_PX + 80)
+    writeLogin(ctx, playerJSON, 20, gameSettings.GAME_BOARD_TOP_PX + 80)
   }
   // ====================== START
   const stepStart = () => {
-    //setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
     setIsStartGame(false)
     const left = gameSettings.CONTENT_LEFT_PX
     writeTitle(gameContent[gameStep].title)
     writeTask(gameContent[gameStep].task)
     writeSrting('Уровень сложности: ' + difficulty, typographySettings.smallText.color, left, gameSettings.GAME_BOARD_TOP_PX + 40)
     writeSrting('Команда: (от 3 до 7)', typographySettings.smallText.color, left, gameSettings.GAME_BOARD_TOP_PX + 70)
-    writeLogin(ctx, playersInfo, null, left + 30, gameSettings.GAME_BOARD_TOP_PX + 100)
+    writeLogin(ctx, playersInfo, left + 30, gameSettings.GAME_BOARD_TOP_PX + 100)
     buttonModal(ctx3, canvas3, 'Выбрать', gameSettings.CONTENT_WIDTH_PX, gameSettings.GAME_BOARD_TOP_PX + 40, 170, 40)
-    if (difficulty != null && playersInfo.length > 2 && playersInfo.length <= 7) {
-      buttonCanvas(ctx3, canvas3, 'red', 'играть', '#fff', typographySettings.title.offset.left, gameSettings.GAME_BOARD_TOP_PX + 320, 170, 40, setNextGameStep)
-    }
+
+    setTimeout(() => {
+      if (difficulty != null && playersInfo.length > 2 && playersInfo.length <= 7) {
+        buttonCanvas(ctx3, canvas3, 'red', 'играть', '#fff', typographySettings.title.offset.left, gameSettings.GAME_BOARD_TOP_PX + 320, 170, 40, () => {
+          setGameStep('association')
+        })
+      }
+    }, 100)
 
     setFinished(false)
+
+    setRaundInfo({
+      id: 1,
+      masterUserId: 'self',
+      masterAssociation: 'Приятная суета',
+      mastercardId: 0,
+      players: playersInfo.map(i => {
+        return {
+          color: i.color,
+          userId: i.userId,
+          selectedCard: i.selectedImageIndex,
+          master: false,
+          pointsOld: i.score > 0 ? i.score - i.scoreAdd : 0,
+          pointsAdd: i.scoreAdd,
+        } as IRaundPlayerInfo
+      }),
+    })
   }
   // ---- будет сохраняться в глобальном стейте
   const startSettingsSave = (team: IPlayerInfo[], difficultyInput: string) => {
-    console.log('teamSave', team)
     setPlayersInfo(team)
     setDifficulty(difficultyInput)
     ClearScreen()
+    // routerGame()
   }
   // ===============================
   const stepAssociation = () => {
-    // тестовые данные
-    // const { playerJSON, pointsJSON } = getPlayersJSON()
-    // setPlayersInfo(playerJSON)
-    // setRaundInfo(pointsJSON)
-
-    // setPlayersInfo(getApiPlayersInfo) // получаем данные о игроках getApiPlayersInfo
     setIsStartGame(true)
-    displayContent(gameStep)
+    if (raundInfo.masterUserId === 'self') {
+      drawCards()
+    } else {
+      setSelectedCard(cardsElement[randomInteger(0, 5)])
+      setAssociation(associations[randomInteger(0, 40)])
+    }
+
+    displayContent(gameStep, raundInfo.masterUserId === 'self', raundInfo.id)
     setFinished(false)
   }
+
+  useEffect(() => {
+    if (raundInfo.masterUserId === 'self') {
+      setRaundInfo(prev => ({ ...prev, mastercardId: selectedCard?.id ?? 0 }))
+    } else {
+      const players = raundInfo.players.map(p => {
+        if (p.userId === 'self') {
+          p.selectedCard = selectedCard?.id ?? 0
+        }
+        return p
+      })
+
+      setRaundInfo(prev => ({ ...prev, players }))
+    }
+
+    if (gameStep === 'association' && association.length > 0 && selectedCard && raundInfo.masterUserId === 'self') {
+      buttonCanvas(ctx3, canvas3, 'red', 'Далее', '#fff', typographySettings.title.offset.left + 40, gameSettings.CANVAS_HEIGHT_PX - 45, 170, 40, () => {
+        setGameStep('cards')
+      })
+    }
+
+    if (gameStep === 'cards' && selectedCard && raundInfo.masterUserId !== 'self') {
+      setTimeout(() => {
+        buttonCanvas(ctx3, canvas3, 'red', 'Далее', '#fff', typographySettings.title.offset.left + 40, gameSettings.CANVAS_HEIGHT_PX - 45, 170, 40, () => {
+          setGameStep('scoring')
+        })
+      }, 2000)
+    }
+  }, [selectedCard, association, gameStep])
+
   const stepCards = () => {
-    displayContent(gameStep)
-    drawCards()
+    if (raundInfo.masterUserId !== 'self') {
+      writeText('Ассоциация ведущего:' + association, gameSettings.CARD_TOP_PX - 60)
+      drawCards()
+    }
+    displayContent(gameStep, raundInfo.masterUserId === 'self', raundInfo.id)
   }
-  const stepVoting = () => {
-    displayContent(gameStep)
-    drawCards()
-    //addClick(animateCards)
-    /*
-    cardsElement.forEach(card => {
-       drawCard(card.img, card.left, card.top)
-    })
-    */
-  }
+
   const stepScoring = () => {
-    displayContent(gameStep)
-    console.log('cardsElement', cardsElement)
-    // drawCards()
-    writeText('Ведущего', gameSettings.CARD_TOP_PX - 60)
-    drawCard(cardsElement[0].img, gameSettings.CONTENT_LEFT_PX + gameSettings.CARD_LEFT_PX, gameSettings.CARD_TOP_PX)
-    writeText('Логин 1', 440)
-    drawCard(cardsElement[1].img, gameSettings.CONTENT_LEFT_PX + gameSettings.CARD_LEFT_PX, 500)
+    displayContent(gameStep, raundInfo.masterUserId === 'self', raundInfo.id)
+    writeText('Карточка ведущего', gameSettings.CARD_TOP_PX - 40)
+    const selectedCardLocal = cardsElement.find(c => c.id === raundInfo.mastercardId)
+    selectedCardLocal && drawCard(selectedCardLocal.img, gameSettings.CONTENT_LEFT_PX + gameSettings.CARD_LEFT_PX, gameSettings.CARD_TOP_PX)
+
+    let dx = gameSettings.CONTENT_LEFT_PX + gameSettings.CARD_LEFT_PX
+
+    const selectedCardIndex = cardsElement.findIndex(card => card.img === selectedCardLocal?.img)
+
+    const onlyPlayers = playersInfo.filter(p => p.userId !== raundInfo.masterUserId)
+
+    onlyPlayers.forEach(player => {
+      if (player.selectedImageIndex === selectedCardIndex) {
+        player.score += 3
+        player.scoreAdd = 3
+      } else {
+        player.score += 1
+        player.scoreAdd = 1
+      }
+      writeText(player.login, 460, dx - gameSettings.CONTENT_LEFT_PX - gameSettings.CARD_LEFT_PX)
+
+      if (typeof player.selectedImageIndex === 'number') {
+        drawCard(cardsElement[player.selectedImageIndex].img, dx, 500)
+      }
+
+      dx += gameSettings.CARD_WIDTH_PX + 10
+    })
+
+    const masterUser = playersInfo.find(p => p.userId === raundInfo.masterUserId)
+
+    if (!masterUser) {
+      return
+    }
+
+    if (raundInfo.masterUserId === 'self') {
+      if (onlyPlayers.every(i => i.selectedImageIndex === selectedCardIndex) || onlyPlayers.every(i => i.selectedImageIndex !== selectedCardIndex)) {
+        masterUser.score += 0
+        masterUser.scoreAdd = 0
+      } else {
+        masterUser.score += 3
+        masterUser.scoreAdd = 3
+      }
+    } else {
+      if (masterUser.selectedImageIndex === selectedCardIndex) {
+        masterUser.score += 3
+        masterUser.scoreAdd = 3
+      } else {
+        masterUser.score += 1
+        masterUser.scoreAdd = 1
+      }
+    }
+    buttonCanvas(ctx3, canvas3, 'red', 'Далее', '#fff', typographySettings.title.offset.left + 40, gameSettings.CANVAS_HEIGHT_PX - 45, 170, 40, () => {
+      setGameStep('results')
+    })
   }
   const stepResults = () => {
     setAnimationField(true)
     setPlace()
-    generatePlayers()
-    displayContent(gameStep)
+    const selectedCardIndex = cardsElement.findIndex(card => card.img === selectedCard?.img)
+    generatePlayers(playersInfo, selectedCardIndex, playersInfo[0].userId)
+    displayContent(gameStep, raundInfo.masterUserId === 'self', raundInfo.id)
     writeTitle(gameContent[gameStep].title)
     writeTask(gameContent[gameStep].task)
-    const { playerJSON, pointsJSON } = getPlayersJSON(7) // тестовые данные
-    writeLogin(ctx, playerJSON, pointsJSON, 20, gameSettings.GAME_BOARD_TOP_PX + 80)
+    writeLogin(ctx, playersInfo, 20, gameSettings.GAME_BOARD_TOP_PX + 80)
+
+    if (playersInfo.find(i => i.score >= 25)) {
+      setGameStep('finish')
+    } else {
+      buttonCanvas(ctx3, canvas3, 'red', 'Следующий раунд', '#fff', typographySettings.title.offset.left - 240, gameSettings.CANVAS_HEIGHT_PX - 45, 170, 40, () => {
+        setGameStep('association')
+        const masterUserIndex = playersInfo.findIndex(p => p.userId === raundInfo.masterUserId)
+
+        const nextMasterUserID = masterUserIndex === playersInfo.length - 1 ? playersInfo[0].userId : playersInfo[masterUserIndex + 1].userId
+
+        setRaundInfo(prev => ({
+          ...prev,
+          id: prev.id + 1,
+          masterUserId: nextMasterUserID,
+        }))
+        setSelectedCard(null)
+        setAssociation('')
+      })
+    }
   }
+
   const stepFinish = () => {
     setAnimationField(false)
-    setPlayersInfo(getApiPlayersInfo(7)) // получаем данные о игроках getApiPlayersInfo
-    setRaundInfo(getApiRaundInfo(7))
     setIsStartGame(false)
     writeTitle('Финал')
     writeLoginFinish(ctx, playersInfo, raundInfo, gameSettings.CANVAS_WIDTH_PX / 2 - 80, gameSettings.GAME_BOARD_TOP_PX)
     buttonCanvas(ctx3, canvas3, 'yellow', 'Еще партейку, пожалуй', '#000', gameSettings.CANVAS_WIDTH_PX / 2 - 100, gameSettings.CANVAS_HEIGHT_PX - 200, 200, 40, ReturnToGame)
 
-    // Generate last score
     updateScore(Math.floor(Math.random() * (MAX_ROUND_SCORE + 1)))
   }
+
   // ===================== Steps ROUTER
   const routerGame = () => {
-    console.log('routerGame step', gameStep)
+    console.log(playersInfo, raundInfo)
     ClearScreen()
     setAnimationField(false)
     if (!visibleField) {
@@ -181,9 +293,6 @@ export const PageGame = () => {
           break
         case 'cards':
           stepCards()
-          break
-        case 'voting':
-          stepVoting()
           break
         case 'scoring':
           stepScoring()
@@ -245,6 +354,7 @@ export const PageGame = () => {
       false
     )
   }
+
   function buttonModal(ctx: CanvasRenderingContext2D | null, canvas: HTMLCanvasElement | null, str: string, imageX: number, imageY: number, imageWidth: number, imageHeight: number) {
     if (!ctx) {
       return
@@ -285,8 +395,6 @@ export const PageGame = () => {
     if (!visibleField) {
       setAnimationField(false)
     }
-
-    routerGame()
     let str = 'Игровое поле'
     if (visibleField) {
       str = 'Вернуться к игре'
@@ -298,11 +406,10 @@ export const PageGame = () => {
 
   useEffect(() => {
     routerGame()
-  }, [playersInfo])
+  }, [playersInfo, gameStep])
 
   useEffect(() => {
-    console.log('load page default')
-    routerGame()
+    // routerGame()
   }, [])
 
   const toggleFullScreen = () => {
@@ -325,9 +432,6 @@ export const PageGame = () => {
   return (
     <>
       <div className="content">
-        {/*<Title>Cтраница игры</Title>*/}
-        <Space style={inputContainer}>{gameStep == 'association' && <Input placeholder="Напишите ассоциацию" />}</Space>
-
         <Row className="w100">
           <Col span={8} offset={12}>
             <Button type="primary" onClick={toggleFullScreen}>
@@ -353,6 +457,19 @@ export const PageGame = () => {
             width: gameSettings.CANVAS_WIDTH_PX,
             height: gameSettings.CANVAS_HEIGHT_PX,
           }}>
+          <Space style={inputContainer}>
+            {gameStep == 'association' && raundInfo.masterUserId === 'self' && (
+              <Input
+                style={input}
+                disabled={!selectedCard}
+                placeholder="Напишите ассоциацию"
+                value={association}
+                onChange={e => {
+                  setAssociation(e.target.value)
+                }}
+              />
+            )}
+          </Space>
           <canvas
             id="canvas"
             className="layer"
@@ -389,7 +506,11 @@ export const PageGame = () => {
                   </Button>
                 ) : (
                   <>
-                    <Button type="primary" onClick={setNextGameStep}>
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        setGameStep(stepsInTheGame[stepsInTheGame.indexOf(gameStep) + 1])
+                      }}>
                       Следующий шаг (для режима разработки)
                     </Button>
                   </>
