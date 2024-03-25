@@ -1,6 +1,6 @@
 import { IComment, IProps } from '../components/forum/forum.types'
 
-export const apiBaseUrl = 'http://localhost:3001'
+export const apiBaseUrl = 'https://imagexit-web-client.vercel.app'
 
 export const IPropsDefault = {
   id: 0,
