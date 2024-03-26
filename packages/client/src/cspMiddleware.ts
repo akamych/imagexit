@@ -17,7 +17,7 @@ const cspMiddleware: Middleware = (req, res, next) => {
   )
   next()
 }
-/**
+/** 
 default-src 'self' data: ${domain}:${serverPort} - разрешает загрузку контента с текущего домена и порта клиента + загрузку скриптов и других ресурсов с ${domain}:${serverPort}, а также использование application/json в качестве типа контента.
 script-src 'self' 'unsafe-inline' ${domain}:${serverPort}  - разрешает загрузку скриптов с текущего домена и порта клиента + встроенных скриптов (с помощью 'unsafe-inline') + использование application/json в качестве типа контента.
 style-src 'self' 'unsafe-inline'  - разрешает загрузку стилей с текущего домена и порта клиента, а также встроенных стилей (с помощью 'unsafe-inline').
