@@ -11,7 +11,7 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import { YandexAPIRepository } from './packages/server/repository/YandexAPIRepository'
-import sequelize from './packages/server/sequelize'
+// import sequelize from './packages/server/sequelize'
 import themeRouter from './packages/server/routes/theme'
 import ForumRouter from './packages/server/routes/forum'
 
@@ -21,11 +21,11 @@ async function startServer() {
   const app = express()
   app.use(cors())
   const port = 3001
-
-  sequelize
-    .sync()
-    .then(() => console.log('Database connected successfully!'))
-    .catch((error: Error) => console.error('Unable to connect to the database: ', error))
+  //
+  // sequelize
+  //   .sync()
+  //   .then(() => console.log('Database connected successfully!'))
+  //   .catch((error: Error) => console.error('Unable to connect to the database: ', error))
 
   const distPath = path.dirname(require.resolve('vercel-dist/index.html'))
   const template = fs.readFileSync(path.resolve(distPath), 'utf-8')
