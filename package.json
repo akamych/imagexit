@@ -10,7 +10,8 @@
     "test": "lerna run test",
     "lint": "lerna run lint",
     "format": "lerna run format",
-    "preview": "lerna run preview"
+    "preview": "lerna run preview",
+    "vercelBuild": "cd packages/client && yarn build:ssr && yarn build && cd ../../ && cp -r packages/client/dist/ vercel-dist && cp -r packages/client/ssr-dist/ vercel-ssr-dist"
   },
   "license": "MIT",
   "workspaces": [
