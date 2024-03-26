@@ -27,8 +27,8 @@ async function startServer() {
   //   .then(() => console.log('Database connected successfully!'))
   //   .catch((error: Error) => console.error('Unable to connect to the database: ', error))
 
-  const distPath = './vercel-dist/index.html'
-  const template = fs.readFileSync(path.resolve(distPath), 'utf-8')
+  const distPath = './vercel-dist'
+  const template = fs.readFileSync(path.resolve(distPath, 'index.html'), 'utf-8')
 
   app.use(express.json())
   app.use(
