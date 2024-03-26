@@ -118,12 +118,10 @@ export const UseDrawCards: UseDrawCards = (ctx, cardsElement, setCardsElement, s
   }
 
   useEffect(() => {
-    if (gameStep == 'voting' || gameStep == 'association') {
-      clearCanvas()
-      cardsElement.forEach(card => {
-        drawCard(card.img, card.left, card.top)
-      })
-    }
+    clearCanvas()
+    cardsElement.forEach(card => {
+      drawCard(card.img, card.left, card.top)
+    })
   }, [cards, gameStep])
 
   return {

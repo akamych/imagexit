@@ -1,7 +1,7 @@
 ### Рабочие ссылки
 
 1. [vercel](https://imagexit-web-client.vercel.app/)
-2. [Видео отчет реализации задач из 5-6 спринтов ](https://disk.yandex.ru/i/v0mF8U_8rNEa8w)
+2. [Видео отчет реализации задач из 7-8 спринтов ](https://disk.yandex.ru/i/pSerlCt4HYFRgg)
 
 ### Как запускать?
 

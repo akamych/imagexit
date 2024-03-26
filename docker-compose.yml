@@ -32,6 +32,7 @@ services:
           POSTGRES_USER: ${POSTGRES_USER}
           POSTGRES_DB: ${POSTGRES_DB}
           POSTGRES_PORT: ${POSTGRES_PORT}
+          POSTGRES_HOST: ${POSTGRES_HOST}
         networks:
           - awesome
         depends_on:

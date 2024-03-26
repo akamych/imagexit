@@ -34,7 +34,7 @@ type IgameContent = {
   }
 }
 
-export const stepsInTheGame = ['start', 'association', 'cards', 'voting', 'scoring', 'results', 'finish']
+export const stepsInTheGame = ['start', 'association', 'cards', 'scoring', 'results', 'finish']
 
 export const gameContent: IgameContent = {
   start: {
@@ -44,7 +44,7 @@ export const gameContent: IgameContent = {
   association: {
     title: 'Придумать ассоциацию',
     task: 'Ведущий придумывает ассоциацию и загадывает карту. Игроки ждут.',
-    messageMaster: 'Придумайте асоциацию и выберите карту.',
+    messageMaster: 'Придумайте ассоциацию и выберите карту.',
     messagePlayer: 'Ждем ведущего',
   },
   cards: {

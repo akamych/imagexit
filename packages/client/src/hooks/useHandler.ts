@@ -15,11 +15,6 @@ export const UseHandler: UseHandler = elem => {
       }
       const elemRect = elem.getBoundingClientRect()
 
-      //const elemLeft = elem.offsetLeft + elem.clientLeft
-      //const elemTop = elem.offsetTop + elem.clientTop
-
-      //const x = event.pageX - elemLeft - elemRect.left
-      //const y = event.pageY - elemTop - elemRect.top
       const x = event.clientX - elemRect.left
       const y = event.clientY - elemRect.top
 

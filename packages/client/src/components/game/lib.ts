@@ -16,23 +16,26 @@ const drawAvatar = (ctx: CanvasRenderingContext2D | null, centerX: number, cente
   ctx.stroke()
 }
 
-export const writeLogin = (ctx: CanvasRenderingContext2D | null, players: IPlayerInfo[], raundInfo: IRaundInfo | null, x: number, y: number) => {
+export const writeLogin = (ctx: CanvasRenderingContext2D | null, players: IPlayerInfo[], x: number, y: number) => {
   if (!ctx) {
     return
   }
   let yRow = y
 
-  players.forEach((player: IPlayerInfo, index) => {
-    let xRow = x
-    drawAvatar(ctx, x, yRow + typographySettings.text.fontSize / 2, player.color)
-    xRow += 20
-    ctx.font = `${typographySettings.text.fontSize}px ${typographySettings.text.fontFamily}`
-    ctx.fillStyle = typographySettings.title.color
-    ctx.textBaseline = 'top'
-    ctx.textAlign = 'start'
-    ctx.fillText(player.login, xRow, yRow)
-    // ---
-    if (raundInfo?.players[index]?.pointsOld) {
+  const arr = [...players]
+
+  arr
+    .sort((a, b) => (a.score < b.score ? 1 : -1))
+    .forEach((player: IPlayerInfo, index) => {
+      let xRow = x
+      drawAvatar(ctx, x, yRow + typographySettings.text.fontSize / 2, player.color)
+      xRow += 20
+      ctx.font = `${typographySettings.text.fontSize}px ${typographySettings.text.fontFamily}`
+      ctx.fillStyle = typographySettings.title.color
+      ctx.textBaseline = 'top'
+      ctx.textAlign = 'start'
+      ctx.fillText(player.login, xRow, yRow)
+      // ---
       ctx.font = `${typographySettings.smallText.fontSize}px ${typographySettings.smallText.fontFamily}`
       ctx.fillStyle = typographySettings.smallText.color
       xRow += ctx.measureText(player.login + ' ').width + 13
@@ -42,11 +45,14 @@ export const writeLogin = (ctx: CanvasRenderingContext2D | null, players: IPlaye
       ctx.fillStyle = typographySettings.text.color
       xRow += ctx.measureText('баллы:').width
 
-      const pointResult = raundInfo.players[index].pointsOld + raundInfo.players[index].pointsAdd
-      ctx.fillText(pointResult + ' (' + raundInfo.players[index].pointsAdd + ')', xRow, yRow)
-    }
-    yRow += 30
-  })
+      if (player.scoreAdd > 0) {
+        ctx.fillText(`${player.score} (+${player.scoreAdd})`, xRow, yRow)
+      } else {
+        ctx.fillText(`${player.score}`, xRow, yRow)
+      }
+
+      yRow += 30
+    })
 }
 
 export const writeLoginFinish = (ctx: CanvasRenderingContext2D | null, players: IPlayerInfo[], raundInfo: IRaundInfo | null, x: number, y: number) => {
@@ -86,7 +92,6 @@ export const writeLoginFinish = (ctx: CanvasRenderingContext2D | null, players: 
       ctx.font = `${typographySettings.text.fontSize}px ${typographySettings.text.fontFamily}`
       ctx.fillStyle = typographySettings.text.color
       xRow += ctx.measureText('баллы:').width
-
       const pointResult = raundInfo.players[index].pointsOld
       ctx.fillText(pointResult + '', xRow, yRow)
     }
@@ -131,15 +136,14 @@ export const buttonCanvas = (
   ctx.fillText(str, imageX + imageWidth / 2, imageY + imageHeight / 2)
   ctx.restore()
   // ---
-  canvas.addEventListener(
-    'click',
-    (event: MouseEvent) => {
-      const isClickedInsideImage = event.offsetX >= imageX && event.offsetX <= imageX + imageWidth && event.offsetY >= imageY && event.offsetY <= imageY + imageHeight
 
-      if (isClickedInsideImage) {
-        fn()
-      }
-    },
-    false
-  )
+  const onClick = (event: MouseEvent) => {
+    const isClickedInsideImage = event.offsetX >= imageX && event.offsetX <= imageX + imageWidth && event.offsetY >= imageY && event.offsetY <= imageY + imageHeight
+
+    if (isClickedInsideImage) {
+      fn()
+      canvas.removeEventListener('click', onClick)
+    }
+  }
+  canvas.addEventListener('click', onClick, false)
 }

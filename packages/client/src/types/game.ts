@@ -30,6 +30,9 @@ export interface IPlayerInfo {
   userId: string
   login: string
   color: string
+  score: number
+  selectedImageIndex: number | null
+  scoreAdd: number
 }
 
 export interface IRaundPlayerInfo {
@@ -38,19 +41,20 @@ export interface IRaundPlayerInfo {
   master: boolean
   pointsOld: number
   pointsAdd: number
+  color: string
 }
 
 export interface IRaundInfo {
   id: number
   masterUserId: string
   masterAssociation: string
-  mastercardId: number
+  mastercardId: number | undefined
   players: IRaundPlayerInfo[]
 }
 
 export const defaultRaundInfo: IRaundInfo = {
   id: 0,
-  masterUserId: '',
+  masterUserId: 'self',
   masterAssociation: '',
   mastercardId: 0,
   players: [],
