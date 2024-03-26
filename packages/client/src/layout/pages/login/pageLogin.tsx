@@ -30,8 +30,8 @@ export const PageLogin = () => {
 
     const params: Record<string, string> = {
       client_id: serviceId,
-      redirect_uri: API_CALLBACK_URL,
       response_type: 'code',
+      redirect_uri: API_CALLBACK_URL,
     }
 
     setYandexOAuthLink(`${API_OAUTH_YANDEX}?${queryGetString(params)}`)
