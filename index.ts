@@ -27,8 +27,8 @@ async function startServer() {
   //   .then(() => console.log('Database connected successfully!'))
   //   .catch((error: Error) => console.error('Unable to connect to the database: ', error))
 
-  const distPath = path.dirname(require.resolve('./vercel-dist/index.html'))
-  const template = fs.readFileSync(path.resolve('./vercel-dist/index.html'), 'utf-8')
+  const distPath = './vercel-dist/index.html'
+  const template = fs.readFileSync(path.resolve(distPath), 'utf-8')
 
   app.use(express.json())
   app.use(
@@ -56,7 +56,7 @@ async function startServer() {
     const url = req.originalUrl
 
     try {
-      const ssrClientPath = require.resolve('vercel-ssr-dist/ssr.cjs')
+      const ssrClientPath = './vercel-ssr-dist/ssr.cjs'
       const mod = await import(ssrClientPath)
 
       const { render } = mod
