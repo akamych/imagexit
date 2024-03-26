@@ -14,6 +14,7 @@ import { YandexAPIRepository } from './packages/server/repository/YandexAPIRepos
 // import sequelize from './packages/server/sequelize'
 import themeRouter from './packages/server/routes/theme'
 import ForumRouter from './packages/server/routes/forum'
+import sequelize from './packages/server/sequelize'
 
 dotenv.config()
 
@@ -21,11 +22,11 @@ async function startServer() {
   const app = express()
   app.use(cors())
   const port = 3001
-  //
-  // sequelize
-  //   .sync()
-  //   .then(() => console.log('Database connected successfully!'))
-  //   .catch((error: Error) => console.error('Unable to connect to the database: ', error))
+
+  sequelize
+    .sync()
+    .then(() => console.log('Database connected successfully!'))
+    .catch((error: Error) => console.error('Unable to connect to the database: ', error))
 
   const distPath = './vercel-dist'
   const template = fs.readFileSync(path.resolve(distPath, 'index.html'), 'utf-8')
