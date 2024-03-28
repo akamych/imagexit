@@ -4,17 +4,16 @@ type Middleware = (req: IncomingMessage, res: ServerResponse, next: () => void) 
 
 const cspMiddleware: Middleware = (req, res, next) => {
   const domain = process.env.DOMAIN
-  const domainVersel = process.env.DOMAIN_VERCEL
   // const clientPort = process.env.CLIENT_PORT
   const serverPort = process.env.SERVER_PORT
   res.setHeader(
     'Content-Security-Policy',
-    `default-src 'self' data: ${domain}:${serverPort} ${domainVersel};
-     script-src 'self' 'unsafe-inline' ${domain}:${serverPort} ${domainVersel};
+    `default-src 'self' data: ${domain}:${serverPort} https://ya-praktikum.tech https://oauth.yandex.ru;
+     script-src 'self' 'unsafe-inline' ${domain}:${serverPort}  ;
      style-src 'self' 'unsafe-inline';
      img-src 'self';
      font-src 'self';
-     connect-src 'self' ${domain}:${serverPort} ${domainVersel}`
+     connect-src 'self' ${domain}:${serverPort} https://ya-praktikum.tech https://oauth.yandex.ru`
   )
   next()
 }
