@@ -28,6 +28,12 @@
 - режим development: yarn dev
 - режим production: yarn prod
 
+### Хостинг ресурса на Vercel
+1. Перейти в ветку versel
+2. Выполнить команду `yarn vercelBuild`
+3. Запушить изменения
+
+
 ### Как добавить зависимости?
 
 В этом проекте используется `monorepo` на основе [`lerna`](https://github.com/lerna/lerna)
