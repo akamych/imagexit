@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { buildSync } from 'esbuild'
 import cspMiddleware from './src/cspMiddleware'
 import type { Request, Response } from 'node-fetch'
-dotenv.config({ path: '../../.env' })
+dotenv.config()
 
 type Middleware = (request: Request, response: Response, next: () => void) => void
 
