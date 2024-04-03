@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
-dotenv.config()
+dotenv.config({ path: './src/cspMiddleware.ts' })
+
 
 export default {
   preset: 'ts-jest',
@@ -12,4 +13,5 @@ export default {
   globals: {
     __SERVER_PORT__: process.env.SERVER_PORT,
   },
+
 }

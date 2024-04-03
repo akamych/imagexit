@@ -1,4 +1,6 @@
-import { Table, Column, Model, DataType, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt } from 'sequelize-typescript'
+import { Table, Column, Model, DataType, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt, HasMany, ForeignKey, BelongsTo } from 'sequelize-typescript'
+import ForumComments from './forumComments.model'
+import User from './user'
 
 @Table({ tableName: 'ForumTopics' })
 class ForumTopic extends Model {
@@ -7,16 +9,26 @@ class ForumTopic extends Model {
   @Column(DataType.INTEGER)
   declare id: number
 
+  @HasMany(() => ForumComments)
+  comments!: ForumComments[]
+
   @Column(DataType.STRING)
   title!: string
 
   @Column(DataType.TEXT)
   description!: string
 
+  @ForeignKey(() => User)
   @Column(DataType.INTEGER)
   userId!: number
 
-  @Column(DataType.INTEGER)
+  @BelongsTo(() => User)
+  user!: User
+
+  @Column({
+    type: DataType.INTEGER,
+    defaultValue: 0,
+  })
   viewCount!: number
 
   @CreatedAt

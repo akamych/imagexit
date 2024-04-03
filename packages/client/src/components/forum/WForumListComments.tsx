@@ -50,6 +50,7 @@ export const WForumListComments = () => {
   }, [])
   // ----
   const BoxList = useMemo(() => {
+    const self = false
     return (
       <List
         itemLayout="vertical"
@@ -67,7 +68,7 @@ export const WForumListComments = () => {
           <List.Item
             key={item.id}
             actions={[
-              <div className={item.self ? 'login active' : 'login'}>
+              <div className={self ? 'login active' : 'login'}>
                 <UserOutlined rev={undefined} /> {item.login}
               </div>,
               <div>

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../Store'
 import { UserDetails } from '../../types/store'
 import { Nullable } from '../../types/common'
-import { authAction, loginAction, signupAction } from '../actions/AuthActions'
+import { authAction, loginAction, logoutAction, signupAction } from '../actions/AuthActions'
 
 interface AuthState {
   user: Nullable<UserDetails>
@@ -48,6 +48,10 @@ const authSlice = createSlice({
         state.user = null
         state.error = action.payload || 'Регистрация неудачная'
       }
+    })
+    builder.addCase(logoutAction.fulfilled, (state: AuthState, action: PayloadAction<UserDetails | void>) => {
+      state.user = null
+      state.error = null
     })
   },
 })

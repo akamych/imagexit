@@ -1,4 +1,4 @@
-import { Alert, Button, Typography } from 'antd'
+import { Alert, Button, Space, Typography, Divider } from 'antd'
 import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { IProps } from './forum.types'
@@ -7,10 +7,13 @@ import { apiGetTopicContent } from '../../api/forum.api'
 import { alertStyle } from '../../assets/antdStyle'
 import { WForumTopicEmojis } from './WForumTopicEmojis'
 import { emojiMoreGrid, moreButton } from '../../assets/emojiStyle'
+import { DateFormatRU } from '../../helpers/dateFormat'
+import { CalendarOutlined, ClockCircleOutlined } from '@ant-design/icons'
 
 export const WForumTopicContent = () => {
-  const { Paragraph, Title } = Typography
+  const { Paragraph, Title, Text } = Typography
   const { id } = useParams()
+  const self = false
   // -----
   const [ellipsis, setEllipsis] = useState(true)
   const [dataTopic, setDataTopic] = useState<IProps>(IPropsDefault) // !!! Удалить Переменную после реализации сохрания изменений через API
@@ -37,10 +40,10 @@ export const WForumTopicContent = () => {
       console.log(e)
     }
   }, [])
-  const saveContent = useCallback(async (content: string) => {
+  const saveContent = useCallback(async (description: string) => {
     try {
       //const res = await apiSaveTitle(title)
-      setDataTopic({ ...dataTopic, content: content })
+      setDataTopic({ ...dataTopic, description: description })
     } catch (e) {
       console.log(e)
     }
@@ -62,20 +65,27 @@ export const WForumTopicContent = () => {
     <>
       {loading && <Alert message="Загрузка" type="info" style={alertStyle} />}
       {status == 'error' && <Alert message={message} type="error" style={alertStyle} />}
-      {dataTopic.created.self && (
-        <>
-          <Title editable={{ onChange: saveTitle }}>{dataTopic.title}</Title>
-          <Paragraph editable={{ onChange: saveContent }} ellipsis={ellipsis ? { rows: 2, expandable: true, symbol: ' ' } : false}>
-            {dataTopic.content}
-          </Paragraph>
-        </>
+
+      {self && <Title editable={{ onChange: saveTitle }}>{dataTopic.title} </Title>}
+      {!self && <Title>{dataTopic.title}</Title>}
+      <Space>
+        <Text type="secondary">
+          Создан: <CalendarOutlined rev={undefined} /> {DateFormatRU(dataTopic.createdAt)}
+        </Text>
+        <Divider type="vertical" />
+        <Text type="secondary">
+          Изменен: <ClockCircleOutlined rev={undefined} /> {DateFormatRU(dataTopic.updatedAt)}
+        </Text>
+        <Divider type="vertical" />
+      </Space>
+      <Divider dashed />
+      {self && (
+        <Paragraph editable={{ onChange: saveContent }} ellipsis={ellipsis ? { rows: 2, expandable: true, symbol: ' ' } : false}>
+          {dataTopic.description}
+        </Paragraph>
       )}
-      {!dataTopic.created.self && (
-        <>
-          <Title>{dataTopic.title}</Title>
-          <Paragraph ellipsis={ellipsis ? { rows: 2, expandable: true, symbol: ' ' } : false}>{dataTopic.content}</Paragraph>
-        </>
-      )}
+      {!self && <Paragraph ellipsis={ellipsis ? { rows: 2, expandable: true, symbol: ' ' } : false}>{dataTopic.description}</Paragraph>}
+
       <div className="forum-emojis" style={emojiMoreGrid}>
         <WForumTopicEmojis />
         <div className="button-more" style={moreButton}>

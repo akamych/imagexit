@@ -12,14 +12,18 @@ export const queryGetString = (params: Record<string, string>) =>
 export const getServiceId = (): Promise<serviceIdType | void> =>
   fetch(API_OAUTH_YP_GET_SERVICE_ID)
     .then(response => {
+      if (!response) {
+        return
+      }
       if (!response.ok) {
         throw new Error('Network response was not ok')
       }
       return response.json() as Promise<serviceIdType>
     })
     .catch(error => {
-      console.error(error)
+      console.log(error)
       localStorage.removeItem('serviceId')
+      throw new Error(error)
     })
 
 export const oAuthRequest = async () => {
@@ -32,7 +36,7 @@ export const oAuthRequest = async () => {
       localStorage.setItem('serviceId', service_id)
     })
     .catch(error => {
-      console.error(error)
+      console.log(error)
       localStorage.removeItem('serviceId')
     })
 }

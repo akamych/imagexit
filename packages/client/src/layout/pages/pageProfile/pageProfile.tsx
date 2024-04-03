@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../../store/Store'
+import { AppDispatch, RootState } from '../../../store/Store'
 import { selectUser } from '../../../store/reducers/AuthReducer'
 import { selectAvatarSrc } from '../../../store/reducers/AvatarReducer'
 import { Typography, Button, Modal, message, Form, Input } from 'antd'
 import { Avatar } from '../../../components/Avatar/Avatar'
 import styles from './styles.module.css'
+import { logoutAction } from '../../../store/actions/AuthActions'
+import { useDispatch } from 'react-redux'
 
 const { Title } = Typography
 
@@ -16,6 +18,7 @@ export const PageProfile: React.FC = () => {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
   const user = useSelector((state: RootState) => selectUser(state))
   const avatarSrc = useSelector((state: RootState) => selectAvatarSrc(state))
+  const dispatch: AppDispatch = useDispatch<AppDispatch>()
 
   const handlePasswordChange = (values: unknown) => {
     message.success('Пароль успешно изменен')
@@ -28,6 +31,9 @@ export const PageProfile: React.FC = () => {
 
   const showPasswordModal = () => {
     setIsPasswordModalOpen(true)
+  }
+  const Exit = () => {
+    dispatch(logoutAction())
   }
 
   return (
@@ -48,13 +54,7 @@ export const PageProfile: React.FC = () => {
         </Button>
 
         {/* Exit Button */}
-        <Button
-          type="primary"
-          danger
-          className="exit-button"
-          onClick={() => {
-            /* Handle exit */
-          }}>
+        <Button type="primary" danger className="exit-button" onClick={Exit}>
           Exit
         </Button>
       </div>

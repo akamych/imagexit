@@ -5,7 +5,7 @@ import { Model, Table, Column, AutoIncrement, PrimaryKey, AllowNull, DataType } 
   paranoid: true,
   tableName: 'users',
 })
-export default class User extends Model<User> {
+export default class User extends Model<User, Partial<User>> {
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.INTEGER)
@@ -23,7 +23,6 @@ export default class User extends Model<User> {
   @Column(DataType.STRING)
   displayName!: string
 
-  @AllowNull(false)
   @Column(DataType.STRING)
   phone!: string
 
@@ -31,17 +30,17 @@ export default class User extends Model<User> {
   @Column(DataType.STRING)
   login!: string
 
-  @AllowNull(false)
+  @AllowNull(true)
   @Column(DataType.STRING)
-  avatar!: string
+  avatar?: string
 
   @AllowNull(false)
   @Column(DataType.STRING)
   email!: string
 
-  @AllowNull(false)
+  @AllowNull(true)
   @Column(DataType.STRING)
-  password!: string
+  password?: string
 
   static async getById(id: number): Promise<User | null> {
     try {
