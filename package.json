@@ -10,7 +10,8 @@
     "test": "lerna run test",
     "lint": "lerna run lint",
     "format": "lerna run format",
-    "preview": "lerna run preview"
+    "preview": "lerna run preview",
+    "vercelBuild": "cd packages/client && yarn build:ssr && yarn build && cd ../../ && cp -r packages/client/dist/ vercel-dist && cp -r packages/client/ssr-dist/ vercel-ssr-dist"
   },
   "license": "MIT",
   "workspaces": [
@@ -21,6 +22,26 @@
   },
   "devDependencies": {
     "@evilmartians/lefthook": "^1.3.9",
+    "jest-transform-css": "^6.0.1",
     "lerna": "^5.4.3"
+  },
+  "dependencies": {
+    "@csstools/normalize.css": "^12.1.1",
+    "jest-transform-css": "^6.0.1",
+    "normalize.css": "^8.0.1",
+    "@evilmartians/lefthook": "^1.3.9",
+    "axios": "^1.6.7",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "http-proxy-middleware": "^2.0.6",
+    "lerna": "^5.4.3",
+    "pg": "^8.8.0",
+    "prettier": "^2.7.1",
+    "reflect-metadata": "^0.2.1",
+    "sequelize": "^6.37.1",
+    "sequelize-typescript": "^2.1.6"
   }
 }

@@ -1,0 +1,11 @@
+.leaderboard {
+  min-width: 320;
+  & table {
+    margin: 40px 0;
+  }
+
+  .ant-avatar {
+    border: 1px solid #dedede;
+    margin-right: 5px;
+  }
+}
