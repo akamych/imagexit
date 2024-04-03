@@ -3,6 +3,8 @@ import { render } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom' // Импортируйте BrowserRouter
 import { create } from 'match-media-mock'
 import { PageLogin } from './pageLogin'
+import { Provider } from 'react-redux'
+import store from '../../../store/Store'
 
 jest.mock('react-redux', () => ({
   useSelector: jest.fn(),

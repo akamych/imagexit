@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { IComment, IProps } from '../components/forum/forum.types'
-import { IPropsDefault, apiBaseUrl, dataTestForumCommentList, dataTestForumTopicId, dataTestForumTopicList } from '../constants/data.forum'
+import { IPropsDefault, apiBaseUrl, dataTestForumCommentList } from '../constants/data.forum'
 
 const baseForumApi = `${apiBaseUrl}/api/forum`
 const ADD_EMOJI_API_URL = `${baseForumApi}emojis`

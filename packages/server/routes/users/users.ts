@@ -6,6 +6,9 @@ import { Optional } from 'sequelize'
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const email = req.query.email as string
+    if (email == undefined) {
+      return []
+    }
     //const commentId = parseInt(req.params.commentId, 10)
     const limit = parseInt(req.query.limit as string, 10) || 10
     const offset = parseInt(req.query.offset as string, 10) || 0
@@ -17,7 +20,7 @@ export const getUsers = async (req: Request, res: Response) => {
       order: [['id', 'DESC']],
     })
 
-    return res.json(replies ? replies : {})
+    return res.json(replies ? replies : [])
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }

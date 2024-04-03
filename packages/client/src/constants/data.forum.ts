@@ -1,6 +1,7 @@
 import { IComment, IProps } from '../components/forum/forum.types'
+import { isDevelopment } from '../utils/EnvUtil'
 
-export const apiBaseUrl = `http://localhost:${__SERVER_PORT__}` // https://imagexit-web-client.vercel.app
+export const apiBaseUrl = isDevelopment ? `http://localhost:${__SERVER_PORT__}` : 'https://imagexit-web-client.vercel.app' // https://imagexit-web-client.vercel.app `http://localhost:${__SERVER_PORT__}`
 
 export const IPropsDefault = {
   id: 0,

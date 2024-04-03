@@ -16,6 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "service-worker.js", "ssr.config.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src", "service-worker.js", "ssr.config.ts", "src/cspMiddleware.ts"],
+  "references": [{ "path": "tsconfig.node.json" }]
 }
