@@ -16,16 +16,17 @@ import { createProxyMiddleware } from 'http-proxy-middleware'
 import { YandexAPIRepository } from './repository/YandexAPIRepository'
 import { SSRModule } from './types'
 import sequelize from './sequelize'
+import UserRouter from './routes/users'
 import themeRouter from './routes/theme'
 import ForumRouter from './routes/forum'
 
 const isDev = () => process.env.NODE_ENV === 'development'
-dotenv.config()
+dotenv.config({ path: '../../.env' })
 
 async function startServer() {
   const app = express()
   app.use(cors())
-  const port = 3001
+  const port = process.env.SERVER_PORT
 
   sequelize
     .sync()
@@ -40,6 +41,7 @@ async function startServer() {
 
   if (isDev()) {
     template = fs.readFileSync(path.resolve(srcPath, 'index.html'), 'utf-8')
+    console.log('srcPath', srcPath)
   } else {
     distPath = path.dirname(require.resolve('client/dist/index.html'))
     template = fs.readFileSync(path.resolve(distPath), 'utf-8')
@@ -65,9 +67,8 @@ async function startServer() {
       target: 'https://ya-praktikum.tech',
     })
   )
-
+  app.use('/api/user', UserRouter)
   app.use('/api/theme', themeRouter)
-
   app.use('/api/forum', ForumRouter)
 
   app.get('/api', (_, res) => {

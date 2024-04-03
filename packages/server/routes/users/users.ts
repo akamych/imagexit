@@ -1,17 +1,20 @@
 import { Request, Response } from 'express'
-import ForumTopic from '../../sequelize/models/forumTopic.model'
+import User from '../../sequelize/models/user'
+import { NullishPropertiesOf } from 'sequelize/types/utils'
+import { Optional } from 'sequelize'
 
-export const getTopics = async (req: Request, res: Response) => {
+export const getUsers = async (req: Request, res: Response) => {
   try {
-    //const email = req.query.email as string
+    const email = req.query.email as string
     //const commentId = parseInt(req.params.commentId, 10)
     const limit = parseInt(req.query.limit as string, 10) || 10
     const offset = parseInt(req.query.offset as string, 10) || 0
 
-    const replies = await ForumTopic.findAll({
+    const replies = await User.findAll({
+      where: { email },
       limit,
       offset,
-      order: [['createdAt', 'DESC']],
+      order: [['id', 'DESC']],
     })
 
     return res.json(replies ? replies : {})
@@ -19,37 +22,22 @@ export const getTopics = async (req: Request, res: Response) => {
     return res.status(500).json({ message: error.message })
   }
 }
-/*
-include: [
-        {
-          model: ForumComments,
 
-          as: 'comments',
-          attributes: ['likeCount'],
-        },
-        {
-          model: User,
-          where: { email },
-          as: 'user',
-          attributes: ['id', 'avatar', 'login'],
-        },
-      ],
-*/
-export const getTopicById = async (req: Request, res: Response) => {
+export const getUserById = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id, 10)
     const limit = parseInt(req.query.limit as string, 10) || 10
     const offset = parseInt(req.query.offset as string, 10) || 0
 
-    const reply = await ForumTopic.findOne({
+    const reply = await User.findOne({
       where: { id },
       limit,
       offset,
-      order: [['createdAt', 'DESC']],
+      order: [['id', 'DESC']],
     })
 
     if (!reply) {
-      return res.status(404).json({ message: 'Reply not found' })
+      return res.status(404).json({ message: 'Not found' })
     }
 
     return res.json(reply)
@@ -58,32 +46,34 @@ export const getTopicById = async (req: Request, res: Response) => {
   }
 }
 
-export const createTopic = async (req: Request, res: Response) => {
-  const commentId = parseInt(req.params.commentId, 10)
-
+export const createUser = async (req: Request, res: Response) => {
   try {
-    // Проверяем что пользователь создает топик от своего имени
-
-    if (req.body.userId !== res.locals.userId) {
-      return res.status(403).json({ message: 'Forbidden' })
+    if (req.body.id !== res.locals.id) {
+      // return res.status(403).json({ message: 'Forbidden' })
     }
-    const newTopic = ForumTopic.build({
-      commentId,
-      userId: req.body.userId,
-      text: req.body.text,
-      likeCount: 0,
-    })
+    const userData: Partial<User> = {
+      login: req.body.login,
+      firstName: req.body.firstName,
+      secondName: req.body.secondName,
+      displayName: req.body.displayName,
+      phone: req.body.phone,
+      avatar: req.body.avatar ? req.body.avatar : 'https://api.dicebear.com/7.x/miniavs/svg?seed=0',
+      email: req.body.email,
+      password: req.body.password,
+    } as Optional<User, NullishPropertiesOf<User>>
+
+    const newUser = new User(userData)
 
     // Устанавливаем значения для полей модели
-    newTopic.set(req.body)
+    // newUser.set(req.body)
 
     // Валидируем значения полей модели
-    await newTopic.validate()
+    await newUser.validate()
 
     // Сохраняем новый ответ в базе данных
-    await newTopic.save()
+    await newUser.save()
 
-    return res.status(201).json(newTopic)
+    return res.status(201).json(newUser)
   } catch (error: any) {
     if (error.name === 'SequelizeValidationError') {
       // Обрабатываем ошибки валидации
@@ -95,15 +85,15 @@ export const createTopic = async (req: Request, res: Response) => {
   }
 }
 
-export const updateTopic = async (req: Request, res: Response) => {
+export const updateUser = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id, 10)
   try {
-    const reply = await ForumTopic.findByPk(id)
+    const reply = await User.findByPk(id)
     if (!reply) {
-      return res.status(404).json({ message: 'Reply not found' })
+      return res.status(404).json({ message: 'Not found' })
     }
     // Проверяем что пользователь редактирует свой топик
-    if (reply.userId !== res.locals.userId) {
+    if (reply.id !== res.locals.id) {
       return res.status(403).json({ message: 'Forbidden' })
     }
     // Проверяем, что обновляемые данные соответствуют модели ForumTopic
@@ -118,19 +108,19 @@ export const updateTopic = async (req: Request, res: Response) => {
 }
 
 // curl -X DELETE http://localhost:3001/api/forum/topics/1
-export const deleteTopic = async (req: Request, res: Response) => {
+export const deleteUser = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id, 10)
   try {
-    const reply = await ForumTopic.findByPk(id)
+    const reply = await User.findByPk(id)
     if (!reply) {
-      return res.status(404).json({ message: 'Reply not found' })
+      return res.status(404).json({ message: 'Not found' })
     }
     // Проверяем что пользователь удаляет свой топик
-    if (reply.userId !== res.locals.userId) {
+    if (reply.id !== res.locals.id) {
       return res.status(403).json({ message: 'Forbidden' })
     }
     await reply.destroy()
-    return res.json({ message: 'Reply deleted' })
+    return res.json({ message: 'Deleted' })
   } catch (error: any) {
     return res.status(500).json({ message: error.message })
   }

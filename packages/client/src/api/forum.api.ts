@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { IComment, IProps } from '../components/forum/forum.types'
 import { IPropsDefault, apiBaseUrl, dataTestForumCommentList, dataTestForumTopicId, dataTestForumTopicList } from '../constants/data.forum'
 
-const baseForumApi = `${apiBaseUrl}/api/forum/`
+const baseForumApi = `${apiBaseUrl}/api/forum`
 const ADD_EMOJI_API_URL = `${baseForumApi}emojis`
 const GET_EMOJI_API_URL = `${ADD_EMOJI_API_URL}/`
 
@@ -73,16 +73,17 @@ export const apiGetTopicContent = () => {
   // -------
   const apiResTopic = useCallback(
     async (id: number) => {
-      const url = apiBaseUrl + '/' + id
+      const url = baseForumApi + '/topics/' + id
       try {
         setApiStatus('')
         setApiMessage('')
-        /* !!! API  - раскомментировать для получения реальных данных
+
         const res = await request(url)
         setApiData(res)
         console.log('apiGetTopicContent data', res)
-        */
+        /* !!! API  - раскомментировать для получения реальных данных
         setApiData(dataTestForumTopicId(id)) // ТЕСТОВЫЕ данные
+        */
         setApiStatus('ok')
         setApiMessage(textSuccess)
       } catch (e: any) {
@@ -105,26 +106,29 @@ export const apiGetTopicList = () => {
   // ----
   const { loading, request } = useHttp()
   // -------
-  const apiResList = useCallback(async () => {
-    const url = apiBaseUrl + '/'
-    console.log(url)
-    try {
-      setApiStatus('')
-      setApiMessage('')
-      /* !!! API  - раскомментировать для получения реальных данных 
-      const res = await request(url)
-      setApiData(res)
-      console.log('apiGetTopicList data', res)
-      */
-      setApiData(dataTestForumTopicList) // !!! ТЕСТОВЫЕ данные
-      setApiStatus('ok')
-      setApiMessage(textSuccess)
-    } catch (e: any) {
-      setApiStatus('error')
-      setApiMessage(e.message)
-      setApiData([])
-    }
-  }, [request])
+  const apiResList = useCallback(
+    async (email: string | undefined) => {
+      const url = baseForumApi + '/topics?email=' + email
+      console.log(url)
+      try {
+        setApiStatus('')
+        setApiMessage('')
+        /* !!! API  - раскомментировать для получения реальных данных */
+        const res = await request(url)
+        setApiData(res)
+
+        console.log('apiGetTopicList data', res)
+        // setApiData(dataTestForumTopicList) // !!! ТЕСТОВЫЕ данные
+        setApiStatus('ok')
+        setApiMessage(textSuccess)
+      } catch (e: any) {
+        setApiStatus('error')
+        setApiMessage(e.message)
+        setApiData([])
+      }
+    },
+    [request]
+  )
   return { loading, apiResList, apiDataList, apiStatus, apiMessage }
 }
 
@@ -139,7 +143,7 @@ export const apiGetCommentList = () => {
   // -------
   const apiResList = useCallback(
     async (topicId: number) => {
-      const url = apiBaseUrl + '/' + topicId
+      const url = baseForumApi + '/comments/' + topicId
       try {
         /* !!! API  - раскомментировать для получения реальных данных
         const res = await request(url)

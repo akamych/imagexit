@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import dotenv from 'dotenv'
 import { join } from 'node:path'
 import { buildSync } from 'esbuild'
-dotenv.config()
+dotenv.config({ path: '../../.env' })
 
 // https://vitejs.dev/config/
 export default defineConfig({

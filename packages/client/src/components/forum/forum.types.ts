@@ -1,17 +1,17 @@
 export interface IEventProps {
-  date: string
+  id: number
   login: string
   avatar: string
-  self: boolean
 }
 
 export interface IProps {
   id: number
-  url: string
   title: string
-  content: string
+  description: string
   comments: number
-  views: number
+  viewCount: number
+  createdAt: string
+  updatedAt: string
   created: IEventProps
   updated: IEventProps
 }
@@ -26,5 +26,6 @@ export interface IComment {
   login: string
   content: string
   like: number
-  self: boolean
+  createdAt: string
+  updatedAt: string
 }

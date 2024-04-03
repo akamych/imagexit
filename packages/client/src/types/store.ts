@@ -7,6 +7,7 @@ export interface UserDetails {
   login: string
   avatar: string | null
   email: string
+  id_local?: number
 }
 
 export interface LoginDto {
